@@ -1,7 +1,11 @@
-'use client'
-import Hero from './_components/hero';
+"use client";
+import Hero from "./_components/hero";
+import Header from "./_components/header";
 export default function page() {
-  return (
-    <Hero/>
-  )
+    return (
+        <>
+            <Header />
+            <Hero />
+        </>
+    );
 }
