@@ -24,7 +24,7 @@ export default function Step() {
                 <div class="flex  flex-wrap sm:flex-nowrap  items-center justify-center gap-6 w-4/5 mx-auto">
                         {features.map((feature, i) => {
                             return (
-                                <div className="border-4 border-third rounded-lg p-4 bg-white w-64 h-26 flex flex-col items-center justify-center">
+                                <div key={i} className="border-4 border-third rounded-lg p-4 bg-white w-64 h-26 flex flex-col items-center justify-center">
                                     <h3 className="my-2 font-semibold text-lg">{feature.title}</h3>
                                     <p className="text-sm">{feature.subtitle}</p>
                                 </div>
