@@ -4,7 +4,7 @@ import { TbHandFingerRight } from "react-icons/tb";
 export default function Hero() {
     return (
         <>
-            <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-10 h-screen">
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-center sm:gap-10 sm:h-screen">
                 <div className="relative isolate px-6 pt-14 lg:px-8 ">
                     <div className="mx-auto max-w-2xl py-12 sm:py-24 lg:py-36">
                         <div className="text-center">
