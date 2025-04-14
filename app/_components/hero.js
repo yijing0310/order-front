@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { TbHandFingerRight } from "react-icons/tb";
 export default function Hero() {
     return (
         <>
@@ -16,9 +17,9 @@ export default function Hero() {
                             <div className="mt-10 flex items-center justify-center gap-x-6">
                                 <a
                                     href="#"
-                                    className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-third focus-visible:outline-2 focus-visible:outline-offset-2 focus-third:outline-indigo-600"
+                                    className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-third focus-visible:outline-2 focus-visible:outline-offset-2 focus-third:outline-indigo-600 flex items-center justify-center "
                                 >
-                                    開始訂餐
+                                    <TbHandFingerRight/>&nbsp;開始訂餐
                                 </a>
                                 <a
                                     href="#"
