@@ -25,7 +25,7 @@ export default function SideBar() {
                     <ul className="mt-8 w-full flex flex-col gap-2">
                         <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
                             <Link
-                                href="/member-center/add-group "
+                                href="/member-center "
                                 className="flex items-center justify-center"
                             >
                                 <IoMdReorder /> &nbsp;&nbsp;揪團總覽
@@ -33,7 +33,7 @@ export default function SideBar() {
                         </li>
                         <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
                             <Link
-                                href="/member-center "
+                                href="/member-center/add-group "
                                 className="flex items-center justify-center"
                             >
                                 <FaPlus /> &nbsp;&nbsp;新增揪團
