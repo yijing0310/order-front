@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext,useEffect } from "react";
 import { JWT_LOGIN } from "@/config/api-path";
 const AuthContext = createContext();
 const emptyAuth = {
