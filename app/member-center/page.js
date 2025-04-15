@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import Select from "./_components/select";
 import Table from "./_components/table";
