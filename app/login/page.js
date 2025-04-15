@@ -8,10 +8,11 @@ import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Login() {
-    const router = useRouter()
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const { auth, login } = useAuth();
     const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [loginForm, setLoginForm] = useState({
         account: "",
         password: "",
@@ -21,8 +22,10 @@ export default function Login() {
     };
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (loginForm.password.length <= 0 && loginForm.account.length <= 0) {            
+        setIsSubmitting(true);
+        if (loginForm.password.length <= 0 && loginForm.account.length <= 0) {
             setError("⚠️ 帳號密碼不得為空");
+            setTimeout(() => setIsSubmitting(false), 2000);
             return;
         }
         const { success, error, code } = await login(
@@ -31,8 +34,9 @@ export default function Login() {
         );
         if (success) {
             alert("登入成功");
-            setError("")
-            router.push("/")
+            setError("");
+            router.push("/");
+            setTimeout(() => setIsSubmitting(false), 2000);
         } else {
             if (code === 400) {
                 setError("⚠️ 帳號密碼不得為空");
@@ -41,6 +45,7 @@ export default function Login() {
             } else {
                 setError("⚠️ 登入失敗，請稍後再試");
             }
+            setTimeout(() => setIsSubmitting(false), 2000);
         }
     };
     return (
@@ -107,12 +112,15 @@ export default function Login() {
                 </div>
 
                 {/* 錯誤訊息（靜態示範） */}
-                <div className="text-sm text-red-500 h-5">{error ? error : ""}</div>
+                <div className="text-sm text-red-500 h-5">
+                    {error ? error : ""}
+                </div>
 
                 {/* 登入按鈕 */}
                 <button
                     type="submit"
                     className="w-full py-2 bg-primary text-white font-semibold rounded-md shadow hover:bg-third transition-all"
+                    disabled={isSubmitting}
                 >
                     登入
                 </button>
