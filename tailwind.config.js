@@ -15,7 +15,8 @@ module.exports = {
         third:"#DBB5B5",
         light:"#F1E5D1",
         lightSec:"#FFF3F0",
-        font:"#333"
+        font:"#333",
+        side:"#C3AAA4",
       },
     },
   },
