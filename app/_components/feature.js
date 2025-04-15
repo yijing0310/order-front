@@ -26,7 +26,7 @@ export default function Feature() {
                    <IoMdFlower/> &nbsp;&nbsp;&nbsp; 功能特色，一看就懂！&nbsp;&nbsp;&nbsp; <IoMdFlower/> 
                 </h3>
                 {/* feature */}
-                <div class="flex  flex-wrap sm:flex-nowrap  items-center justify-center gap-6 w-4/5 mx-auto">
+                <div className="flex  flex-wrap sm:flex-nowrap  items-center justify-center gap-6 w-4/5 mx-auto">
                         {features.map((feature, i) => {
                             return (
                                 <div key={i} className=" p-4 w-64 h-32 flex flex-col items-center justify-center">

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
+import { useAuth } from "@/context/auth.js";
+import Link from "next/link";
 const navigation = [
     { name: "Product", href: "#" },
     { name: "Features", href: "#" },
@@ -13,6 +14,7 @@ const navigation = [
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { auth, logout } = useAuth();
 
     return (
         <>
@@ -21,9 +23,7 @@ export default function Header() {
                     aria-label="Global"
                     className="flex items-center justify-between p-6 lg:px-8"
                 >
-                    <div className="flex lg:flex-1">
-                        
-                    </div>
+                    <div className="flex lg:flex-1"></div>
                     <div className="flex lg:hidden">
                         <button
                             type="button"
@@ -46,12 +46,27 @@ export default function Header() {
                         ))} */}
                     </div>
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                        <a
-                            href="/login"
-                            className="text-sm/6 font-semibold text-gray-900"
-                        >
-                            Log in <span aria-hidden="true">&rarr;</span>
-                        </a>
+                        {auth ? (
+                            <>
+                                <p className="text-sm/6 font-semibold mr-4 text-gray-500">
+                                    H i ! {auth.name}
+                                </p>
+                                <div
+                                    className="text-sm/6 font-semibold cursor-pointer hover:text-primary "
+                                    onClick={logout}
+                                >
+                                    {" "}
+                                    登出{" "}
+                                </div>
+                            </>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="text-sm/6 font-semibold "
+                            >
+                                Log in <span aria-hidden="true">&rarr;</span>
+                            </Link>
+                        )}
                     </div>
                 </nav>
                 <Dialog
