@@ -1,11 +1,14 @@
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
-  account VARCHAR(255)  NOT NULL,
+  account VARCHAR(255)  UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+INSERT INTO users (email, account, password_hash, name)
+VALUES ('jing@example.com', 'jing3320', '$2b$10$zj4EyfqWJrr61Cs/Wbn1AOr0norL.XEA8uMc9aKLlFPKUE0Q8i/MW', '小禎');
+
 CREATE TABLE groups (
   id INT AUTO_INCREMENT PRIMARY KEY,
   owner_id INT NOT NULL,
