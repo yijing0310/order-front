@@ -46,11 +46,14 @@ export default function Header() {
                         ))} */}
                     </div>
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                        {auth ? (
+                        {auth.id ? (
                             <>
-                                <p className="text-sm/6 font-semibold mr-4 text-gray-500">
+                                <Link
+                                    href="/member-center"
+                                    className="text-sm/6 font-semibold mr-4 text-gray-500"
+                                >
                                     H i ! {auth.name}
-                                </p>
+                                </Link>
                                 <div
                                     className="text-sm/6 font-semibold cursor-pointer hover:text-primary "
                                     onClick={logout}

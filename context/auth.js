@@ -13,7 +13,7 @@ export function AuthContextProvider({ children }) {
     const [auth, setAuth] = useState({ ...emptyAuth });
     const logout = () => {
         localStorage.removeItem(storageKey);
-        setUser({ ...emptyAuth });
+        setAuth({ ...emptyAuth });
     };
     const login = async (account, password) => {
         const r = await fetch(JWT_LOGIN, {

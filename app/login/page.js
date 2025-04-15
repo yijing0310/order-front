@@ -5,8 +5,10 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Login() {
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState(false);
     const { auth, login } = useAuth();
     const [error, setError] = useState("");
@@ -30,6 +32,7 @@ export default function Login() {
         if (success) {
             alert("登入成功");
             setError("")
+            router.push("/")
         } else {
             if (code === 400) {
                 setError("⚠️ 帳號密碼不得為空");

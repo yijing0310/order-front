@@ -20,7 +20,7 @@ export default function Step() {
                 <h3 className="text-lg font-semibold tracking-tight text-balance  sm:text-2xl my-8  text-white bg-third w-4/5 py-5 rounded-xl">
                 簡單三步驟，就能完成訂餐！
                 </h3>
-                <div class="flex  flex-wrap sm:flex-nowrap  items-center justify-center gap-6 w-4/5 mx-auto">
+                <div className="flex  flex-wrap sm:flex-nowrap  items-center justify-center gap-6 w-4/5 mx-auto">
                         {features.map((feature, i) => {
                             return (
                                 <div key={i} className=" w-64 h-26 flex flex-col items-center justify-center">

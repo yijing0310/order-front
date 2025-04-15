@@ -4,8 +4,11 @@ import { IoMdReorder } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
+import { useAuth } from "@/context/auth.js";
+
 import Link from "next/link";
 export default function SideBar() {
+    const { auth, logout } = useAuth();
     return (
         <aside
             id="logo-sidebar"
@@ -16,10 +19,13 @@ export default function SideBar() {
                 {/* 上半部 */}
                 <div className="w-full">
                     {/* 使用者歡迎區塊 */}
-                    <div className="flex flex-col items-center gap-2 text-white font-bold">
+                    <Link
+                        href="/"
+                        className="flex flex-col items-center gap-2 text-white font-bold"
+                    >
                         <p className="text-sm opacity-70">WELCOME!</p>
-                        <p className="text-lg">陳曉明</p>
-                    </div>
+                        <p className="text-lg">{auth.name}</p>
+                    </Link>
 
                     {/* 選單列表 */}
                     <ul className="mt-8 w-full flex flex-col gap-2">
@@ -50,12 +56,12 @@ export default function SideBar() {
                         <FaHome size={18} />
                     </Link>
 
-                    <Link
-                        href="/"
+                    <div
+                        onClick={logout}
                         className="flex items-center justify-center w-10 h-10 bg-lightSec  rounded-full hover:scale-110 transition duration-200"
                     >
                         <MdLogout size={18} />
-                    </Link>
+                    </div>
                 </div>
             </div>
         </aside>
