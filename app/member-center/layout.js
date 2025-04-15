@@ -4,7 +4,9 @@ export default function RootLayout({ children }) {
     return (
         <>
             <div className="flex">
-                <SideBar />
+                <div className="w-48">
+                    <SideBar />
+                </div>
                 {children}
             </div>
         </>

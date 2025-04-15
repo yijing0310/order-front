@@ -9,10 +9,10 @@ export default function SideBar() {
     return (
         <aside
             id="logo-sidebar"
-            className="z-40 w-2/12 h-screen transition-transform -translate-x-full sm:translate-x-0 px-3 py-4 flex flex-col items-center"
+            className="fixed  top-0 left-0 z-40 w-2/12 h-screen transition-transform -translate-x-full sm:translate-x-0 px-3 py-4 flex flex-col items-center"
             aria-label="Sidebar"
         >
-            <div className="bg-side m-4 flex flex-col items-center justify-between px-4 py-6 w-full h-full rounded-md shadow-md">
+            <div className="bg-side m-4 flex flex-col items-center justify-between px-4 py-6 w-full h-full rounded-md shadow-md ">
                 {/* 上半部 */}
                 <div className="w-full">
                     {/* 使用者歡迎區塊 */}
