@@ -110,8 +110,7 @@ export default function Login() {
                         {showPassword ? <TbEyeglass2 /> : <TbEyeglassFilled />}
                     </button>
                 </div>
-
-                {/* 錯誤訊息（靜態示範） */}
+                {/* ERROR */}
                 <div className="text-sm text-red-500 h-5">
                     {error ? error : ""}
                 </div>
@@ -128,7 +127,10 @@ export default function Login() {
                 {/* 其他連結 */}
                 <div className="text-sm text-center text-gray-600">
                     尚未註冊？{" "}
-                    <Link href="/register" className="text-primary hover:underline">
+                    <Link
+                        href="/register"
+                        className="text-primary hover:underline"
+                    >
                         立即註冊
                     </Link>
                 </div>

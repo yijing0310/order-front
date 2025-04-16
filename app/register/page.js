@@ -59,7 +59,27 @@ export default function Register() {
                     <FaHome className="text-secondary" />
                 </Link>
                 <h2 className="text-2xl font-bold text-center">註冊 Register</h2>
-                 {/* 帳號欄位 */}
+                {/* 姓名欄位 */}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="name"
+                        className="mb-1 text-sm font-medium text-gray-700"
+                    >
+                        姓名
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="請輸入姓名"
+                        className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        value={registerForm.name}
+                        onChange={changeRegisterForm}
+                        max={10}
+                    />
+                </div>
+
+                 {/* email欄位 */}
                  <div className="flex flex-col">
                     <label
                         htmlFor="email"
@@ -75,6 +95,7 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.email}
                         onChange={changeRegisterForm}
+                        max={30}
                     />
                 </div>
 
@@ -95,6 +116,7 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.account}
                         onChange={changeRegisterForm}
+                        max={20}
                     />
                 </div>
 
@@ -114,6 +136,7 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.password}
                         onChange={changeRegisterForm}
+                        max={20}
                     />
                     <button
                         type="button"
@@ -140,6 +163,7 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.passwordCheck}
                         onChange={changeRegisterForm}
+                        max={20}
                     />
                     <button
                         type="button"
@@ -150,18 +174,17 @@ export default function Register() {
                     </button>
                 </div>
 
-                {/* 錯誤訊息（靜態示範） */}
                 <div className="text-sm text-red-500 h-5">
                     {error ? error : ""}
                 </div>
 
-                {/* 登入按鈕 */}
+                {/* 註冊按鈕 */}
                 <button
                     type="submit"
                     className="w-full py-2 bg-primary text-white font-semibold rounded-md shadow hover:bg-third transition-all"
                     disabled={isSubmitting}
                 >
-                    登入
+                    註冊
                 </button>
 
                 {/* 其他連結 */}
