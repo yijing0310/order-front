@@ -7,30 +7,30 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-export default function Login() {
+export default function Register() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const { auth, login } = useAuth();
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [loginForm, setLoginForm] = useState({
+    const [registerForm, setRegisterForm] = useState({
         account: "",
         password: "",
     });
-    const changeLoginForm = (e) => {
-        setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+    const changeRegisterForm = (e) => {
+        setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
     };
     const onSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        if (loginForm.password.length <= 0 && loginForm.account.length <= 0) {
+        if (registerForm.password.length <= 0 && registerForm.account.length <= 0) {
             setError("⚠️ 帳號密碼不得為空");
             setTimeout(() => setIsSubmitting(false), 2000);
             return;
         }
         const { success, error, code } = await login(
-            loginForm.account,
-            loginForm.password
+            registerForm.account,
+            registerForm.password
         );
         if (success) {
             alert("登入成功");
@@ -50,21 +50,34 @@ export default function Login() {
     };
     return (
         <div className="flex flex-wrap sm:flex-nowrap items-center justify-center min-h-screen">
-            <DotLottieReact
-                src="https://lottie.host/c761c7bb-bb1e-4302-a301-79e92e85091a/QJ60kSBHQr.lottie"
-                loop
-                autoplay
-                style={{ width: "500px", height: "auto" }}
-            />
             <form
-                className="w-full max-w-md px-8 py-10 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl space-y-6"
+                className="w-full max-w-md px-8 py-10 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl space-y-6 my-7"
                 method="post"
                 onSubmit={onSubmit}
             >
                 <Link href="/" className="inline-block">
                     <FaHome className="text-secondary" />
                 </Link>
-                <h2 className="text-2xl font-bold text-center">登入 Login</h2>
+                <h2 className="text-2xl font-bold text-center">註冊 Register</h2>
+                 {/* 帳號欄位 */}
+                 <div className="flex flex-col">
+                    <label
+                        htmlFor="email"
+                        className="mb-1 text-sm font-medium text-gray-700"
+                    >
+                        電子郵件
+                    </label>
+                    <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        placeholder="請輸入電子郵件"
+                        className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        value={registerForm.email}
+                        onChange={changeRegisterForm}
+                    />
+                </div>
+
 
                 {/* 帳號欄位 */}
                 <div className="flex flex-col">
@@ -80,8 +93,8 @@ export default function Login() {
                         name="account"
                         placeholder="請輸入帳號"
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        value={loginForm.account}
-                        onChange={changeLoginForm}
+                        value={registerForm.account}
+                        onChange={changeRegisterForm}
                     />
                 </div>
 
@@ -99,8 +112,34 @@ export default function Login() {
                         name="password"
                         placeholder="請輸入密碼"
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        value={loginForm.password}
-                        onChange={changeLoginForm}
+                        value={registerForm.password}
+                        onChange={changeRegisterForm}
+                    />
+                    <button
+                        type="button"
+                        className="absolute right-3 top-[38px] text-sm text-gray-500 hover:text-gray-800"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? <TbEyeglass2 /> : <TbEyeglassFilled />}
+                    </button>
+                </div>
+
+                {/* 確認密碼欄位 */}
+                <div className="flex flex-col relative">
+                    <label
+                        htmlFor="passwordCheck"
+                        className="mb-1 text-sm font-medium text-gray-700"
+                    >
+                        確認密碼
+                    </label>
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        id="passwordCheck"
+                        name="passwordCheck"
+                        placeholder="請再次輸入密碼"
+                        className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        value={registerForm.passwordCheck}
+                        onChange={changeRegisterForm}
                     />
                     <button
                         type="button"
@@ -127,12 +166,19 @@ export default function Login() {
 
                 {/* 其他連結 */}
                 <div className="text-sm text-center text-gray-600">
-                    尚未註冊？{" "}
-                    <Link href="/register" className="text-primary hover:underline">
-                        立即註冊
+                    已有帳號？{" "}
+                    <Link href="/login" className="text-primary hover:underline">
+                        立即登入
                     </Link>
                 </div>
             </form>
+            <DotLottieReact
+                src="https://lottie.host/c761c7bb-bb1e-4302-a301-79e92e85091a/QJ60kSBHQr.lottie"
+                loop
+                autoplay
+                style={{ width: "500px", height: "auto" }}
+                className="order-1"
+            />
         </div>
     );
 }
