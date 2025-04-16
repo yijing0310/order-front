@@ -7,6 +7,7 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Swal from 'sweetalert2'
 export default function Login() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +34,11 @@ export default function Login() {
             loginForm.password
         );
         if (success) {
-            alert("登入成功");
+            Swal.fire({
+                title: "登入成功",
+                showConfirmButton: false,
+                icon: "success",
+              });
             setError("");
             router.push("/");
             setTimeout(() => setIsSubmitting(false), 2000);
