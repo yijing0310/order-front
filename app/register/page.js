@@ -9,7 +9,6 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { REGISTER_POST } from "@/config/api-path";
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
 export default function Register() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
