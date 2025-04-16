@@ -22,7 +22,7 @@ export default function page() {
                             tabIndex={0}
                             className="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal"
                         >
-                            揪團總覽
+                            我的揪團
                         </p>
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
                             <p>Sort By:</p>

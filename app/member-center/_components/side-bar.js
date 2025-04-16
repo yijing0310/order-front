@@ -34,7 +34,7 @@ export default function SideBar() {
                                 href="/member-center "
                                 className="flex items-center justify-center"
                             >
-                                <IoMdReorder /> &nbsp;&nbsp;揪團總覽
+                                <IoMdReorder /> &nbsp;&nbsp;我的揪團
                             </Link>
                         </li>
                         <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
