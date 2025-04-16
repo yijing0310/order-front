@@ -1,53 +1,97 @@
 "use client";
-import React from "react";
-import { useAuth } from "@/context/auth.js";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { useState } from "react";
-import { FaHome } from "react-icons/fa";
-import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/context/auth.js";
+import { registerSchema } from "@/utils/schema/rschema";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { FaHome } from "react-icons/fa";
+import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
+import { REGISTER_POST } from "@/config/api-path";
+import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 export default function Register() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const { auth, login } = useAuth();
-    const [error, setError] = useState("");
+    const [error, setError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [registerForm, setRegisterForm] = useState({
+    const defaultRegisterForm = {
+        name: "",
+        email: "",
         account: "",
         password: "",
-    });
+        passwordCheck: "",
+      }
+    const [registerForm, setRegisterForm] = useState(defaultRegisterForm);
+
     const changeRegisterForm = (e) => {
-        setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        const newForm = { ...registerForm, [name]: value };
+        setRegisterForm(newForm);
+        // 即時比對 password
+        if (
+            (name === "password" || name === "passwordCheck") &&
+            newForm.password &&
+            newForm.passwordCheck
+        ) {
+            if (newForm.password !== newForm.passwordCheck) {
+                setError((prev) => ({
+                    ...prev,
+                    passwordCheck: "密碼不一致",
+                }));
+            } else {
+                setError((prev) => ({
+                    ...prev,
+                    passwordCheck: "",
+                }));
+            }
+        }
     };
     const onSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        if (registerForm.password.length <= 0 && registerForm.account.length <= 0) {
-            setError("⚠️ 帳號密碼不得為空");
+
+        const zResult = registerSchema.safeParse(registerForm);
+        if (!zResult.success) {
+            const newError = {
+                name: "",
+                email: "",
+                account: "",
+                password: "",
+                passwordCheck: "",
+            };
+            const errMap = new Map();
+
+            zResult.error?.issues.forEach((item) => {
+                const pathKey = item.path[0];
+                if (!errMap.has(pathKey)) {
+                    errMap.set(pathKey, item.message);
+                    newError[pathKey] = item.message;
+                }
+            });
+            setError(newError);
             setTimeout(() => setIsSubmitting(false), 2000);
             return;
         }
-        const { success, error, code } = await login(
-            registerForm.account,
-            registerForm.password
-        );
-        if (success) {
-            alert("登入成功");
-            setError("");
-            router.push("/");
-            setTimeout(() => setIsSubmitting(false), 2000);
-        } else {
-            if (code === 400) {
-                setError("⚠️ 帳號密碼不得為空");
-            } else if (code === 410 || code === 420) {
-                setError("⚠️ 帳號或密碼錯誤，請再試一次。");
-            } else {
-                setError("⚠️ 登入失敗，請稍後再試");
-            }
+        const r = await fetch(REGISTER_POST, {
+            method: "POST",
+            body: JSON.stringify(registerForm),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const result = await r.json();
+        console.log(result);
+        setError(result.error);
+        setTimeout(() => setIsSubmitting(false), 2000);
+        if (result.success) {
+            alert("註冊成功");
+            setRegisterForm(defaultRegisterForm);
             setTimeout(() => setIsSubmitting(false), 2000);
         }
     };
+
     return (
         <div className="flex flex-wrap sm:flex-nowrap items-center justify-center min-h-screen">
             <form
@@ -58,7 +102,9 @@ export default function Register() {
                 <Link href="/" className="inline-block">
                     <FaHome className="text-secondary" />
                 </Link>
-                <h2 className="text-2xl font-bold text-center">註冊 Register</h2>
+                <h2 className="text-2xl font-bold text-center">
+                    註冊 Register
+                </h2>
                 {/* 姓名欄位 */}
                 <div className="flex flex-col">
                     <label
@@ -66,6 +112,10 @@ export default function Register() {
                         className="mb-1 text-sm font-medium text-gray-700"
                     >
                         姓名
+                        {/* ERROR */}
+                        <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                            {error.name}
+                        </div>
                     </label>
                     <input
                         type="text"
@@ -75,17 +125,21 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.name}
                         onChange={changeRegisterForm}
-                        max={10}
+                        maxLength={10}
                     />
                 </div>
 
-                 {/* email欄位 */}
-                 <div className="flex flex-col">
+                {/* email欄位 */}
+                <div className="flex flex-col">
                     <label
                         htmlFor="email"
                         className="mb-1 text-sm font-medium text-gray-700"
                     >
                         電子郵件
+                        {/* ERROR */}
+                        <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                            {error.email}
+                        </div>
                     </label>
                     <input
                         type="text"
@@ -95,10 +149,9 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.email}
                         onChange={changeRegisterForm}
-                        max={30}
+                        maxLength={30}
                     />
                 </div>
-
 
                 {/* 帳號欄位 */}
                 <div className="flex flex-col">
@@ -107,6 +160,10 @@ export default function Register() {
                         className="mb-1 text-sm font-medium text-gray-700"
                     >
                         帳號
+                        {/* ERROR */}
+                        <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                            {error.account}
+                        </div>
                     </label>
                     <input
                         type="text"
@@ -116,7 +173,7 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.account}
                         onChange={changeRegisterForm}
-                        max={20}
+                        maxLength={20}
                     />
                 </div>
 
@@ -127,16 +184,20 @@ export default function Register() {
                         className="mb-1 text-sm font-medium text-gray-700"
                     >
                         密碼
+                        {/* ERROR */}
+                        <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                            {error.password}
+                        </div>
                     </label>
                     <input
                         type={showPassword ? "text" : "password"}
                         id="password"
                         name="password"
-                        placeholder="請輸入密碼"
+                        placeholder="8個字元且需包含英文字母及數字"
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.password}
                         onChange={changeRegisterForm}
-                        max={20}
+                        maxLength={20}
                     />
                     <button
                         type="button"
@@ -154,6 +215,10 @@ export default function Register() {
                         className="mb-1 text-sm font-medium text-gray-700"
                     >
                         確認密碼
+                        {/* ERROR */}
+                        <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                            {error.passwordCheck}
+                        </div>
                     </label>
                     <input
                         type={showPassword ? "text" : "password"}
@@ -163,19 +228,17 @@ export default function Register() {
                         className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         value={registerForm.passwordCheck}
                         onChange={changeRegisterForm}
-                        max={20}
+                        maxLength={20}
                     />
-                    <button
-                        type="button"
-                        className="absolute right-3 top-[38px] text-sm text-gray-500 hover:text-gray-800"
-                        onClick={() => setShowPassword(!showPassword)}
-                    >
-                        {showPassword ? <TbEyeglass2 /> : <TbEyeglassFilled />}
-                    </button>
-                </div>
-
-                <div className="text-sm text-red-500 h-5">
-                    {error ? error : ""}
+                    <div className="absolute right-3 top-[38px] text-sm text-gray-500">
+                        {error.passwordCheck === "密碼不一致" ? (
+                            <IoIosCloseCircle className="text-[12px] text-red-500" />
+                        ) : registerForm.passwordCheck?.length > 0 ? (
+                            <IoIosCheckmarkCircle className="text-[12px] text-green-500" />
+                        ) : (
+                            ""
+                        )}
+                    </div>
                 </div>
 
                 {/* 註冊按鈕 */}
@@ -190,7 +253,10 @@ export default function Register() {
                 {/* 其他連結 */}
                 <div className="text-sm text-center text-gray-600">
                     已有帳號？{" "}
-                    <Link href="/login" className="text-primary hover:underline">
+                    <Link
+                        href="/login"
+                        className="text-primary hover:underline"
+                    >
                         立即登入
                     </Link>
                 </div>
