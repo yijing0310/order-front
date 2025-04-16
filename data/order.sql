@@ -11,14 +11,19 @@ CREATE TABLE users (
 INSERT INTO users (email, account, password_hash, name)
 VALUES ('jing@example.com', 'jing3320', '$2b$10$zj4EyfqWJrr61Cs/Wbn1AOr0norL.XEA8uMc9aKLlFPKUE0Q8i/MW', '小禎');
 
-CREATE TABLE groups (
+CREATE TABLE orderGroups (
   id INT AUTO_INCREMENT PRIMARY KEY,
   owner_id INT NOT NULL,
   title VARCHAR(100) NOT NULL,
+  restaurant VARCHAR(100) NOT NULL,
+  menu_link VARCHAR(255),
+  max_people INT,
+  deadline DATETIME NOT NULL,
+  password VARCHAR(100),
   description TEXT,
-  password VARCHAR(255) NOT NULL,
-  deadline DATETIME,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status ENUM('open', 'full', 'closed') DEFAULT 'open',
+  is_active BOOLEAN DEFAULT TRUE, -- 刪除揪團
   FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE orders (
@@ -29,7 +34,7 @@ CREATE TABLE orders (
   total INT,
   note TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+  FOREIGN KEY (group_id) REFERENCES orderGroups(id) ON DELETE CASCADE
 );
 CREATE TABLE menu_templates (
   id INT AUTO_INCREMENT PRIMARY KEY,

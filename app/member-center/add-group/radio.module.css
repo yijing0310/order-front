@@ -1,0 +1,49 @@
+/* radio.module.css */
+.radioBtn {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    align-items: flex-start; 
+  }
+  
+  .radioBtn label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem; 
+    cursor: pointer;
+  }
+  
+  .radioBtn input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    appearance: none; /* 移除默認的圓圈樣式 */
+    border-radius: 50%;
+    border: 2px solid #C39898; /* 預設邊框顏色 */
+    background-color: white; /* 背景顏色 */
+    transition: background-color 0.2s, border-color 0.2s; /* 平滑過渡 */
+    position: relative;
+  }
+  
+  .radioBtn input[type="radio"]:checked {
+    background-color: #C39898; 
+  }
+  
+  
+  .radioBtn label:hover input[type="radio"] {
+    border-color: #C39898; 
+  }
+  
+  .radioBtn label:hover input[type="radio"]:checked {
+    background-color: #C39898; 
+  }
+  
+  .radioBtn label span {
+    color: #333; 
+    transition: color 0.2s;
+  }
+  
+  .radioBtn label:hover span {
+    color: #C39898; 
+  }
+  
