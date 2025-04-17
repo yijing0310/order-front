@@ -2,22 +2,42 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
-
+import { JOIN_GROUP_POST } from "@/config/api-path";
 export default function EnterGroup() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [groupId, setGroupId] = useState("");
     const [password, setPassword] = useState("");
-
-    const handleSubmit = (e) => {
+    const [error, setError] = useState("");
+    const onSubmit = (e) => {
         e.preventDefault();
-
-        // 模擬驗證流程（可改成 API）
-        if (password === "1234") {
-            router.push("/group-form"); // 導向填寫畫面
-        } else {
-            alert("密碼錯誤，請再試一次");
+        if (!groupId.length) {
+            setError({ group_uuid: "請輸入揪團ID" });
+            return;
         }
+        const fetchJoinGroup = async () => {
+            const res = await fetch(JOIN_GROUP_POST, {
+                method: "POST",
+                body: JSON.stringify({
+                    group_uuid: groupId,
+                    password: password,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!res.ok) {
+                setError("連接資料錯誤");
+            }
+            const r = await res.json();
+            setError(r.error);
+            if (r.success == true) {
+                alert("成功加入");
+                setGroupId("");
+                setPassword("");
+            }
+        };
+        fetchJoinGroup();
     };
 
     return (
@@ -26,18 +46,18 @@ export default function EnterGroup() {
                 <h2 className="text-2xl font-semibold mb-4 text-center">
                     開始點餐 !
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} className="space-y-4">
                     {/* 揪團ID欄位 */}
                     <div className="flex flex-col mb-3">
                         <label
                             htmlFor="ID"
                             className="mb-2 text-sm font-medium text-gray-700"
                         >
-                            揪團ID
+                            揪團ID * 
                             {/* ERROR */}
-                            {/* <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                            
-                        </div> */}
+                            <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                {error.group_uuid ? error.group_uuid : ""}
+                            </div>
                         </label>
                         <input
                             type="text"
@@ -58,15 +78,15 @@ export default function EnterGroup() {
                         >
                             揪團密碼
                             {/* ERROR */}
-                            {/* <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                            
-                        </div> */}
+                            <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                {error.password ? error.password : ""}
+                            </div>
                         </label>
                         <input
                             type={showPassword ? "text" : "password"}
                             id="password"
                             name="password"
-                            placeholder="請輸入揪團密碼"
+                            placeholder="請輸入揪團密碼(如有才需填寫)"
                             className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
