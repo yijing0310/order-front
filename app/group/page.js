@@ -13,7 +13,6 @@ export default function MemberCenterPage() {
     const router = useRouter();
     const [filterStatus, setFilterStatus] = useState("all");
     useEffect(() => {
-        
         const getFetchGroup = async () => {
             try {
                 const res = await fetch(GROUP_GET, {
@@ -34,7 +33,7 @@ export default function MemberCenterPage() {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;
     });
-    
+
     return (
         <>
             <div className="sm:px-6 w-full">
@@ -66,12 +65,9 @@ export default function MemberCenterPage() {
                     </div>
                 </div>
                 <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                    <Select
-                        setFilterStatus={setFilterStatus}
-                        filterStatus={filterStatus}
-                    />
+                    <Select />
                     <div className="mt-7 overflow-x-auto">
-                        <Table filteredList={filteredList}/>
+                        <Table filteredList={filteredList} />
                     </div>
                 </div>
             </div>

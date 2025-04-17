@@ -1,6 +1,6 @@
 "use client";
 import moment from "moment";
-export default function Table({ filteredList = [] }) {
+export default function Table() {
     return (
         <>
             <div className="w-full overflow-x-auto">
