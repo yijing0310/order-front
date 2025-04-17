@@ -13,9 +13,7 @@ export default function MemberCenterPage() {
     const router = useRouter();
     const [filterStatus, setFilterStatus] = useState("all");
     useEffect(() => {
-        // if (!auth.id) {
-        //     router.push("/");
-        // }
+        
         const getFetchGroup = async () => {
             try {
                 const res = await fetch(GROUP_GET, {
@@ -39,14 +37,14 @@ export default function MemberCenterPage() {
     
     return (
         <>
-            <div className="sm:px-6 w-10/12">
+            <div className="sm:px-6 w-full">
                 <div className="px-4 md:px-10 py-4 md:py-7">
                     <div className="flex items-center justify-between">
                         <p
                             tabIndex={0}
                             className="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal"
                         >
-                            我的揪團
+                            麻古
                         </p>
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
                             <p>Sort By:</p>
