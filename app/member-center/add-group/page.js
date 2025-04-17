@@ -211,7 +211,7 @@ export default function AddGroupPage() {
                                 name="password"
                                 placeholder="輸入密碼"
                                 className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                                maxLength={20}
+                                maxLength={10}
                                 value={addGroupForm.password}
                                 onChange={changeAddGroupForm}
                             />
