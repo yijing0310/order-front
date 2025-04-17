@@ -1,65 +1,94 @@
 "use client";
 import moment from "moment";
-export default function Table({filteredList=[]}) {
+export default function Table({ filteredList = [] }) {
     return (
         <>
-            <table className="w-full whitespace-nowrap">
-                <thead>
-                    <tr
-                        tabIndex={0}
-                        className="focus:outline-none h-16 border border-gray-100 rounded"
-                    >
-                        <td className="px-2 ml-2">#</td>
-                        <td className="px-3 ">揪團名稱</td>
-                        <td className="px-3 ">揪團代號</td>
-                        <td className="px-3 ">餐廳名稱</td>
-                        <td className="px-3 ">揪團上限</td>
-                        <td className="px-3">結束時間</td>
-                        <td className="pl-5 ">狀態</td>
-                        <td className="pl-4 ">查看</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredList?.map((list, i) => {
-                        return (
-                                <tr
-                                    tabIndex={0}
-                                    className="focus:outline-none h-16 border border-gray-100 rounded "
-                                    key={list.id || i}
-                                >
-                                    <td className="px-2 ml-2">{i + 1}</td>
-                                    <td className="px-3">{list.title}</td>
-                                    <td className="px-3">{list.group_uuid}</td>
-                                    <td className="px-3">{list.restaurant}</td>
-                                    <td className="px-3">{list.max_people}</td>
-                                    <td className="px-3 text-sm">
-                                        {moment(list.deadline).format(
-                                            "YYYY/MM/DD HH:mm"
-                                        )}
-                                    </td>
-                                    <td className="pl-5">
-                                        {list.status == "closed" ? (
-                                            <button className="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded cursor-default">
-                                                已截止
-                                            </button>
-                                        ) : list.status == "open" ? (
-                                            <button className="py-3 px-3 text-sm focus:outline-none leading-none text-green-700 bg-green-100 rounded cursor-default">
-                                                開放中
-                                            </button>
-                                        ) : (
-                                            ""
-                                        )}
-                                    </td>
-                                    <td className="pl-4">
-                                        <button className="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <div className="w-full overflow-x-auto">
+                {/* 表頭 */}
+                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
+                    <div className="w-[5%] px-2">#</div>
+                    <div className="w-[15%] px-3">揪團名稱</div>
+                    <div className="w-[15%] px-3">揪團代號</div>
+                    <div className="w-[15%] px-3">餐廳名稱</div>
+                    <div className="w-[10%] px-3">揪團上限</div>
+                    <div className="w-[20%] px-3">結束時間</div>
+                    <div className="w-[10%] pl-5">狀態</div>
+                    <div className="w-[10%] pl-4">查看</div>
+                </div>
+                {/* 內容 */}
+                <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
+                    {filteredList?.length <= 0 ? (
+                        <>
+                            <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 min-w-[800px]">
+                                空空的，快來揪團吧
+                            </div>
+                        </>
+                    ) : (
+                        filteredList?.map((list, i) => (
+                            <div
+                                key={list.id || i}
+                                tabIndex={0}
+                                className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 min-w-[800px]"
+                            >
+                                <div className="w-full md:w-[5%] px-2">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        #{" "}
+                                    </span>
+                                    {i + 1}
+                                </div>
+                                <div className="w-full md:w-[15%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        名稱：
+                                    </span>
+                                    {list.title}
+                                </div>
+                                <div className="w-full md:w-[15%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        代號：
+                                    </span>
+                                    {list.group_uuid}
+                                </div>
+                                <div className="w-full md:w-[15%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        餐廳：
+                                    </span>
+                                    {list.restaurant}
+                                </div>
+                                <div className="w-full md:w-[10%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        上限：
+                                    </span>
+                                    {list.max_people}
+                                </div>
+                                <div className="w-full md:w-[20%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        截止：
+                                    </span>
+                                    {moment(list.deadline).format(
+                                        "YYYY/MM/DD HH:mm"
+                                    )}
+                                </div>
+                                <div className="w-full md:w-[10%] pl-5 mt-2 md:mt-0">
+                                    {list.status === "closed" ? (
+                                        <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded">
+                                            已截止
+                                        </span>
+                                    ) : (
+                                        <span className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded">
+                                            開放中
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="w-full md:w-[10%] pl-4 mt-2 md:mt-0">
+                                    <button className="text-sm text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
+                                        View
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
         </>
     );
 }

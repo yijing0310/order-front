@@ -61,7 +61,6 @@ export default function Select({
                 </div>
                 <Link href="/member-center/add-group">
                     <button
-                        onclick="popuphandler(true)"
                         className="focus:ring-2 focus:ring-offset-2 focus:bg-third mt-4 sm:mt-0 inline-flex items-start justify-start px-3 py-2 bg-primary hover:bg-third focus:outline-none rounded"
                     >
                         <p className="text-xl font-medium leading-none text-white">
