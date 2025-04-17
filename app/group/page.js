@@ -1,76 +1,39 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { GROUP_GET } from "@/config/api-path";
-import Select from "./_components/select";
-import Table from "./_components/table";
-import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
+import React from "react";
 
-export default function MemberCenterPage() {
-    const { auth, getAuthHeader } = useAuth();
-    const [listData, setListData] = useState([]);
-    const [error, setError] = useState("");
+export default function CreateGroupWelcomePage() {
     const router = useRouter();
-    const [filterStatus, setFilterStatus] = useState("all");
-    useEffect(() => {
-        const getFetchGroup = async () => {
-            try {
-                const res = await fetch(GROUP_GET, {
-                    headers: { ...getAuthHeader() },
-                });
-                if (!res.ok) {
-                    throw new Error("請求失敗");
-                }
-                const data = await res.json();
-                setListData(data);
-            } catch (err) {
-                setError("發送請求時發生錯誤:", error);
-            }
-        };
-        getFetchGroup();
-    }, [auth, getAuthHeader]);
-    const filteredList = listData?.data?.filter((item) => {
-        if (filterStatus === "all") return true;
-        return item.status === filterStatus;
-    });
 
     return (
-        <>
-            <div className="sm:px-6 w-full">
-                <div className="px-4 md:px-10 py-4 md:py-7">
-                    <div className="flex items-center justify-between">
-                        <p
-                            tabIndex={0}
-                            className="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal"
-                        >
-                            麻古
-                        </p>
-                        <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-                            <p>Sort By:</p>
-                            <select
-                                aria-label="select"
-                                className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-                            >
-                                <option className="text-sm text-indigo-800">
-                                    Latest
-                                </option>
-                                <option className="text-sm text-indigo-800">
-                                    Oldest
-                                </option>
-                                <option className="text-sm text-indigo-800">
-                                    Latest
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                    <Select />
-                    <div className="mt-7 overflow-x-auto">
-                        <Table filteredList={filteredList} />
-                    </div>
+        <div className="min-h-screen bg-gradient-to-br flex items-center justify-center px-6">
+            <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
+                <h2 className="text-3xl font-bold mb-4 text-gray-800 py-6"> 歡迎揪團一起來點餐！</h2>
+                <p className="text-gray-600 mb-6 py-3">
+                    想點什麼？建立一個新揪團，<br/>邀請大家一起訂購美食或飲料吧 🍜🥤
+                </p>
+
+                <div className="flex  gap-4 justify-center">
+                    <button
+                        onClick={() => router.push("/member-center/add-group")}
+                        className="border border-primary text-primary hover:bg-primary hover:text-white py-2 px-4 rounded transition"
+                    >
+                        開始開團
+                    </button>
+                    <button
+                        onClick={() => router.push("/member-center")}
+                        className="border border-primary text-primary hover:bg-primary hover:text-white py-2 px-4 rounded transition"
+                    >
+                        查看我的揪團
+                    </button>
+                    <button
+                        onClick={() => router.push("/join-group")}
+                        className="border border-primary text-primary hover:bg-primary hover:text-white py-2 px-4 rounded transition"
+                    >
+                        進入點餐
+                    </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

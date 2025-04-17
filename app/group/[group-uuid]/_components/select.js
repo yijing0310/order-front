@@ -6,7 +6,8 @@ export default function Select() {
     const [showModal, setShowModal] = useState(false);
 
     const drinkTemplate = [
-        { label: "飲料名稱", type: "text", required: true },
+        { label: "訂購人", type: "text", required: true },
+        { label: "今天要喝點", type: "text", required: true },
         {
             label: "甜度",
             type: "radio",
