@@ -1,30 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { GROUP_GET } from "@/config/api-path";
-import { useAuth } from "@/context/auth.js";
 import moment from "moment";
-export default function Table() {
-    const { auth, getAuthHeader } = useAuth();
-    const [listData, setListData] = useState([]);
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        const getFetchGroup = async () => {
-            try {
-                const res = await fetch(GROUP_GET, {
-                    headers: { ...getAuthHeader() },
-                });
-                if (!res.ok) {
-                    throw new Error("請求失敗");
-                }
-                const data = await res.json();
-                setListData(data);
-            } catch (err) {
-                setError("發送請求時發生錯誤:", error);
-            }
-        };
-        getFetchGroup();
-    }, [auth, getAuthHeader]);
+export default function Table({filteredList=[]}) {
     return (
         <>
             <table className="w-full whitespace-nowrap">
@@ -43,12 +19,13 @@ export default function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    {listData?.data?.map((list, i) => {
+                    {filteredList?.map((list, i) => {
                         return (
                             <>
                                 <tr
                                     tabIndex={0}
-                                    className="focus:outline-none h-16 border border-gray-100 rounded  "
+                                    className="focus:outline-none h-16 border border-gray-100 rounded "
+                                    key={list.id}
                                 >
                                     <td className="px-2">{i + 1}</td>
                                     <td className="px-3">{list.title}</td>

@@ -1,18 +1,42 @@
 "use client";
-import React,{useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { GROUP_GET } from "@/config/api-path";
 import Select from "./_components/select";
 import Table from "./_components/table";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
 
-export default function page() {
-    const { auth } = useAuth();
+export default function MemberCenterPage() {
+    const { auth, getAuthHeader } = useAuth();
+    const [listData, setListData] = useState([]);
+    const [error, setError] = useState("");
     const router = useRouter();
+    const [filterStatus, setFilterStatus] = useState("all");
     useEffect(() => {
         if (!auth.id) {
             router.push("/");
         }
-    }, [auth.id]);
+        const getFetchGroup = async () => {
+            try {
+                const res = await fetch(GROUP_GET, {
+                    headers: { ...getAuthHeader() },
+                });
+                if (!res.ok) {
+                    throw new Error("請求失敗");
+                }
+                const data = await res.json();
+                setListData(data);
+            } catch (err) {
+                setError("發送請求時發生錯誤:", error);
+            }
+        };
+        getFetchGroup();
+    }, [auth, getAuthHeader]);
+    const filteredList = listData?.data?.filter((item) => {
+        if (filterStatus === "all") return true;
+        return item.status === filterStatus;
+    });
+    
     return (
         <>
             <div className="sm:px-6 w-10/12">
@@ -44,9 +68,12 @@ export default function page() {
                     </div>
                 </div>
                 <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                    <Select />
+                    <Select
+                        setFilterStatus={setFilterStatus}
+                        filterStatus={filterStatus}
+                    />
                     <div className="mt-7 overflow-x-auto">
-                        <Table />
+                        <Table filteredList={filteredList}/>
                     </div>
                 </div>
             </div>
