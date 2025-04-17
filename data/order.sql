@@ -21,26 +21,30 @@ CREATE TABLE orderGroups (
   deadline DATETIME NOT NULL,
   password VARCHAR(100),
   description TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status ENUM('open', 'full', 'closed') DEFAULT 'open',
+  template VARCHAR(100), -- 模板 之後新增default
   is_active BOOLEAN DEFAULT TRUE, -- 刪除揪團
-  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+  -- FOREIGN KEY (template) REFERENCES menu_templates(name) ON DELETE CASCADE
 );
 CREATE TABLE orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   group_id INT NOT NULL,
   name VARCHAR(100) NOT NULL,
-  items JSON,
+  item_name VARCHAR(100) NOT NULL,
+  quantity INT DEFAULT 1,
+  price DECIMAL(10, 2),
   total INT,
   note TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (group_id) REFERENCES orderGroups(id) ON DELETE CASCADE
 );
+
 CREATE TABLE menu_templates (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  title VARCHAR(100),
-  items JSON,
+  name VARCHAR(100) NOT NULL UNIQUE,              -- 模板名稱
+  fields JSON NOT NULL,                    -- 欄位配置（表單定義）
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
