@@ -1,10 +1,13 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 
 export default function EnterGroup() {
-    const [password, setPassword] = useState("");
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
+    const [groupId, setGroupId] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,13 +45,13 @@ export default function EnterGroup() {
                             name="ID"
                             placeholder="請輸入揪團ID"
                             className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            // value={registerForm.name}
-                            // onChange={}
+                            value={groupId}
+                            onChange={(e) => setGroupId(e.target.value)}
                             maxLength={10}
                         />
                     </div>
                     {/* 揪團密碼欄位 */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col relative">
                         <label
                             htmlFor="password"
                             className="mb-2 text-sm font-medium text-gray-700"
@@ -60,15 +63,26 @@ export default function EnterGroup() {
                         </div> */}
                         </label>
                         <input
-                            type="text"
+                            type={showPassword ? "text" : "password"}
                             id="password"
                             name="password"
                             placeholder="請輸入揪團密碼"
                             className="h-10 px-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            // value={registerForm.name}
-                            // onChange={}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             maxLength={10}
                         />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-[40px] text-sm text-gray-500 hover:text-gray-800"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? (
+                                <TbEyeglass2 />
+                            ) : (
+                                <TbEyeglassFilled />
+                            )}
+                        </button>
                     </div>
 
                     <button
