@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import DrinkModal from "./modal";
-export default function Select() {
+export default function OrderSelect({
+    setFilterStatus = () => {},
+    filterStatus = "",
+}) {
     const [showModal, setShowModal] = useState(false);
 
     const drinkTemplate = [
@@ -29,43 +32,50 @@ export default function Select() {
                 <div className="flex items-center">
                     <div
                         className={`rounded-full focus:outline-none focus:ring-2 focus:bg-third cursor-pointer`}
-                        // onClick={() => {
-                        //     setFilterStatus("all");
-                        // }}
+                        onClick={() => {
+                            setFilterStatus("all");
+                        }}
                     >
                         <div
-                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white `}
+                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white ${
+                                filterStatus == "all"
+                                    ? "bg-primary text-white"
+                                    : ""
+                            }`}
                         >
                             <p>全部</p>
                         </div>
                     </div>
                     <div
                         className="rounded-full focus:outline-none focus:ring-2 focus:bg-third  ml-1 sm:ml-3 cursor-pointer"
-                        // onClick={() => {
-                        //     setFilterStatus("closed");
-                        // }}
+                        onClick={() => {
+                            setFilterStatus("closed");
+                        }}
                     >
                         <div
-                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white `}
+                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white ${
+                                filterStatus == "Paid"
+                                    ? "bg-primary text-white"
+                                    : ""
+                            }`}
                         >
-                            <p>已截止</p>
+                            <p>已付款</p>
                         </div>
                     </div>
                     <div
                         className="rounded-full focus:outline-none focus:ring-2 focus:bg-third  ml-1 sm:ml-3 cursor-pointer"
-                        // onClick={() => {
-                        //     setFilterStatus("open");
-                        // }}
+                        onClick={() => {
+                            setFilterStatus("Non-payment");
+                        }}
                     >
                         <div
-                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white `}
-                        >
-                            {/* ${
+                            className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white ${
                                 filterStatus == "open"
                                     ? "bg-primary text-white"
                                     : ""
-                            } */}
-                            <p>進行中</p>
+                            }`}
+                        >
+                            <p>未付款</p>
                         </div>
                     </div>
                 </div>

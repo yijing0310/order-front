@@ -9,3 +9,5 @@ export const GROUP_GET = `${API_SERVER}/group/api`
 export const ADD_GROUP_POST = `${API_SERVER}/group/add/api`
 // 加入揪團
 export const JOIN_GROUP_POST  = `${API_SERVER}/group/join/api`
+// 獲取該團點餐總覽
+export const ORDER_LIST_GET  = `${API_SERVER}/order/api`

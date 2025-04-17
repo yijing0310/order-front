@@ -1,23 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { GROUP_GET } from "@/config/api-path";
-import Select from "./_components/select";
-import Table from "./_components/table";
+import { ORDER_LIST_GET } from "@/config/api-path";
+import OrderSelect from "./_components/select";
+import GroupTable from "./_components/table";
 import { useAuth } from "@/context/auth.js";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
-export default function MemberCenterPage() {
+export default function GroupListPage() {
     const { auth, getAuthHeader } = useAuth();
     const [listData, setListData] = useState([]);
     const [error, setError] = useState("");
     const router = useRouter();
+    const {group_uuid} = useParams();
+    
     const [filterStatus, setFilterStatus] = useState("all");
     useEffect(() => {
-        const getFetchGroup = async () => {
+        const getFetchOrderList = async () => {
             try {
-                const res = await fetch(GROUP_GET, {
-                    headers: { ...getAuthHeader() },
-                });
+                const res = await fetch(`${ORDER_LIST_GET}?group_uuid=${group_uuid}`);
                 if (!res.ok) {
                     throw new Error("請求失敗");
                 }
@@ -27,8 +27,8 @@ export default function MemberCenterPage() {
                 setError("發送請求時發生錯誤:", error);
             }
         };
-        getFetchGroup();
-    }, [auth, getAuthHeader]);
+        getFetchOrderList();
+    }, []);
     const filteredList = listData?.data?.filter((item) => {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;
@@ -65,9 +65,9 @@ export default function MemberCenterPage() {
                     </div>
                 </div>
                 <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                    <Select />
+                    <OrderSelect setFilterStatus={setFilterStatus} filterStatus={filterStatus}/>
                     <div className="mt-7 overflow-x-auto">
-                        <Table filteredList={filteredList} />
+                        <GroupTable filteredList={filteredList} />
                     </div>
                 </div>
             </div>
