@@ -10,6 +10,7 @@ export default function AddGroupPage() {
     const defaultAddGroupForm = {
         title: "",
         restaurant: "",
+        tel: "",
         menuLink: "",
         limit: 100,
         endTime: "",
@@ -23,7 +24,11 @@ export default function AddGroupPage() {
     const [addGroupForm, setAddGroupForm] = useState(defaultAddGroupForm);
     const changeAddGroupForm = (e) => {
         const { name, value } = e.target;
-        const newForm = { ...addGroupForm, [name]: value };
+        let newValue = value;
+        if (name === "limit") {
+            newValue = value === "" ? "" : Number(value);
+        }
+        const newForm = { ...addGroupForm, [name]: newValue };
         setAddGroupForm(newForm);
     };
     function getCurrentDateTime() {
@@ -41,6 +46,7 @@ export default function AddGroupPage() {
             const newError = {
                 title: "",
                 restaurant: "",
+                tel: "",
                 menuLink: "",
                 limit: "",
                 endTime: "",
@@ -104,7 +110,10 @@ export default function AddGroupPage() {
                                 htmlFor="title"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                揪團名稱 *
+                                揪團名稱 *{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.title}
+                                </div>
                             </label>
                             <input
                                 type="text"
@@ -124,7 +133,10 @@ export default function AddGroupPage() {
                                 htmlFor="restaurant"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                餐廳名稱 *
+                                餐廳名稱 *{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.restaurant}
+                                </div>
                             </label>
                             <input
                                 type="text"
@@ -137,14 +149,39 @@ export default function AddGroupPage() {
                                 onChange={changeAddGroupForm}
                             />
                         </div>
-
+                        {/* 聯絡方式 */}
+                        <div>
+                            <label
+                                htmlFor="tel"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                                聯絡方式
+                                {/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.tel}
+                                </div>
+                            </label>
+                            <input
+                                type="text"
+                                id="tel"
+                                name="tel"
+                                placeholder="例如：06-5900112"
+                                className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all w-full"
+                                maxLength={30}
+                                value={addGroupForm.tel}
+                                onChange={changeAddGroupForm}
+                            />
+                        </div>
                         {/* 菜單連結 */}
                         <div>
                             <label
                                 htmlFor="menuLink"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                菜單連結
+                                菜單連結{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.menuLink}
+                                </div>
                             </label>
                             <input
                                 type="text"
@@ -164,7 +201,10 @@ export default function AddGroupPage() {
                                 htmlFor="limit"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                人數上限
+                                人數上限{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.limit}
+                                </div>
                             </label>
                             <input
                                 type="number"
@@ -184,7 +224,10 @@ export default function AddGroupPage() {
                                 htmlFor="endTime"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                結束時間 *
+                                結束時間 *{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.endTime}
+                                </div>
                             </label>
                             <input
                                 type="datetime-local"
@@ -204,6 +247,10 @@ export default function AddGroupPage() {
                                 className="mb-1 text-sm font-medium text-gray-700"
                             >
                                 設置密碼
+                                {/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.password}
+                                </div>
                             </label>
                             <input
                                 type={showPassword ? "text" : "password"}
@@ -232,7 +279,10 @@ export default function AddGroupPage() {
                             className={`flex flex-col ${radioStyles.radioBtn}`}
                         >
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                選擇訂購模板 *
+                                選擇訂購模板 *{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.template}
+                                </div>
                             </label>
                             <div className="flex  gap-2 pl-2">
                                 <label className="inline-flex items-center gap-2">
@@ -281,7 +331,10 @@ export default function AddGroupPage() {
                                 htmlFor="note"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                備註
+                                備註{/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.note}
+                                </div>
                             </label>
                             <textarea
                                 id="note"
