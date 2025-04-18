@@ -91,6 +91,7 @@ export default function OrderModal({
                 setRefresh(!refresh);
                 alert("訂購成功！");
                 onClose();
+                handleClear()
             }
         } catch (ex) {
             setError("連接錯誤:", ex);
@@ -275,7 +276,7 @@ export default function OrderModal({
                             <div className="flex items-center gap-2">
                                 <label className="font-medium">
                                     {/* ERROR */}
-                                    <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    <div className="text-[12px] text-red-500 h-3 mt-2 mr-3 inline pb-1 ">
                                         {error.price}
                                     </div>
                                     單價：
