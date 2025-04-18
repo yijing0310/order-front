@@ -1,8 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ORDER_LIST_GET, ORDER_TEMPLATE_GET } from "@/config/api-path";
+import {
+    ORDER_LIST_GET,
+    ORDER_TEMPLATE_GET,
+    ORDER_DETAIL_GET,
+} from "@/config/api-path";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
+import Announcement from "./_components/announcement";
 import { useAuth } from "@/context/auth.js";
 import { useRouter, useParams } from "next/navigation";
 
@@ -16,6 +21,8 @@ export default function GroupListPage() {
     const { group_uuid } = useParams();
 
     const [filterStatus, setFilterStatus] = useState("all");
+    const [announcement, setAnnouncement] = useState();
+
     useEffect(() => {
         // 取得訂餐列表
         const getFetchOrderList = async () => {
@@ -51,6 +58,22 @@ export default function GroupListPage() {
             }
         };
         getFetchOrderTemplate();
+        // 取得揪團詳細資訊
+        const getFetchGroupInfo = async () => {
+            try {
+                const res = await fetch(
+                    `${ORDER_DETAIL_GET}?group_uuid=${group_uuid}`
+                );
+                if (!res.ok) {
+                    throw new Error("連接揪團資訊失敗");
+                }
+                const data = await res.json();
+                setAnnouncement(data?.data);
+            } catch (err) {
+                setError("連接揪團資訊時發生錯誤:", error);
+            }
+        };
+        getFetchGroupInfo();
     }, []);
     const filteredList = listData?.data?.filter((item) => {
         if (filterStatus === "all") return true;
@@ -60,14 +83,9 @@ export default function GroupListPage() {
     return (
         <>
             <div className="sm:px-6 w-full">
-                <div className="px-4 md:px-10 py-4 md:py-7">
-                    <div className="flex items-center justify-between">
-                        <p
-                            tabIndex={0}
-                            className="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal"
-                        >
-                            麻古
-                        </p>
+                <Announcement announcement={announcement} />
+                <div className="px-4 md:px-10 py-4 md:py-3">
+                    <div className="flex items-center justify-end">
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
                             <p>Sort By:</p>
                             <select
