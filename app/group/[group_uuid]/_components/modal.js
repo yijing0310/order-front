@@ -4,6 +4,7 @@ import { RiDrinks2Fill } from "react-icons/ri";
 import { addOrderSchema } from "@/utils/schema/addOrderSchema";
 import { ORDER_ADD_POST } from "@/config/api-path";
 import { useParams } from "next/navigation";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 export default function OrderModal({
     isOpen,
     onClose,
@@ -49,6 +50,7 @@ export default function OrderModal({
             quantity: parseInt(quantity),
             price: parseInt(price),
             group_uuid: group_uuid,
+            template: templateFields.template,
         };
 
         const zResult = addOrderSchema.safeParse(finalData);
@@ -91,7 +93,7 @@ export default function OrderModal({
                 setRefresh(!refresh);
                 alert("訂購成功！");
                 onClose();
-                handleClear()
+                handleClear();
             }
         } catch (ex) {
             setError("連接錯誤:", ex);
@@ -114,8 +116,8 @@ export default function OrderModal({
                     ✕
                 </button>
                 <h2 className="text-xl font-semibold mb-4 flex justify-start items-center">
-                    <RiDrinks2Fill />
-                    &nbsp;飲料訂購單
+                    <MdOutlineRestaurantMenu />
+                    &nbsp;訂購單
                     <span
                         className="ml-3 px-2 text-xs text-gray-700 cursor-pointer font-light"
                         onClick={handleClear}
@@ -129,7 +131,7 @@ export default function OrderModal({
                     </span>
                 ) : (
                     <form className="space-y-4" onSubmit={handleSubmit}>
-                        {templateFields.map((field, i) => {
+                        {templateFields?.fields.map((field, i) => {
                             const { label, type, options = [] } = field;
                             const [labelText, fieldNameRaw] = label.split(",");
                             const fieldName =
@@ -234,11 +236,13 @@ export default function OrderModal({
                                                 {label}
                                             </label>
                                             <textarea
+                                                name="note"
                                                 className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
                                                 rows={3}
+                                                value={formData.note || ""} 
                                                 onChange={(e) =>
                                                     handleChange(
-                                                        label,
+                                                        "note",
                                                         e.target.value
                                                     )
                                                 }

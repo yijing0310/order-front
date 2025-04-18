@@ -56,7 +56,7 @@ export default function GroupListPage() {
                     throw new Error("取得訂餐模板請求失敗");
                 }
                 const data = await res.json();
-                setTemplateData(data?.data?.fields);
+                setTemplateData(data?.data);
             } catch (err) {
                 setError("訂餐模板發送請求時發生錯誤:", error);
             }

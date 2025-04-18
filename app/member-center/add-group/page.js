@@ -5,7 +5,9 @@ import radioStyles from "./radio.module.css";
 import { useAuth } from "@/context/auth.js";
 import { ADD_GROUP_POST } from "@/config/api-path";
 import { addGroupSchema } from "@/utils/schema/addGroupSchema";
+import { useRouter } from "next/navigation";
 export default function AddGroupPage() {
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState(false);
     const defaultAddGroupForm = {
         title: "",
@@ -80,6 +82,7 @@ export default function AddGroupPage() {
         setTimeout(() => setIsSubmitting(false), 2000);
         if (result.success) {
             alert("新增成功");
+            router.push("/member-center")
             setAddGroupForm(defaultAddGroupForm);
             setTimeout(() => setIsSubmitting(false), 2000);
         }
