@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import DrinkModal from "./modal";
+import OrderModal from "./modal";
 export default function OrderSelect({
     setFilterStatus = () => {},
     filterStatus = "",
@@ -31,7 +31,7 @@ export default function OrderSelect({
                     <div
                         className="rounded-full focus:outline-none focus:ring-2 focus:bg-third  ml-1 sm:ml-3 cursor-pointer"
                         onClick={() => {
-                            setFilterStatus("closed");
+                            setFilterStatus("Paid");
                         }}
                     >
                         <div
@@ -52,7 +52,7 @@ export default function OrderSelect({
                     >
                         <div
                             className={`py-2 px-5  rounded-full hover:bg-third  hover:text-white ${
-                                filterStatus == "open"
+                                filterStatus == "Non-payment"
                                     ? "bg-primary text-white"
                                     : ""
                             }`}
@@ -72,7 +72,7 @@ export default function OrderSelect({
                     </p>
                 </button>
             </div>
-            <DrinkModal
+            <OrderModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 templateFields={templateData}

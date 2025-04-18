@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { RiDrinks2Fill } from "react-icons/ri";
-export default function DrinkModal({ isOpen, onClose, templateFields }) {
+export default function OrderModal({ isOpen, onClose, templateFields }) {
     const [formData, setFormData] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [price, setPrice] = useState(0);
