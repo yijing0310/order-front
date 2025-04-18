@@ -187,7 +187,7 @@ export default function AddGroupPage() {
                                 type="text"
                                 id="menuLink"
                                 name="menuLink"
-                                placeholder="http:// how-order/menu"
+                                placeholder="https://how-order.com/menu"
                                 className="h-10 px-3 rounded-md border border-gray-300 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all w-full"
                                 maxLength={100}
                                 value={addGroupForm.menuLink}
