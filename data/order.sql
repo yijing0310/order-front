@@ -17,6 +17,7 @@ CREATE TABLE orderGroups (
   owner_id INT NOT NULL,
   title VARCHAR(100) NOT NULL,
   restaurant VARCHAR(100) NOT NULL,
+  tel VARCHAR(100),
   menu_link VARCHAR(255),
   max_people INT,
   deadline DATETIME NOT NULL,
@@ -29,9 +30,7 @@ CREATE TABLE orderGroups (
   FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
   -- FOREIGN KEY (template) REFERENCES menu_templates(name) ON DELETE CASCADE
 );
-INSERT INTO `ordergroups` (`id`, `group_uuid`, `owner_id`, `title`, `restaurant`, `menu_link`, `max_people`, `deadline`, `password`, `description`, `status`, `template`, `is_active`, `created_at`) VALUES
-(1, 'TzERYXy9M4', 1, '訂飲料拉!', '大苑子', '', 100, '2025-04-17 15:33:00', '12345', '轉錢帳號：23-44', 'closed', 'drink', 1, '2025-04-17 06:35:59'),
-(2, 'fPvyhs27ac', 1, '請客了!', '麻古', '', 100, '2025-04-17 17:23:00', '', '', 'closed', 'drink', 1, '2025-04-17 09:21:08');
+
 CREATE TABLE orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   group_uuid VARCHAR(100) NOT NULL,
@@ -45,10 +44,6 @@ CREATE TABLE orders (
   FOREIGN KEY (group_uuid) REFERENCES orderGroups(group_uuid) ON DELETE CASCADE
 );
 
-INSERT INTO orders (group_uuid, name,item_name ,quantity,price,note)
-VALUES ('TzERYXy9M4', '小明', '波霸奶茶', '1','50','半糖少冰');
-
-SELECT menu_templates.fields FROM  orderGroups LEFT JOIN menu_templates ON orderGroups.template = menu_templates.name WHERE group_uuid = 'TzERYXy9M4';
 
 CREATE TABLE menu_templates (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,6 +59,12 @@ VALUES (
   '[
     { "label": "訂購人,name", "type": "text", "required": true },
     { "label": "今天要點什麼,item_name", "type": "text", "required": true },
+     {
+      "label": "尺寸",
+      "type": "radio",
+      "options": ["中杯", "大杯"],
+      "required": true
+    },
     {
       "label": "甜度",
       "type": "radio",
