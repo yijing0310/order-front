@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { TbHandFingerRight } from "react-icons/tb";
+import Link from "next/link";
 export default function Hero() {
     return (
         <>
@@ -15,18 +16,18 @@ export default function Hero() {
                                 團體訂餐太麻煩？How Order Are You 幫你一次解決！
                             </p>
                             <div className="mt-10 flex items-center justify-center gap-x-6">
-                                <a
-                                    href="#"
+                                <Link
+                                    href="/join-group"
                                     className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-third focus-visible:outline-2 focus-visible:outline-offset-2 focus-third:outline-indigo-600 flex items-center justify-center "
                                 >
                                     <TbHandFingerRight/>&nbsp;開始訂餐
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="#"
                                     className="text-sm/6 font-semibold text-font"
                                 >
                                     如何使用 <span aria-hidden="true">→</span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

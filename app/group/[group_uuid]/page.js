@@ -5,11 +5,14 @@ import {
     ORDER_TEMPLATE_GET,
     ORDER_DETAIL_GET,
 } from "@/config/api-path";
+import Link from "next/link";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import Announcement from "./_components/announcement";
 import { useAuth } from "@/context/auth.js";
 import { useRouter, useParams } from "next/navigation";
+import { FaArrowLeft } from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
 
 export default function GroupListPage() {
     const { auth, getAuthHeader } = useAuth();
@@ -70,8 +73,8 @@ export default function GroupListPage() {
                 }
                 const data = await res.json();
                 setAnnouncement(data?.data);
-                if(data?.data?.status == "closed"){
-                    setIsEnd(true)
+                if (data?.data?.status == "closed") {
+                    setIsEnd(true);
                 }
             } catch (err) {
                 setError("連接揪團資訊時發生錯誤:", error);
@@ -87,6 +90,12 @@ export default function GroupListPage() {
     return (
         <>
             <div className="sm:px-6 w-full">
+                <Link
+                    href="/"
+                    className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
+                >
+                    <FaHome /> &nbsp;&nbsp; <span className="mt-1">回到首頁</span> 
+                </Link>
                 <Announcement announcement={announcement} />
                 <div className="px-4 md:px-10 py-4 md:py-3">
                     <div className="flex items-center justify-end">

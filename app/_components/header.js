@@ -4,26 +4,39 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/context/auth.js";
+import { usePathname } from "next/navigation";
+import { FaHome } from "react-icons/fa";
+
 import Link from "next/link";
-const navigation = [
-    { name: "Product", href: "#" },
-    { name: "Features", href: "#" },
-    { name: "Marketplace", href: "#" },
-    { name: "Company", href: "#" },
-];
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { auth, logout } = useAuth();
+    const pathname = usePathname();
+    const hiddenPaths = ["/member-center", "/login", "/register", "/group"];
+    const shouldHide = hiddenPaths.some((path) => pathname.startsWith(path));
 
+    if (shouldHide) return null;
     return (
         <>
-            <header className="absolute inset-x-0 top-0 z-50">
+            <header className="fixed inset-x-0 top-0 z-50">
                 <nav
                     aria-label="Global"
-                    className="flex items-center justify-between p-6 lg:px-8"
+                    className="flex items-center justify-between p-5 lg:px-8"
                 >
-                    <div className="flex lg:flex-1"></div>
+                    <div className="flex lg:flex-1">
+                        {pathname.startsWith("/join-group") ? (
+                            <Link
+                                href="/"
+                                className="w-[90px] flex items-center text-sm hover:text-primary"
+                            >
+                                <FaHome /> &nbsp;&nbsp;{" "}
+                                <span className="mt-1">回到首頁</span>
+                            </Link>
+                        ) : (
+                            ""
+                        )}
+                    </div>
                     <div className="flex lg:hidden">
                         <button
                             type="button"
@@ -34,17 +47,7 @@ export default function Header() {
                             <Bars3Icon aria-hidden="true" className="size-6" />
                         </button>
                     </div>
-                    <div className="hidden lg:flex lg:gap-x-12">
-                        {/* {navigation.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-sm/6 font-semibold text-gray-900"
-                            >
-                                {item.name}
-                            </a>
-                        ))} */}
-                    </div>
+                    <div className="hidden lg:flex lg:gap-x-12"></div>
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                         {auth.id ? (
                             <>
@@ -102,17 +105,6 @@ export default function Header() {
                         </div>
                         <div className="mt-6 flow-root">
                             <div className="-my-6 divide-y divide-gray-500/10">
-                                <div className="space-y-2 py-6">
-                                    {navigation.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
-                                </div>
                                 <div className="py-6">
                                     <a
                                         href="#"

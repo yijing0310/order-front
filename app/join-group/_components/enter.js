@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { JOIN_GROUP_POST } from "@/config/api-path";
 import Loader from "@/app/_components/loader";
@@ -118,6 +119,15 @@ export default function EnterGroup() {
                             進入揪團
                         </button>
                     </form>
+                    <div className="text-sm text-center text-gray-600 mt-5">
+                        想創建屬於自己的團嗎？{" "}
+                        <Link
+                            href="/login"
+                            className="text-primary hover:underline"
+                        >
+                            登入後立即開團!
+                        </Link>
+                    </div>
                 </div>
             )}
         </div>
