@@ -1,5 +1,8 @@
 "use client";
 import moment from "moment";
+import Link from "next/link";
+import { FaTrashCan } from "react-icons/fa6";
+import { FaEdit } from "react-icons/fa";
 export default function Table({ filteredList = [] }) {
     return (
         <>
@@ -8,12 +11,14 @@ export default function Table({ filteredList = [] }) {
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">揪團名稱</div>
-                    <div className="w-[15%] px-3">揪團代號</div>
+                    <div className="w-[13%] px-3">揪團代號</div>
                     <div className="w-[15%] px-3">餐廳名稱</div>
                     <div className="w-[10%] px-3">揪團上限</div>
-                    <div className="w-[20%] px-3">結束時間</div>
-                    <div className="w-[10%] pl-5">狀態</div>
-                    <div className="w-[10%] pl-4">查看</div>
+                    <div className="w-[15%] px-3">結束時間</div>
+                    <div className="w-[8%] pl-5">狀態</div>
+                    <div className="w-[8%] pl-4">查看</div>
+                    <div className="w-[5%] pl-2">編輯</div>
+                    <div className="w-[5%] px-2">刪除</div>
                 </div>
                 {/* 內容 */}
                 <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
@@ -42,7 +47,7 @@ export default function Table({ filteredList = [] }) {
                                     </span>
                                     {list.title}
                                 </div>
-                                <div className="w-full md:w-[15%] px-3">
+                                <div className="w-full md:w-[13%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         代號：
                                     </span>
@@ -60,7 +65,7 @@ export default function Table({ filteredList = [] }) {
                                     </span>
                                     {list.max_people}
                                 </div>
-                                <div className="w-full md:w-[20%] px-3">
+                                <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         截止：
                                     </span>
@@ -68,7 +73,7 @@ export default function Table({ filteredList = [] }) {
                                         "YYYY/MM/DD HH:mm"
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] pl-5 mt-2 md:mt-0">
+                                <div className="w-full md:w-[8%] pl-5 mt-2 md:mt-0">
                                     {list.status === "closed" ? (
                                         <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded">
                                             已截止
@@ -79,10 +84,24 @@ export default function Table({ filteredList = [] }) {
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] pl-4 mt-2 md:mt-0">
-                                    <button className="text-sm text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
-                                        View
-                                    </button>
+                                <div className="w-full md:w-[8%] pl-4 mt-2 md:mt-0">
+                                    <Link href={`/group/${list.group_uuid}`}>
+                                        <button className="text-xs text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
+                                            view
+                                        </button>
+                                    </Link>
+                                </div>
+                                <div className="w-full md:w-[5%] px-3 ">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        編輯
+                                    </span>
+                                    <FaEdit className="mx-2"/>
+                                </div>
+                                <div className="w-full md:w-[5%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        刪除
+                                    </span>
+                                    <FaTrashCan className="mx-2"/>
                                 </div>
                             </div>
                         ))
