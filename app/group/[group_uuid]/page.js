@@ -13,7 +13,7 @@ import Total from "./_components/total";
 import { useAuth } from "@/context/auth.js";
 import { useRouter, useParams } from "next/navigation";
 import { FaHome } from "react-icons/fa";
-
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 export default function GroupListPage() {
     const { auth, getAuthHeader } = useAuth();
     const [listData, setListData] = useState([]);
@@ -105,16 +105,25 @@ export default function GroupListPage() {
     return (
         <>
             <div className="sm:px-6 w-full">
-                <Link
-                    href="/"
-                    className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
-                >
-                    <FaHome /> &nbsp;&nbsp;{" "}
-                    <span className="mt-1">回到首頁</span>
-                </Link>
+                <div className="flex items-center gap-2">
+                    <Link
+                        href="/"
+                        className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
+                    >
+                        <FaHome /> &nbsp;&nbsp;{" "}
+                        <span className="mt-2 ">回到首頁</span>
+                    </Link>
+                    
+                    <Link
+                        href="/join-group"
+                        className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
+                    >
+                        <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
+                        <span className="mt-2">其他揪團點餐</span>
+                    </Link>
+                </div>
                 <Announcement announcement={announcement} />
 
-                
                 <div className="px-4 md:px-10 py-4 md:py-3">
                     <div className="flex items-center justify-end">
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
