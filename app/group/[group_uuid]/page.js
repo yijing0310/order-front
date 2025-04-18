@@ -9,9 +9,9 @@ import Link from "next/link";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import Announcement from "./_components/announcement";
+import Total from "./_components/total";
 import { useAuth } from "@/context/auth.js";
 import { useRouter, useParams } from "next/navigation";
-import { FaArrowLeft } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 
 export default function GroupListPage() {
@@ -86,6 +86,21 @@ export default function GroupListPage() {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;
     });
+    const getTotalSummary = (data) => {
+        if (!data || !Array.isArray(data))
+            return { totalQty: 0, totalPrice: 0 };
+        const summary = data.reduce(
+            (acc, pre) => {
+                acc.totalQty += pre.quantity;
+                acc.totalPrice += pre.quantity * pre.price;
+                return acc;
+            },
+            { totalQty: 0, totalPrice: 0 }
+        );
+        return summary;
+    };
+
+    const summary = getTotalSummary(filteredList);
 
     return (
         <>
@@ -94,9 +109,12 @@ export default function GroupListPage() {
                     href="/"
                     className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
                 >
-                    <FaHome /> &nbsp;&nbsp; <span className="mt-1">回到首頁</span> 
+                    <FaHome /> &nbsp;&nbsp;{" "}
+                    <span className="mt-1">回到首頁</span>
                 </Link>
                 <Announcement announcement={announcement} />
+
+                
                 <div className="px-4 md:px-10 py-4 md:py-3">
                     <div className="flex items-center justify-end">
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
@@ -118,7 +136,8 @@ export default function GroupListPage() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+                <Total summary={summary} />
+                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
                     <OrderSelect
                         setFilterStatus={setFilterStatus}
                         filterStatus={filterStatus}

@@ -4,7 +4,7 @@ import "moment/locale/zh-tw";
 export default function Announcement({ announcement = {} }) {
     moment.locale("zh-tw");
     return (
-        <div className=" sticky top-0  w-full bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 my-4 ">
+        <div className="   w-full bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 my-4 ">
             <p className="font-semibold text-lg">📢 訂購公告</p>
             <ul className="mt-1 ml-4 list-disc text-sm">
                 <li className="mb-1">

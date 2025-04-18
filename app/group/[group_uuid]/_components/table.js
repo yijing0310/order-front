@@ -3,7 +3,7 @@ import moment from "moment";
 export default function GroupTable({ filteredList = [] }) {
     return (
         <>
-            <div className="w-full overflow-x-auto">
+            <div className="w-full overflow-x-auto ">
                 {/* 表頭 */}
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
