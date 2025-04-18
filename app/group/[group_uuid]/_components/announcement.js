@@ -15,6 +15,20 @@ export default function Announcement({ announcement = {} }) {
                     <strong>餐廳：</strong>
                     {announcement.restaurant}
                 </li>
+                {announcement.menu_link ? (
+                    <li className="mb-1">
+                        <strong>菜單連結：</strong>
+                        <a
+                            href={`${announcement.menu_link}`}
+                            target="_blank"
+                            className="hover:text-blue-500"
+                        >
+                            {announcement.menu_link}
+                        </a>
+                    </li>
+                ) : (
+                    ""
+                )}
                 <li className="mb-1">
                     <strong>狀態：</strong>
                     {announcement.status === "open" ? (
@@ -31,7 +45,9 @@ export default function Announcement({ announcement = {} }) {
                 </li>
                 <li className="mb-1">
                     <strong>截止時間：</strong>
-                    {moment(announcement.deadline).format("YYYY/MM/DD (dddd)  HH:mm")}
+                    {moment(announcement.deadline).format(
+                        "YYYY/MM/DD (dddd)  HH:mm"
+                    )}
                     {moment(announcement.deadline).isSame(moment(), "day") &&
                         "（今日）"}
                 </li>
