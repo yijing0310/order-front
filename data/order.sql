@@ -48,7 +48,7 @@ CREATE TABLE orders (
 INSERT INTO orders (group_uuid, name,item_name ,quantity,price,note)
 VALUES ('TzERYXy9M4', '小明', '波霸奶茶', '1','50','半糖少冰');
 
-
+SELECT menu_templates.fields FROM  orderGroups LEFT JOIN menu_templates ON orderGroups.template = menu_templates.name WHERE group_uuid = 'TzERYXy9M4';
 
 CREATE TABLE menu_templates (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,8 +62,8 @@ INSERT INTO menu_templates (name, fields)
 VALUES (
   'drink',
   '[
-    { "label": "訂購人", "type": "text", "required": true },
-    { "label": "今天要喝點", "type": "text", "required": true },
+    { "label": "訂購人,name", "type": "text", "required": true },
+    { "label": "今天要點什麼,item_name", "type": "text", "required": true },
     {
       "label": "甜度",
       "type": "radio",

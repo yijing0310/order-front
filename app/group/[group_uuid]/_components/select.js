@@ -5,6 +5,8 @@ export default function OrderSelect({
     setFilterStatus = () => {},
     filterStatus = "",
     templateData = [],
+    setRefresh = () => {},
+    refresh = false,
 }) {
     const [showModal, setShowModal] = useState(false);
     return (
@@ -76,6 +78,8 @@ export default function OrderSelect({
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 templateFields={templateData}
+                setRefresh={setRefresh}
+                refresh={refresh}
             />
         </>
     );

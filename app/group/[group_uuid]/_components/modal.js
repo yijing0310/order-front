@@ -1,14 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import { RiDrinks2Fill } from "react-icons/ri";
-export default function OrderModal({ isOpen, onClose, templateFields }) {
-    const [formData, setFormData] = useState({});
+import { addOrderSchema } from "@/utils/schema/addOrderSchema";
+import { ORDER_ADD_POST } from "@/config/api-path";
+import { useParams } from "next/navigation";
+export default function OrderModal({
+    isOpen,
+    onClose,
+    templateFields,
+    setRefresh = () => {},
+    refresh = false,
+}) {
+    const { group_uuid } = useParams();
+    const defaultValue = { name: "", item_name: "", note: "" };
+    const [formData, setFormData] = useState(defaultValue);
     const [quantity, setQuantity] = useState(1);
     const [price, setPrice] = useState(0);
-
+    const [error, setError] = useState("");
     if (!isOpen) return null;
     const handleClear = () => {
-        setFormData({});
+        setFormData(defaultValue);
         setQuantity(1);
         setPrice("");
     };
@@ -17,21 +28,72 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
     };
 
     const handleOptionSelect = (label, value) => {
-        setFormData((prev) => ({ ...prev, [label]: value }));
+        let note = formData.note || "";
+        const parts = note.split(" / ").filter(Boolean);
+
+        // 移除相同 label 的舊項目
+        const filtered = parts.filter((part) => !part.startsWith(`${label}:`));
+        filtered.push(`${label}:${value}`);
+
+        setFormData((prev) => ({
+            ...prev,
+            note: filtered.join(" / "),
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const total = quantity * (parseInt(price) || 0);
         const finalData = {
             ...formData,
-            quantity,
+            quantity: parseInt(quantity),
             price: parseInt(price),
-            total,
+            group_uuid: group_uuid,
         };
-        console.log("送出訂單：", finalData);
-        alert("訂購成功！");
-        onClose();
+
+        const zResult = addOrderSchema.safeParse(finalData);
+        if (!zResult.success) {
+            const newError = {
+                group_uuid: "",
+                name: "",
+                item_name: "",
+                quantity: "",
+                price: "",
+                note: "",
+            };
+            const errMap = new Map();
+
+            zResult.error?.issues.forEach((item) => {
+                const pathKey = item.path[0];
+                if (!errMap.has(pathKey)) {
+                    errMap.set(pathKey, item.message);
+                    newError[pathKey] = item.message;
+                }
+            });
+
+            setError(newError);
+            return;
+        }
+        try {
+            const res = await fetch(ORDER_ADD_POST, {
+                method: "POST",
+                body: JSON.stringify(finalData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!res.ok) {
+                setError("新增資料錯誤");
+            }
+            const result = await res.json();
+            setError(result.error);
+            if (result.success) {
+                setRefresh(!refresh)
+                alert("訂購成功！");
+                onClose();
+            }
+        } catch (ex) {
+            setError("連接錯誤:", ex);
+        }
     };
 
     return (
@@ -50,7 +112,8 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                     ✕
                 </button>
                 <h2 className="text-xl font-semibold mb-4 flex justify-start items-center">
-                    <RiDrinks2Fill/>&nbsp;飲料訂購單
+                    <RiDrinks2Fill />
+                    &nbsp;飲料訂購單
                     <span
                         className="ml-3 px-2 text-xs text-gray-700 cursor-pointer font-light"
                         onClick={handleClear}
@@ -61,24 +124,31 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     {templateFields.map((field, i) => {
                         const { label, type, options = [] } = field;
-
+                        const [labelText, fieldNameRaw] = label.split(",");
+                        const fieldName =
+                            fieldNameRaw?.trim() || labelText?.trim();
                         switch (type) {
                             case "text":
                                 return (
                                     <div key={i}>
                                         <label className="block mb-1 font-medium">
-                                            {label}
+                                            {labelText}
+                                            {/* ERROR */}
+                                            <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                                {error[fieldName]}
+                                            </div>
                                         </label>
                                         <input
                                             type="text"
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
+                                            value={formData[fieldName] || ""}
                                             onChange={(e) =>
                                                 handleChange(
-                                                    label,
+                                                    fieldName,
                                                     e.target.value
                                                 )
                                             }
-                                            required={field.required}
+                                            // required={field.required}
                                         />
                                     </div>
                                 );
@@ -87,6 +157,10 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                                     <div key={i}>
                                         <label className="block mb-1 font-medium">
                                             {label}
+                                            {/* ERROR */}
+                                            <div className="text-[12px] text-red-500 h-4  ml-3 inline-block mb-2 ">
+                                                {error.note}
+                                            </div>
                                         </label>
                                         <div className="flex flex-wrap gap-2 mt-1">
                                             {options.map((opt, i) => (
@@ -94,7 +168,11 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                                                     key={i}
                                                     type="button"
                                                     className={`px-3 py-1 rounded border ${
-                                                        formData[label] === opt
+                                                        (
+                                                            formData.note || ""
+                                                        ).includes(
+                                                            `${label}:${opt}`
+                                                        )
                                                             ? "bg-primary text-white"
                                                             : "bg-gray-100 text-gray-700"
                                                     }`}
@@ -146,7 +224,7 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                                             {label}
                                         </label>
                                         <textarea
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
                                             rows={3}
                                             onChange={(e) =>
                                                 handleChange(
@@ -186,13 +264,20 @@ export default function OrderModal({ isOpen, onClose, templateFields }) {
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <label className="font-medium">單價：</label>
+                            <label className="font-medium">
+                                {/* ERROR */}
+                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                    {error.price}
+                                </div>
+                                單價：
+                            </label>
                             <input
                                 type="number"
-                                className="w-24 border rounded px-2 py-1"
+                                className="w-24 border rounded px-2 py-1 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                                 min={0}
+                                required
                             />
                         </div>
                     </div>

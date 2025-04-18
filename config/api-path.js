@@ -13,3 +13,5 @@ export const JOIN_GROUP_POST  = `${API_SERVER}/group/join/api`
 export const ORDER_LIST_GET  = `${API_SERVER}/order/api`
 //  獲取點餐模板
 export const ORDER_TEMPLATE_GET  = `${API_SERVER}/order/templates/api`
+// 新增餐點
+export const ORDER_ADD_POST  = `${API_SERVER}/order/add/api`

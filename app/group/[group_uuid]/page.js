@@ -11,6 +11,7 @@ export default function GroupListPage() {
     const [listData, setListData] = useState([]);
     const [templateData, setTemplateData] = useState([]);
     const [error, setError] = useState("");
+    const [refresh, setRefresh] = useState(false);
     const router = useRouter();
     const { group_uuid } = useParams();
 
@@ -32,6 +33,8 @@ export default function GroupListPage() {
             }
         };
         getFetchOrderList();
+    }, [refresh]);
+    useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
             try {
@@ -89,6 +92,8 @@ export default function GroupListPage() {
                         setFilterStatus={setFilterStatus}
                         filterStatus={filterStatus}
                         templateData={templateData}
+                        setRefresh={setRefresh}
+                        refresh={refresh}
                     />
                     <div className="mt-7 overflow-x-auto">
                         <GroupTable filteredList={filteredList} />
