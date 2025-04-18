@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ORDER_LIST_GET } from "@/config/api-path";
+import { ORDER_LIST_GET, ORDER_TEMPLATE_GET } from "@/config/api-path";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import { useAuth } from "@/context/auth.js";
@@ -9,25 +9,45 @@ import { useRouter, useParams } from "next/navigation";
 export default function GroupListPage() {
     const { auth, getAuthHeader } = useAuth();
     const [listData, setListData] = useState([]);
+    const [templateData, setTemplateData] = useState([]);
     const [error, setError] = useState("");
     const router = useRouter();
-    const {group_uuid} = useParams();
-    
+    const { group_uuid } = useParams();
+
     const [filterStatus, setFilterStatus] = useState("all");
     useEffect(() => {
+        // 取得訂餐列表
         const getFetchOrderList = async () => {
             try {
-                const res = await fetch(`${ORDER_LIST_GET}?group_uuid=${group_uuid}`);
+                const res = await fetch(
+                    `${ORDER_LIST_GET}?group_uuid=${group_uuid}`
+                );
                 if (!res.ok) {
-                    throw new Error("請求失敗");
+                    throw new Error("取得訂餐列表請求失敗");
                 }
                 const data = await res.json();
                 setListData(data);
             } catch (err) {
-                setError("發送請求時發生錯誤:", error);
+                setError("取得訂餐列表發送請求時發生錯誤:", error);
             }
         };
         getFetchOrderList();
+        // 取得訂餐模板
+        const getFetchOrderTemplate = async () => {
+            try {
+                const res = await fetch(
+                    `${ORDER_TEMPLATE_GET}?group_uuid=${group_uuid}`
+                );
+                if (!res.ok) {
+                    throw new Error("取得訂餐模板請求失敗");
+                }
+                const data = await res.json();
+                setTemplateData(data?.data?.fields);
+            } catch (err) {
+                setError("訂餐模板發送請求時發生錯誤:", error);
+            }
+        };
+        getFetchOrderTemplate();
     }, []);
     const filteredList = listData?.data?.filter((item) => {
         if (filterStatus === "all") return true;
@@ -65,7 +85,11 @@ export default function GroupListPage() {
                     </div>
                 </div>
                 <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                    <OrderSelect setFilterStatus={setFilterStatus} filterStatus={filterStatus}/>
+                    <OrderSelect
+                        setFilterStatus={setFilterStatus}
+                        filterStatus={filterStatus}
+                        templateData={templateData}
+                    />
                     <div className="mt-7 overflow-x-auto">
                         <GroupTable filteredList={filteredList} />
                     </div>

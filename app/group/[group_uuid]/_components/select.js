@@ -1,30 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import DrinkModal from "./modal";
 export default function OrderSelect({
     setFilterStatus = () => {},
     filterStatus = "",
+    templateData = [],
 }) {
     const [showModal, setShowModal] = useState(false);
-
-    const drinkTemplate = [
-        { label: "訂購人", type: "text", required: true },
-        { label: "今天要喝點", type: "text", required: true },
-        {
-            label: "甜度",
-            type: "radio",
-            options: ["無糖", "微糖", "半糖", "少糖", "全糖", "固定"],
-            required: true,
-        },
-        {
-            label: "冰塊",
-            type: "radio",
-            options: ["去冰", "微冰", "少冰", "正常冰", "固定", "熱飲"],
-            required: true,
-        },
-        { label: "備註", type: "textarea" },
-    ];
     return (
         <>
             {/* 篩選 */}
@@ -93,7 +75,7 @@ export default function OrderSelect({
             <DrinkModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                templateFields={drinkTemplate}
+                templateFields={templateData}
             />
         </>
     );
