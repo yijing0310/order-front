@@ -10,6 +10,7 @@ export default function OrderModal({
     templateFields,
     setRefresh = () => {},
     refresh = false,
+    isEnd = false,
 }) {
     const { group_uuid } = useParams();
     const defaultValue = { name: "", item_name: "", note: "" };
@@ -87,7 +88,7 @@ export default function OrderModal({
             const result = await res.json();
             setError(result.error);
             if (result.success) {
-                setRefresh(!refresh)
+                setRefresh(!refresh);
                 alert("訂購成功！");
                 onClose();
             }
@@ -121,181 +122,190 @@ export default function OrderModal({
                         清除資料
                     </span>
                 </h2>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    {templateFields.map((field, i) => {
-                        const { label, type, options = [] } = field;
-                        const [labelText, fieldNameRaw] = label.split(",");
-                        const fieldName =
-                            fieldNameRaw?.trim() || labelText?.trim();
-                        switch (type) {
-                            case "text":
-                                return (
-                                    <div key={i}>
-                                        <label className="block mb-1 font-medium">
-                                            {labelText}
-                                            {/* ERROR */}
-                                            <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                                                {error[fieldName]}
-                                            </div>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
-                                            value={formData[fieldName] || ""}
-                                            onChange={(e) =>
-                                                handleChange(
-                                                    fieldName,
-                                                    e.target.value
-                                                )
-                                            }
-                                            // required={field.required}
-                                        />
-                                    </div>
-                                );
-                            case "radio":
-                                return (
-                                    <div key={i}>
-                                        <label className="block mb-1 font-medium">
-                                            {label}
-                                            {/* ERROR */}
-                                            <div className="text-[12px] text-red-500 h-4  ml-3 inline-block mb-2 ">
-                                                {error.note}
-                                            </div>
-                                        </label>
-                                        <div className="flex flex-wrap gap-2 mt-1">
-                                            {options.map((opt, i) => (
-                                                <button
-                                                    key={i}
-                                                    type="button"
-                                                    className={`px-3 py-1 rounded border ${
-                                                        (
-                                                            formData.note || ""
-                                                        ).includes(
-                                                            `${label}:${opt}`
-                                                        )
-                                                            ? "bg-primary text-white"
-                                                            : "bg-gray-100 text-gray-700"
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleOptionSelect(
-                                                            label,
-                                                            opt
-                                                        )
-                                                    }
-                                                >
-                                                    {opt}
-                                                </button>
-                                            ))}
+                {isEnd ? (
+                    <span className="py-1 px-2 text-sm text-red-700 bg-red-100 rounded">
+                        已截止
+                    </span>
+                ) : (
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                        {templateFields.map((field, i) => {
+                            const { label, type, options = [] } = field;
+                            const [labelText, fieldNameRaw] = label.split(",");
+                            const fieldName =
+                                fieldNameRaw?.trim() || labelText?.trim();
+                            switch (type) {
+                                case "text":
+                                    return (
+                                        <div key={i}>
+                                            <label className="block mb-1 font-medium">
+                                                {labelText}
+                                                {/* ERROR */}
+                                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                                    {error[fieldName]}
+                                                </div>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
+                                                value={
+                                                    formData[fieldName] || ""
+                                                }
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        fieldName,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                // required={field.required}
+                                            />
                                         </div>
-                                    </div>
-                                );
-                            case "checkbox":
-                                return (
-                                    <div key={i}>
-                                        <label className="block mb-1 font-medium">
-                                            {label}
-                                        </label>
-                                        <div className="flex flex-wrap gap-2">
-                                            {options.map((opt, i) => (
-                                                <label
-                                                    key={i}
-                                                    className="flex items-center gap-1"
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        value={opt}
-                                                        onChange={() =>
-                                                            handleCheckboxChange(
+                                    );
+                                case "radio":
+                                    return (
+                                        <div key={i}>
+                                            <label className="block mb-1 font-medium">
+                                                {label}
+                                                {/* ERROR */}
+                                                <div className="text-[12px] text-red-500 h-4  ml-3 inline-block mb-2 ">
+                                                    {error.note}
+                                                </div>
+                                            </label>
+                                            <div className="flex flex-wrap gap-2 mt-1">
+                                                {options.map((opt, i) => (
+                                                    <button
+                                                        key={i}
+                                                        type="button"
+                                                        className={`px-3 py-1 rounded border ${
+                                                            (
+                                                                formData.note ||
+                                                                ""
+                                                            ).includes(
+                                                                `${label}:${opt}`
+                                                            )
+                                                                ? "bg-primary text-white"
+                                                                : "bg-gray-100 text-gray-700"
+                                                        }`}
+                                                        onClick={() =>
+                                                            handleOptionSelect(
                                                                 label,
                                                                 opt
                                                             )
                                                         }
-                                                    />
-                                                    {opt}
-                                                </label>
-                                            ))}
+                                                    >
+                                                        {opt}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            case "textarea":
-                                return (
-                                    <div key={i}>
-                                        <label className="block mb-1 font-medium">
-                                            {label}
-                                        </label>
-                                        <textarea
-                                            className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
-                                            rows={3}
-                                            onChange={(e) =>
-                                                handleChange(
-                                                    label,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                );
-                            default:
-                                return null;
-                        }
-                    })}
+                                    );
+                                case "checkbox":
+                                    return (
+                                        <div key={i}>
+                                            <label className="block mb-1 font-medium">
+                                                {label}
+                                            </label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {options.map((opt, i) => (
+                                                    <label
+                                                        key={i}
+                                                        className="flex items-center gap-1"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            value={opt}
+                                                            onChange={() =>
+                                                                handleCheckboxChange(
+                                                                    label,
+                                                                    opt
+                                                                )
+                                                            }
+                                                        />
+                                                        {opt}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                case "textarea":
+                                    return (
+                                        <div key={i}>
+                                            <label className="block mb-1 font-medium">
+                                                {label}
+                                            </label>
+                                            <textarea
+                                                className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
+                                                rows={3}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        label,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    );
+                                default:
+                                    return null;
+                            }
+                        })}
 
-                    {/* 數量 + 金額 */}
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="font-medium">數量：</span>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setQuantity((q) => Math.max(1, q - 1))
-                                }
-                                className="px-2 py-1 bg-gray-200 rounded"
-                            >
-                                –
-                            </button>
-                            <span className="px-2">{quantity}</span>
-                            <button
-                                type="button"
-                                onClick={() => setQuantity((q) => q + 1)}
-                                className="px-2 py-1 bg-gray-200 rounded"
-                            >
-                                +
-                            </button>
+                        {/* 數量 + 金額 */}
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-2">
+                                <span className="font-medium">數量：</span>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setQuantity((q) => Math.max(1, q - 1))
+                                    }
+                                    className="px-2 py-1 bg-gray-200 rounded"
+                                >
+                                    –
+                                </button>
+                                <span className="px-2">{quantity}</span>
+                                <button
+                                    type="button"
+                                    onClick={() => setQuantity((q) => q + 1)}
+                                    className="px-2 py-1 bg-gray-200 rounded"
+                                >
+                                    +
+                                </button>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <label className="font-medium">
+                                    {/* ERROR */}
+                                    <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
+                                        {error.price}
+                                    </div>
+                                    單價：
+                                </label>
+                                <input
+                                    type="number"
+                                    className="w-24 border rounded px-2 py-1 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    min={0}
+                                    required
+                                />
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <label className="font-medium">
-                                {/* ERROR */}
-                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                                    {error.price}
-                                </div>
-                                單價：
-                            </label>
-                            <input
-                                type="number"
-                                className="w-24 border rounded px-2 py-1 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                min={0}
-                                required
-                            />
+                        <div className="text-right font-semibold text-lg mt-2 mr-2">
+                            總金額：
+                            <span className="text-green-600 ">
+                                ${quantity * (parseInt(price) || 0)}
+                            </span>
                         </div>
-                    </div>
 
-                    <div className="text-right font-semibold text-lg mt-2 mr-2">
-                        總金額：
-                        <span className="text-green-600 ">
-                            ${quantity * (parseInt(price) || 0)}
-                        </span>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-primary text-white py-2 rounded hover:bg-third transition"
-                    >
-                        送出訂單
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="w-full bg-primary text-white py-2 rounded hover:bg-third transition"
+                        >
+                            送出訂單
+                        </button>
+                    </form>
+                )}
             </div>
         </div>
     );

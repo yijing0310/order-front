@@ -7,6 +7,7 @@ export default function OrderSelect({
     templateData = [],
     setRefresh = () => {},
     refresh = false,
+    isEnd = false,
 }) {
     const [showModal, setShowModal] = useState(false);
     return (
@@ -80,6 +81,7 @@ export default function OrderSelect({
                 templateFields={templateData}
                 setRefresh={setRefresh}
                 refresh={refresh}
+                isEnd = {isEnd}
             />
         </>
     );

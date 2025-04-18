@@ -17,6 +17,7 @@ export default function GroupListPage() {
     const [templateData, setTemplateData] = useState([]);
     const [error, setError] = useState("");
     const [refresh, setRefresh] = useState(false);
+    const [isEnd, setIsEnd] = useState(false); // 是否截止
     const router = useRouter();
     const { group_uuid } = useParams();
 
@@ -69,6 +70,9 @@ export default function GroupListPage() {
                 }
                 const data = await res.json();
                 setAnnouncement(data?.data);
+                if(data?.data?.status == "closed"){
+                    setIsEnd(true)
+                }
             } catch (err) {
                 setError("連接揪團資訊時發生錯誤:", error);
             }
@@ -112,6 +116,7 @@ export default function GroupListPage() {
                         templateData={templateData}
                         setRefresh={setRefresh}
                         refresh={refresh}
+                        isEnd={isEnd}
                     />
                     <div className="mt-7 overflow-x-auto">
                         <GroupTable filteredList={filteredList} />
