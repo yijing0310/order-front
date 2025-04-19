@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { IoMdShare } from "react-icons/io";
-const ShareButton = () => {
+const ShareButton = ({ group_uuid = "" }) => {
+    const [copied, setCopied] = useState(false);
+    const handleShare = () => {
+        const url = `${window.location.origin}/join-group?group_id=${group_uuid}`;
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
     return (
         <StyledWrapper>
-            <button className="Btn">
+            <button className="Btn" onClick={handleShare}>
                 <span
                     className="svgIcon"
                     viewBox="0 0 384 512"
                     height="0.7em"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <IoMdShare/>
+                    <IoMdShare />
                 </span>
-                <span className="tooltip">Share</span>
+                <span className="tooltip">
+                    {copied ? "Copied" : "Share"}
+                </span>
             </button>
         </StyledWrapper>
     );
@@ -74,13 +83,11 @@ const StyledWrapper = styled.div`
         opacity: 1;
         transition-duration: 0.3s;
     }
-    
 
     .Btn:hover {
         background-color: #c39898;
         transition-duration: 0.3s;
     }
-
 
     .Btn:hover .svgIcon {
         fill: rgb(255, 255, 255);

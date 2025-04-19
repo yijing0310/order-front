@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-
 import {
     ORDER_LIST_GET,
     ORDER_TEMPLATE_GET,
@@ -124,6 +123,7 @@ export default function GroupListPage() {
         };
         html2pdf().set(opt).from(element).save();
     };
+    
 
     return (
         <>
@@ -190,7 +190,7 @@ export default function GroupListPage() {
                             </select>
                         </div>
                         <DownloadButton onClick={handleDownload} />
-                        <ShareButton />
+                        <ShareButton group_uuid={group_uuid}/>
                     </div>
                 </div>
                 <Total summary={summary} />

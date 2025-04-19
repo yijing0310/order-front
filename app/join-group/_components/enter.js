@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
@@ -12,6 +12,13 @@ export default function EnterGroup() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isloading, setIsloading] = useState(false);
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const groupIdFromUrl = params.get("group_id");
+        if (groupIdFromUrl) {
+            setGroupId(groupIdFromUrl);
+        }
+    }, []);
     const onSubmit = (e) => {
         e.preventDefault();
         if (!groupId.length) {
