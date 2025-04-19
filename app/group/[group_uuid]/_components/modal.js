@@ -5,6 +5,8 @@ import { addOrderSchema } from "@/utils/schema/addOrderSchema";
 import { ORDER_ADD_POST } from "@/config/api-path";
 import { useParams } from "next/navigation";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+
+
 export default function OrderModal({
     isOpen,
     onClose,
@@ -91,8 +93,7 @@ export default function OrderModal({
             setError(result.error);
             if (result.success) {
                 setRefresh(!refresh);
-                alert("訂購成功！");
-                onClose();
+                onClose()
                 handleClear();
             }
         } catch (ex) {
@@ -239,7 +240,7 @@ export default function OrderModal({
                                                 name="note"
                                                 className="w-full border rounded px-3 py-2 focus:ring-primary focus:border-transparent focus:outline-none focus:ring-2 transition-all"
                                                 rows={3}
-                                                value={formData.note || ""} 
+                                                value={formData.note || ""}
                                                 onChange={(e) =>
                                                     handleChange(
                                                         "note",
@@ -312,6 +313,7 @@ export default function OrderModal({
                     </form>
                 )}
             </div>
+            
         </div>
     );
 }

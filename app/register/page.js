@@ -9,6 +9,8 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { REGISTER_POST } from "@/config/api-path";
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Register() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +23,11 @@ export default function Register() {
         account: "",
         password: "",
         passwordCheck: "",
-      }
+    };
     const [registerForm, setRegisterForm] = useState(defaultRegisterForm);
-
+    const notify = () => {
+        toast.success("註冊成功 ! 準備前往登入頁");
+    };
     const changeRegisterForm = (e) => {
         const { name, value } = e.target;
         const newForm = { ...registerForm, [name]: value };
@@ -85,7 +89,11 @@ export default function Register() {
         setError(result.error);
         setTimeout(() => setIsSubmitting(false), 2000);
         if (result.success) {
-            alert("註冊成功");
+            notify();
+            setTimeout(() => {
+                router.push("/login");
+            }, 2000);
+
             setRegisterForm(defaultRegisterForm);
             setTimeout(() => setIsSubmitting(false), 2000);
         }
@@ -266,6 +274,18 @@ export default function Register() {
                 autoplay
                 style={{ width: "500px", height: "auto" }}
                 className="order-1"
+            />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
             />
         </div>
     );

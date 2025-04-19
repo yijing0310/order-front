@@ -7,7 +7,8 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Login() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -21,12 +22,15 @@ export default function Login() {
     const changeLoginForm = (e) => {
         setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     };
+    const notify = () => {
+        toast.success("登入成功 ! 準備前往首頁");
+    };
     const onSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         if (loginForm.password.length <= 0 && loginForm.account.length <= 0) {
             setError("⚠️ 帳號密碼不得為空");
-            setTimeout(() => setIsSubmitting(false), 2000);
+            setTimeout(() => setIsSubmitting(false), 3000);
             return;
         }
         const { success, error, code } = await login(
@@ -34,13 +38,11 @@ export default function Login() {
             loginForm.password
         );
         if (success) {
-            Swal.fire({
-                title: "登入成功",
-                showConfirmButton: false,
-                icon: "success",
-              });
+            notify();
             setError("");
-            router.push("/");
+            setTimeout(() => {
+                router.push("/");
+            }, 2000);
             setTimeout(() => setIsSubmitting(false), 2000);
         } else {
             if (code === 400) {
@@ -116,9 +118,7 @@ export default function Login() {
                     </button>
                 </div>
                 {/* ERROR */}
-                <div className="text-sm text-red-500 h-5">
-                    {error ? error : ""}
-                </div>
+                <div className="text-sm text-red-500 h-5">{error}</div>
 
                 {/* 登入按鈕 */}
                 <button
@@ -140,6 +140,18 @@ export default function Login() {
                     </Link>
                 </div>
             </form>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 }

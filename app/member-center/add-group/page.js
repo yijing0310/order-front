@@ -6,8 +6,9 @@ import { useAuth } from "@/context/auth.js";
 import { ADD_GROUP_POST } from "@/config/api-path";
 import { addGroupSchema } from "@/utils/schema/addGroupSchema";
 import { useRouter } from "next/navigation";
+
 export default function AddGroupPage() {
-    const router = useRouter()
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const defaultAddGroupForm = {
         title: "",
@@ -39,7 +40,7 @@ export default function AddGroupPage() {
         const localDate = new Date(now.getTime() - offset * 60000);
         return localDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
     }
-
+    
     const onSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -81,8 +82,7 @@ export default function AddGroupPage() {
         setError(result.error);
         setTimeout(() => setIsSubmitting(false), 2000);
         if (result.success) {
-            alert("新增成功");
-            router.push("/member-center")
+            router.push("/member-center");
             setAddGroupForm(defaultAddGroupForm);
             setTimeout(() => setIsSubmitting(false), 2000);
         }
