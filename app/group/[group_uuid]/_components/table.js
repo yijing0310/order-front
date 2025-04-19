@@ -1,6 +1,33 @@
 "use client";
-import moment from "moment";
-export default function GroupTable({ filteredList = [] }) {
+import { useEffect } from "react";
+import { TOGGLE_STATUS } from "@/config/api-path";
+export default function GroupTable({
+    filteredList = [],
+    setRefresh = () => {},
+}) {
+    const toggleStatus = async (orderId, status) => {
+        try {
+            const res = await fetch(TOGGLE_STATUS, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ order_id: orderId, status }),
+            });
+
+            if (!res.ok) {
+                throw new Error("更新狀態失敗");
+            }
+
+            const result = await res.json();
+            if (result.success) {
+                setRefresh((prev) => !prev);
+            } else {
+                console.error(result.error || "更新失敗");
+            }
+        } catch (err) {
+            console.error("請求錯誤:", err);
+        }
+    };
+
     return (
         <>
             <div className="w-full overflow-x-auto ">
@@ -34,7 +61,7 @@ export default function GroupTable({ filteredList = [] }) {
                                     <span className="md:hidden text-gray-500 font-medium">
                                         #{" "}
                                     </span>
-                                    {i+1}
+                                    {i + 1}
                                 </div>
                                 <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
@@ -70,11 +97,27 @@ export default function GroupTable({ filteredList = [] }) {
                                 </div>
                                 <div className="w-full md:w-[10%] pl-5 mt-2 md:mt-0">
                                     {list.status === "Paid" ? (
-                                        <span className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded">
+                                        <span
+                                            className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded cursor-pointer"
+                                            onClick={() => {
+                                                toggleStatus(
+                                                    list.id,
+                                                    list.status
+                                                );
+                                            }}
+                                        >
                                             已付款
                                         </span>
                                     ) : (
-                                        <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded">
+                                        <span
+                                            className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded cursor-pointer"
+                                            onClick={() => {
+                                                toggleStatus(
+                                                    list.id,
+                                                    list.status
+                                                );
+                                            }}
+                                        >
                                             未付款
                                         </span>
                                     )}

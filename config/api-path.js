@@ -17,3 +17,5 @@ export const ORDER_DETAIL_GET  = `${API_SERVER}/order/list/api`
 export const ORDER_TEMPLATE_GET  = `${API_SERVER}/order/templates/api`
 // 新增餐點
 export const ORDER_ADD_POST  = `${API_SERVER}/order/add/api`
+//  修改付款狀態
+export const TOGGLE_STATUS  = `${API_SERVER}/order/updatePaid/api`

@@ -176,11 +176,14 @@ export default function GroupListPage() {
                         isEnd={isEnd}
                     />
                     <div className="mt-7 overflow-x-auto" ref={pdfRef}>
-                        <GroupTable filteredList={filteredList} />
+                        <GroupTable
+                            filteredList={filteredList}
+                            setRefresh={setRefresh}
+                            refresh={refresh}
+                        />
                     </div>
                 </div>
             </div>
-            
         </>
     );
 }
