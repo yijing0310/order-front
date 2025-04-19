@@ -13,10 +13,10 @@ export default function Table({ filteredList = [] }) {
                     <div className="w-[15%] px-3">揪團名稱</div>
                     <div className="w-[13%] px-3">揪團代號</div>
                     <div className="w-[15%] px-3">餐廳名稱</div>
-                    <div className="w-[10%] px-3">揪團上限</div>
+                    <div className="w-[8%] px-3">上限</div>
                     <div className="w-[15%] px-3">結束時間</div>
-                    <div className="w-[8%] pl-5">狀態</div>
-                    <div className="w-[8%] pl-4">查看</div>
+                    <div className="w-[9%] pl-5">狀態</div>
+                    <div className="w-[9%] pl-4">查看</div>
                     <div className="w-[5%] pl-2">編輯</div>
                     <div className="w-[5%] px-2">刪除</div>
                 </div>
@@ -59,7 +59,7 @@ export default function Table({ filteredList = [] }) {
                                     </span>
                                     {list.restaurant}
                                 </div>
-                                <div className="w-full md:w-[10%] px-3">
+                                <div className="w-full md:w-[8%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         上限：
                                     </span>
@@ -73,7 +73,7 @@ export default function Table({ filteredList = [] }) {
                                         "YYYY/MM/DD HH:mm"
                                     )}
                                 </div>
-                                <div className="w-full md:w-[8%] pl-5 mt-2 md:mt-0">
+                                <div className="w-full md:w-[9%] pl-5 mt-2 md:mt-0">
                                     {list.status === "closed" ? (
                                         <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded">
                                             已截止
@@ -84,7 +84,7 @@ export default function Table({ filteredList = [] }) {
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[8%] pl-4 mt-2 md:mt-0">
+                                <div className="w-full md:w-[9%] pl-4 mt-2 md:mt-0">
                                     <Link href={`/group/${list.group_uuid}`}>
                                         <button className="text-xs text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
                                             view

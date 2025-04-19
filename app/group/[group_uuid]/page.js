@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-// import html2pdf from "html2pdf.js";
+
 import {
     ORDER_LIST_GET,
     ORDER_TEMPLATE_GET,
@@ -18,7 +18,7 @@ import { useRouter, useParams } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 export default function GroupListPage() {
-    const { auth, getAuthHeader } = useAuth();
+    const { auth, getAuthHeader, logout } = useAuth();
     const [listData, setListData] = useState([]);
     const [templateData, setTemplateData] = useState([]);
     const [error, setError] = useState("");
@@ -127,23 +127,46 @@ export default function GroupListPage() {
 
     return (
         <>
-            <div className="sm:px-6 w-full">
-                <div className="flex items-center gap-2">
-                    <Link
-                        href="/"
-                        className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
-                    >
-                        <FaHome /> &nbsp;&nbsp;{" "}
-                        <span className="mt-2 ">回到首頁</span>
-                    </Link>
+            <div className="sm:px-6 w-full ">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href="/"
+                            className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
+                        >
+                            <FaHome /> &nbsp;&nbsp;{" "}
+                            <span className="mt-2 ">回到首頁</span>
+                        </Link>
 
-                    <Link
-                        href="/join-group"
-                        className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
-                    >
-                        <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
-                        <span className="mt-2">其他揪團點餐</span>
-                    </Link>
+                        <Link
+                            href="/join-group"
+                            className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
+                        >
+                            <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
+                            <span className="mt-2">其他揪團點餐</span>
+                        </Link>
+                    </div>
+                    <div className="hidden lg:flex lg:flex-1 lg:justify-end  mt-2">
+                        {auth.id ? (
+                            <>
+                                <Link
+                                    href="/member-center"
+                                    className="text-sm font-semibold mr-4 mt-2 text-gray-700"
+                                >
+                                    H i ! {auth.name}
+                                </Link>
+                                <div
+                                    className="text-sm  cursor-pointer hover:text-primary mt-2"
+                                    onClick={logout}
+                                >
+                                    {" "}
+                                    登出{" "}
+                                </div>
+                            </>
+                        ) : (
+                            ""
+                        )}
+                    </div>
                 </div>
                 <Announcement announcement={announcement} />
 
