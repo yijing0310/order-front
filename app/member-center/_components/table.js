@@ -27,10 +27,10 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                     <div className="w-[7%] pl-2">編輯</div>
                 </div>
                 {/* 內容 */}
-                <div className="max-h-[400px] overflow-y-auto min-w-[800px] ">
+                <div className="max-h-[400px] overflow-y-auto ">
                     {filteredList?.length <= 0 ? (
                         <>
-                            <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 min-w-[800px]">
+                            <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 ">
                                 空空的，快來揪團吧
                             </div>
                         </>
@@ -39,7 +39,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                             <div
                                 key={list.id || i}
                                 tabIndex={0}
-                                className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 min-w-[800px]"
+                                className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 "
                             >
                                 <div className="w-full md:w-[5%] px-2">
                                     <span className="md:hidden text-gray-500 font-medium">

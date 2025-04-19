@@ -3,6 +3,7 @@ import React from "react";
 import { IoMdReorder } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
@@ -29,7 +30,7 @@ export default function SideBar() {
                     </Link>
 
                     {/* 選單列表 */}
-                    <ul className="mt-8 w-full flex flex-col gap-2">
+                    <ul className="mt-8 w-full flex flex-col gap-2 min-h-80">
                         <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
                             <Link
                                 href="/member-center "
@@ -44,6 +45,14 @@ export default function SideBar() {
                                 className="flex items-center justify-center"
                             >
                                 <FaPlus /> &nbsp;&nbsp;新增揪團
+                            </Link>
+                        </li>
+                        <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
+                            <Link
+                                href="/member-center/add-group "
+                                className="flex items-center justify-center"
+                            >
+                                <IoSettingsOutline /> &nbsp;&nbsp;我的資料
                             </Link>
                         </li>
                     </ul>
