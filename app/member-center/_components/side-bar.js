@@ -5,10 +5,11 @@ import { FaPlus } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/context/auth.js";
-
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function SideBar() {
     const { auth, logout } = useAuth();
+    const router = useRouter()
     return (
         <aside
             id="logo-sidebar"
@@ -58,9 +59,9 @@ export default function SideBar() {
 
                     <div
                         onClick={logout}
-                        className="flex items-center justify-center w-10 h-10 bg-lightSec  rounded-full hover:scale-110 transition duration-200"
+                        className="flex items-center justify-center w-10 h-10 bg-lightSec  rounded-full hover:scale-110 transition duration-200 cursor-pointer"
                     >
-                        <MdLogout size={18} />
+                        <MdLogout size={18} onClick={() => {router.push("/")}}/>
                     </div>
                 </div>
             </div>
