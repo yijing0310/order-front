@@ -12,6 +12,7 @@ export default function MemberCenterPage() {
     const [error, setError] = useState("");
     const router = useRouter();
     const [filterStatus, setFilterStatus] = useState("all");
+    const [refresh, setRefresh] = useState(false);
     useEffect(() => {
         // if (!auth.id) {
         //     router.push("/");
@@ -31,12 +32,12 @@ export default function MemberCenterPage() {
             }
         };
         getFetchGroup();
-    }, [auth, getAuthHeader]);
+    }, [auth, getAuthHeader,refresh]);
     const filteredList = listData?.data?.filter((item) => {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;
     });
-    
+
     return (
         <>
             <div className="sm:px-6 w-10/12">
@@ -67,13 +68,13 @@ export default function MemberCenterPage() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-7">
                     <Select
                         setFilterStatus={setFilterStatus}
                         filterStatus={filterStatus}
                     />
-                    <div className="mt-7 overflow-x-auto">
-                        <Table filteredList={filteredList}/>
+                    <div className="mt-7 overflow-x-auto ">
+                        <Table filteredList={filteredList} setRefresh={setRefresh}/>
                     </div>
                 </div>
             </div>
