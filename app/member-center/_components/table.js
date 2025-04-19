@@ -2,7 +2,6 @@
 import { useState } from "react";
 import moment from "moment";
 import Link from "next/link";
-import { FaTrashCan } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import EditModal from "./modal";
 export default function Table({ filteredList = [], setRefresh = () => {} }) {

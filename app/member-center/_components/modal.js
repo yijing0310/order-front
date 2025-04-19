@@ -5,6 +5,8 @@ import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useAuth } from "@/context/auth.js";
 import { addGroupSchema } from "@/utils/schema/addGroupSchema";
+import { FaTrashCan } from "react-icons/fa6";
+
 export default function EditModal({
     isOpen,
     onClose,
@@ -148,7 +150,14 @@ export default function EditModal({
                 </button>
                 <h2 className="text-xl font-semibold mb-6 flex justify-start items-center">
                     <MdOutlineRestaurantMenu />
-                    &nbsp;{editData.title}
+                    &nbsp;{editData.title}{" "}
+                    <button
+                        // onClick={handleDelete}
+                        title="刪除揪團"
+                        className="text-red-500 hover:text-red-700 transition-colors p-2 rounded-md hover:bg-red-100 ml-3"
+                    >
+                        <FaTrashCan className="text-lg" />
+                    </button>
                 </h2>
                 <form className="space-y-4" onSubmit={onSubmit}>
                     {/* 餐廳名稱 */}
