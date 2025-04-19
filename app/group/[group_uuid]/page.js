@@ -10,6 +10,8 @@ import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import Announcement from "./_components/announcement";
 import Total from "./_components/total";
+import DownloadButton from "./_components/download";
+import ShareButton from "./_components/share";
 import { useAuth } from "@/context/auth.js";
 import { useRouter, useParams } from "next/navigation";
 import { FaHome } from "react-icons/fa";
@@ -124,7 +126,7 @@ export default function GroupListPage() {
                 </div>
                 <Announcement announcement={announcement} />
 
-                <div className="px-4 md:px-10 py-4 md:py-3">
+                <div className="px-4 md:px-8 py-4 md:py-3">
                     <div className="flex items-center justify-end">
                         <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
                             <p>Sort By:</p>
@@ -143,6 +145,8 @@ export default function GroupListPage() {
                                 </option>
                             </select>
                         </div>
+                        <DownloadButton/>
+                        <ShareButton/>
                     </div>
                 </div>
                 <Total summary={summary} />
