@@ -97,13 +97,18 @@ export default function GroupListPage() {
             (acc, pre) => {
                 acc.totalQty += pre.quantity;
                 acc.totalPrice += pre.quantity * pre.price;
+                if (pre.status === "Paid") {
+                    acc.paid += pre.quantity * pre.price;
+                } else {
+                    acc.unpaid += pre.quantity * pre.price;
+                }
                 return acc;
             },
-            { totalQty: 0, totalPrice: 0 }
+            { totalQty: 0, totalPrice: 0, paid: 0, unpaid: 0 }
         );
         return summary;
     };
-    const summary = getTotalSummary(filteredList);
+    const summary = getTotalSummary(listData?.data);
     // 下載內容
     const pdfRef = useRef();
 

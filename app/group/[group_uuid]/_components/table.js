@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { TOGGLE_STATUS } from "@/config/api-path";
 export default function GroupTable({
     filteredList = [],
@@ -133,6 +132,35 @@ export default function GroupTable({
                     )}
                 </div>
             </div>
+            {/* 統計資料區塊 */}
+            {filteredList.length > 0 && (
+                <div className="flex flex-col items-end mt-4 gap-2 text-sm text-gray-800 px-2 md:px-6">
+                    <div className="bg-white  px-4 py-1  flex items-center gap-2">
+                        <span className="text-gray-600">總件數：</span>
+                        <span className="font-semibold">
+                            {filteredList.reduce(
+                                (acc, pre) => acc + pre.quantity,
+                                0
+                            )}{" "}
+                            件
+                        </span>
+                    </div>
+                    <div className="bg-white px-4 py-1 flex items-center gap-2">
+                        <span className="text-gray-600">總金額：</span>
+                        <span className="font-semibold ">
+                            NT${" "}
+                            {filteredList
+                                .reduce(
+                                    (acc, pre) =>
+                                        acc +
+                                        pre.quantity * parseInt(pre.price, 10),
+                                    0
+                                )
+                                .toLocaleString()}
+                        </span>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
