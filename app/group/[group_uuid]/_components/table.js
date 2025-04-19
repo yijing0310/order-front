@@ -7,7 +7,7 @@ export default function GroupTable({ filteredList = [] }) {
                 {/* 表頭 */}
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
-                    <div className="w-[20%] px-3">項目</div>
+                    <div className="w-[15%] px-3">項目</div>
                     <div className="w-[10%] px-3">金額</div>
                     <div className="w-[10%] px-3">數量</div>
                     <div className="w-[15%] px-3">訂購人</div>
@@ -36,7 +36,7 @@ export default function GroupTable({ filteredList = [] }) {
                                     </span>
                                     {i+1}
                                 </div>
-                                <div className="w-full md:w-[20%] px-3">
+                                <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         項目：
                                     </span>

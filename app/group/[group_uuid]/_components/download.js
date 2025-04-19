@@ -1,10 +1,11 @@
+"use client"
 import React from "react";
 import styled from "styled-components";
 
-const DownloadButton = () => {
+const DownloadButton = ({onClick}) => {
     return (
         <StyledWrapper>
-            <button className="Btn">
+            <button className="Btn" onClick={onClick}>
                 <svg
                     className="svgIcon"
                     viewBox="0 0 384 512"

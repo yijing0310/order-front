@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+// import html2pdf from "html2pdf.js";
 import {
     ORDER_LIST_GET,
     ORDER_TEMPLATE_GET,
@@ -88,6 +89,7 @@ export default function GroupListPage() {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;
     });
+    // 獲取總額總數量
     const getTotalSummary = (data) => {
         if (!data || !Array.isArray(data))
             return { totalQty: 0, totalPrice: 0 };
@@ -101,8 +103,22 @@ export default function GroupListPage() {
         );
         return summary;
     };
-
     const summary = getTotalSummary(filteredList);
+    // 下載內容
+    const pdfRef = useRef();
+
+    const handleDownload = async () => {
+        const html2pdf = (await import("html2pdf.js")).default;
+        const element = pdfRef.current;
+        const opt = {
+            margin: 0.4,
+            filename: `${announcement.title}.pdf`,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        };
+        html2pdf().set(opt).from(element).save();
+    };
 
     return (
         <>
@@ -115,7 +131,7 @@ export default function GroupListPage() {
                         <FaHome /> &nbsp;&nbsp;{" "}
                         <span className="mt-2 ">回到首頁</span>
                     </Link>
-                    
+
                     <Link
                         href="/join-group"
                         className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
@@ -145,8 +161,8 @@ export default function GroupListPage() {
                                 </option>
                             </select>
                         </div>
-                        <DownloadButton/>
-                        <ShareButton/>
+                        <DownloadButton onClick={handleDownload} />
+                        <ShareButton />
                     </div>
                 </div>
                 <Total summary={summary} />
@@ -159,11 +175,12 @@ export default function GroupListPage() {
                         refresh={refresh}
                         isEnd={isEnd}
                     />
-                    <div className="mt-7 overflow-x-auto">
+                    <div className="mt-7 overflow-x-auto" ref={pdfRef}>
                         <GroupTable filteredList={filteredList} />
                     </div>
                 </div>
             </div>
+            
         </>
     );
 }
