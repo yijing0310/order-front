@@ -74,6 +74,11 @@ export default function GroupListPage() {
                     throw new Error("連接揪團資訊失敗");
                 }
                 const data = await res.json();
+                setError(data.error);
+                if (data.error == "查無此揪團") {
+                    router.push("/join-group");
+                }
+
                 setAnnouncement(data?.data);
                 if (data?.data?.status == "closed") {
                     setIsEnd(true);
@@ -123,95 +128,98 @@ export default function GroupListPage() {
         };
         html2pdf().set(opt).from(element).save();
     };
-    
 
     return (
         <>
-            <div className="sm:px-6 w-full ">
-                <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                        <Link
-                            href="/"
-                            className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
-                        >
-                            <FaHome /> &nbsp;&nbsp;{" "}
-                            <span className="mt-2 ">回到首頁</span>
-                        </Link>
-
-                        <Link
-                            href="/join-group"
-                            className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
-                        >
-                            <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
-                            <span className="mt-2">其他揪團點餐</span>
-                        </Link>
-                    </div>
-                    <div className="hidden lg:flex lg:flex-1 lg:justify-end  mt-2">
-                        {auth.id ? (
-                            <>
-                                <Link
-                                    href="/member-center"
-                                    className="text-sm font-semibold mr-4 mt-2 text-gray-700"
-                                >
-                                    H i ! {auth.name}
-                                </Link>
-                                <div
-                                    className="text-sm  cursor-pointer hover:text-primary mt-2"
-                                    onClick={logout}
-                                >
-                                    {" "}
-                                    登出{" "}
-                                </div>
-                            </>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                </div>
-                <Announcement announcement={announcement} />
-
-                <div className="px-4 md:px-8 py-4 md:py-3">
-                    <div className="flex items-center justify-end">
-                        <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-                            <p>Sort By:</p>
-                            <select
-                                aria-label="select"
-                                className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+            {error !== "查無此揪團" ? (
+                <div className="sm:px-6 w-full ">
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                            <Link
+                                href="/"
+                                className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
                             >
-                                <option className="text-sm text-indigo-800">
-                                    Latest
-                                </option>
-                                <option className="text-sm text-indigo-800">
-                                    Oldest
-                                </option>
-                                <option className="text-sm text-indigo-800">
-                                    Latest
-                                </option>
-                            </select>
+                                <FaHome /> &nbsp;&nbsp;{" "}
+                                <span className="mt-2 ">回到首頁</span>
+                            </Link>
+
+                            <Link
+                                href="/join-group"
+                                className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
+                            >
+                                <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
+                                <span className="mt-2">其他揪團點餐</span>
+                            </Link>
                         </div>
-                        <DownloadButton onClick={handleDownload} />
-                        <ShareButton group_uuid={group_uuid}/>
+                        <div className="hidden lg:flex lg:flex-1 lg:justify-end  mt-2">
+                            {auth.id ? (
+                                <>
+                                    <Link
+                                        href="/member-center"
+                                        className="text-sm font-semibold mr-4 mt-2 text-gray-700"
+                                    >
+                                        H i ! {auth.name}
+                                    </Link>
+                                    <div
+                                        className="text-sm  cursor-pointer hover:text-primary mt-2"
+                                        onClick={logout}
+                                    >
+                                        {" "}
+                                        登出{" "}
+                                    </div>
+                                </>
+                            ) : (
+                                ""
+                            )}
+                        </div>
                     </div>
-                </div>
-                <Total summary={summary} />
-                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
-                    <OrderSelect
-                        setFilterStatus={setFilterStatus}
-                        filterStatus={filterStatus}
-                        templateData={templateData}
-                        setRefresh={setRefresh}
-                        refresh={refresh}
-                        isEnd={isEnd}
-                    />
-                    <div className="mt-7 overflow-x-auto" ref={pdfRef}>
-                        <GroupTable
-                            filteredList={filteredList}
+                    <Announcement announcement={announcement} />
+
+                    <div className="px-4 md:px-8 py-4 md:py-3">
+                        <div className="flex items-center justify-end">
+                            <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+                                <p>Sort By:</p>
+                                <select
+                                    aria-label="select"
+                                    className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+                                >
+                                    <option className="text-sm text-indigo-800">
+                                        Latest
+                                    </option>
+                                    <option className="text-sm text-indigo-800">
+                                        Oldest
+                                    </option>
+                                    <option className="text-sm text-indigo-800">
+                                        Latest
+                                    </option>
+                                </select>
+                            </div>
+                            <DownloadButton onClick={handleDownload} />
+                            <ShareButton group_uuid={group_uuid} />
+                        </div>
+                    </div>
+                    <Total summary={summary} />
+                    <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
+                        <OrderSelect
+                            setFilterStatus={setFilterStatus}
+                            filterStatus={filterStatus}
+                            templateData={templateData}
                             setRefresh={setRefresh}
                             refresh={refresh}
+                            isEnd={isEnd}
                         />
+                        <div className="mt-7 overflow-x-auto" ref={pdfRef}>
+                            <GroupTable
+                                filteredList={filteredList}
+                                setRefresh={setRefresh}
+                                refresh={refresh}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className="sm:px-6 w-full ">沒有資料</div>
+            )}
         </>
     );
 }
