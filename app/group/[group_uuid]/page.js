@@ -13,6 +13,8 @@ import Announcement from "./_components/announcement";
 import Total from "./_components/total";
 import DownloadButton from "./_components/download";
 import ShareButton from "./_components/share";
+import Search from "./_components/search";
+import Sort from "./_components/sort";
 import { useAuth } from "@/context/auth.js";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
@@ -29,6 +31,7 @@ export default function GroupListPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState("all");
     const [announcement, setAnnouncement] = useState();
+    const [isSearch, setIsSearch] = useState(""); // 搜尋
     useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
@@ -93,10 +96,18 @@ export default function GroupListPage() {
         getFetchOrderList();
     }, [refresh]);
 
-    const filteredList = listData?.data?.filter((item) => {
-        if (filterStatus === "all") return true;
-        return item.status === filterStatus;
-    });
+    const filteredList = listData?.data
+        ?.filter((item) => {
+            if (filterStatus === "all") return true;
+            return item.status === filterStatus;
+        })
+        ?.filter((item) => {
+            const keyword = isSearch.toLowerCase();
+            return (
+                item.name?.toLowerCase().includes(keyword) ||
+                item.item_name?.toLowerCase().includes(keyword)
+            );
+        });
     // 獲取總額總數量
     const getTotalSummary = (data) => {
         if (!data || !Array.isArray(data))
@@ -136,7 +147,9 @@ export default function GroupListPage() {
     return (
         <>
             {isLoading ? (
-                <div className="text-center mt-10"><Loader/></div>
+                <div className="text-center mt-10">
+                    <Loader />
+                </div>
             ) : error === "查無此揪團" ? (
                 <div className="sm:px-6 w-full ">沒有資料</div>
             ) : (
@@ -184,26 +197,15 @@ export default function GroupListPage() {
                     <Announcement announcement={announcement} />
 
                     <div className="px-4 md:px-8 py-4 md:py-3">
-                        <div className="flex items-center justify-end">
-                            <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-                                <p>Sort By:</p>
-                                <select
-                                    aria-label="select"
-                                    className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-                                >
-                                    <option className="text-sm text-indigo-800">
-                                        Latest
-                                    </option>
-                                    <option className="text-sm text-indigo-800">
-                                        Oldest
-                                    </option>
-                                    <option className="text-sm text-indigo-800">
-                                        Latest
-                                    </option>
-                                </select>
+                        <div className="flex flex-col md:flex-row  items-end sm:items-center justify-end">
+                            <div className="flex items-center justify-end -order-first sm:order-1 mt-3 sm:mt-0">
+                                <Search onSearch={setIsSearch} />
                             </div>
-                            <DownloadButton onClick={handleDownload} />
-                            <ShareButton group_uuid={group_uuid} />
+                            <div className="flex items-center justify-end -order-last sm:order-1">
+                                <Sort />
+                                <DownloadButton onClick={handleDownload} />
+                                <ShareButton group_uuid={group_uuid} />
+                            </div>
                         </div>
                     </div>
                     <Total summary={summary} />

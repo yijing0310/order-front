@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Total({ summary = {} }) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:my-6 mb-4 mt-2">
             {/* 總數量 */}
             <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow">
                 <h3 className="text-gray-600 text-sm font-medium mb-1">
