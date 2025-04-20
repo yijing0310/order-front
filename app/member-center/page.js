@@ -40,7 +40,7 @@ export default function MemberCenterPage() {
 
     return (
         <>
-            <div className="sm:px-6 w-10/12">
+            <div className="sm:px-6 w-full">
                 <div className="px-4 md:px-10 py-4 md:py-7">
                     <div className="flex items-center justify-between">
                         <p

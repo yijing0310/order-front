@@ -1,13 +1,11 @@
-import SideBar from "./_components/side-bar";
+import SidebarWrapper from "./_components/sidebarWrapper";
 
 export default function RootLayout({ children }) {
     return (
         <>
             <div className="flex">
-                <div className="w-48">
-                    <SideBar />
-                </div>
-                {children}
+                <SidebarWrapper />
+                <main className="w-full lg:ml-[16.666%] lg:mt-0 mt-10">{children}</main>
             </div>
         </>
     );
