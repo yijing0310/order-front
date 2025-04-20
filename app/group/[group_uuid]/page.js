@@ -197,11 +197,11 @@ export default function GroupListPage() {
                     <Announcement announcement={announcement} />
 
                     <div className="px-4 md:px-8 py-4 md:py-3">
-                        <div className="flex flex-col md:flex-row  items-end sm:items-center justify-end">
-                            <div className="flex items-center justify-end -order-first sm:order-1 mt-3 sm:mt-0">
+                        <div className="flex flex-col md:flex-row  items-end md:items-center justify-end">
+                            <div className="flex items-center justify-end -order-first md:order-1 mt-3 md:mt-0">
                                 <Search onSearch={setIsSearch} />
                             </div>
-                            <div className="flex items-center justify-end -order-last sm:order-1">
+                            <div className="flex items-center justify-end -order-last md:order-1">
                                 <Sort />
                                 <DownloadButton onClick={handleDownload} />
                                 <ShareButton group_uuid={group_uuid} />
@@ -218,7 +218,7 @@ export default function GroupListPage() {
                             refresh={refresh}
                             isEnd={isEnd}
                         />
-                        <div className="mt-7 overflow-x-auto" ref={pdfRef}>
+                        <div className="mt-7" ref={pdfRef}>
                             <GroupTable
                                 filteredList={filteredList}
                                 setRefresh={setRefresh}

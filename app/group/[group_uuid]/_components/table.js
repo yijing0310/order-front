@@ -79,9 +79,9 @@ export default function GroupTable({
     };
     return (
         <>
-            <div className="w-full overflow-x-auto ">
+            <div className="w-full overflow-x-auto min-w-[800px]">
                 {/* 表頭 */}
-                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
+                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3">
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">品項</div>
                     <div className="w-[10%] px-3">金額</div>
@@ -93,10 +93,10 @@ export default function GroupTable({
                     <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
-                <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
+                <div className="max-h-[400px] overflow-y-auto">
                     {filteredList?.length <= 0 ? (
                         <>
-                            <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 min-w-[800px]">
+                            <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 ">
                                 空空的，快來點餐吧
                             </div>
                         </>
@@ -104,7 +104,7 @@ export default function GroupTable({
                         filteredList?.map((list, i) => (
                             <div
                                 tabIndex={0}
-                                className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 min-w-[800px]"
+                                className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 "
                                 key={list.id}
                             >
                                 <div className="w-full md:w-[5%] px-2">
@@ -145,7 +145,10 @@ export default function GroupTable({
                                     {parseInt(list.quantity) *
                                         parseInt(list.price, 10)}
                                 </div>
-                                <div className="w-full md:w-[10%] pl-5 mt-2 md:mt-0">
+                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        狀態：
+                                    </span>
                                     {list.status === "Paid" ? (
                                         <span
                                             className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded cursor-pointer"
@@ -172,13 +175,13 @@ export default function GroupTable({
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[15%] pl-4 mt-2 md:mt-0">
+                                <div className="w-full md:w-[15%] md:pl-4 mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         備註：
                                     </span>
                                     {list.note}
                                 </div>
-                                <div className="w-full md:w-[8%] pl-4 mt-2 md:mt-0 ml-2">
+                                <div className="w-full md:w-[8%] md:pl-4 mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         刪除：
                                     </span>

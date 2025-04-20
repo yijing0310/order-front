@@ -13,9 +13,9 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
     };
     return (
         <>
-            <div className="w-full overflow-x-auto ">
+            <div className="w-full overflow-x-auto  min-w-[800px]">
                 {/* 表頭 */}
-                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
+                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3">
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">揪團名稱</div>
                     <div className="w-[13%] px-3">揪團代號</div>
@@ -79,7 +79,10 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                         "YYYY/MM/DD HH:mm"
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] pl-5 mt-2 md:mt-0">
+                                <div className="w-full md:w-[10%] md:pl-5 mt-2 md:mt-0 px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        狀態：
+                                    </span>
                                     {list.status === "closed" ? (
                                         <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded">
                                             已截止
@@ -90,7 +93,10 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] pl-4 mt-2 md:mt-0">
+                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        查看：
+                                    </span>
                                     <Link href={`/group/${list.group_uuid}`}>
                                         <button className="text-xs text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
                                             view
@@ -98,7 +104,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     </Link>
                                 </div>
                                 <div
-                                    className="w-full md:w-[7%] px-3 cursor-pointer"
+                                    className="w-full md:w-[7%] px-3 cursor-pointer flex md:block items-center"
                                     onClick={() => {
                                         editInfo(list);
                                     }}
