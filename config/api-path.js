@@ -11,6 +11,8 @@ export const ADD_GROUP_POST = `${API_SERVER}/group/add/api`
 export const JOIN_GROUP_POST  = `${API_SERVER}/group/join/api`
 // 刪除揪團
 export const DELETE_GROUP_POST  = `${API_SERVER}/group/delete/api`
+// 編輯揪團
+export const EDIT_GROUP_POST  = `${API_SERVER}/group/edit/api`
 // 獲取該團點餐總覽
 export const ORDER_LIST_GET  = `${API_SERVER}/order/api`
 // 獲取該團詳細資訊

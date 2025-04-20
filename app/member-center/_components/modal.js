@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ORDER_EDIT_POST, DELETE_GROUP_POST } from "@/config/api-path";
+import { EDIT_GROUP_POST, DELETE_GROUP_POST } from "@/config/api-path";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useAuth } from "@/context/auth.js";
-import { addGroupSchema } from "@/utils/schema/addGroupSchema";
+import { editGroupSchema } from "@/utils/schema/editGroupSchema.js";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
 export default function EditModal({
@@ -89,7 +89,7 @@ export default function EditModal({
     }
     const onSubmit = async (e) => {
         e.preventDefault();
-        const zResult = addGroupSchema.safeParse(editGroupForm);
+        const zResult = editGroupSchema.safeParse(editGroupForm);
         if (isExpired) return;
         if (!zResult.success) {
             const newError = {
@@ -115,21 +115,35 @@ export default function EditModal({
             setError(newError);
             return;
         }
-        const r = await fetch(ORDER_EDIT_POST, {
+        const r = await fetch(EDIT_GROUP_POST, {
             method: "POST",
             body: JSON.stringify(editGroupForm),
             headers: {
                 "Content-Type": "application/json",
-                ...getAuthHeader(),
             },
         });
+        if (!r.ok) {
+            throw new Error("fail to edit");
+        }
         const result = await r.json();
-        console.log(result);
         setError(result.error);
         if (result.success) {
-            setRefresh((pre) => !pre);
-            onClose();
-            setEditGroupForm(defaultAddGroupForm);
+            Swal.fire({
+                title: "編輯成功",
+                // text: "該揪團已成功刪除",
+                icon: "success",
+                confirmButtonColor: "#DBB5B5",
+            }).then(() => {
+                onClose();
+                setEditGroupForm(defaultAddGroupForm);
+            });
+            setRefresh?.((prev) => !prev);
+        } else {
+            Swal.fire({
+                title: "編輯失敗",
+                text: data.error || "請稍後再試",
+                icon: "error",
+            });
         }
     };
 
