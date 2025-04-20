@@ -130,7 +130,6 @@ export default function EditModal({
         if (result.success) {
             Swal.fire({
                 title: "編輯成功",
-                // text: "該揪團已成功刪除",
                 icon: "success",
                 confirmButtonColor: "#DBB5B5",
             }).then(() => {

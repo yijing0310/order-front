@@ -6,6 +6,7 @@ import {
     ORDER_DETAIL_GET,
 } from "@/config/api-path";
 import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import Announcement from "./_components/announcement";
@@ -13,9 +14,9 @@ import Total from "./_components/total";
 import DownloadButton from "./_components/download";
 import ShareButton from "./_components/share";
 import { useAuth } from "@/context/auth.js";
-import { useRouter, useParams } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
     const { auth, getAuthHeader, logout } = useAuth();
     const [listData, setListData] = useState([]);
@@ -25,7 +26,7 @@ export default function GroupListPage() {
     const [isEnd, setIsEnd] = useState(false); // 是否截止
     const router = useRouter();
     const { group_uuid } = useParams();
-
+    const [isLoading, setIsLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState("all");
     const [announcement, setAnnouncement] = useState();
     useEffect(() => {
@@ -47,6 +48,7 @@ export default function GroupListPage() {
         getFetchOrderTemplate();
         // 取得揪團詳細資訊
         const getFetchGroupInfo = async () => {
+            setIsLoading(true);
             try {
                 const res = await fetch(
                     `${ORDER_DETAIL_GET}?group_uuid=${group_uuid}`
@@ -66,6 +68,8 @@ export default function GroupListPage() {
                 }
             } catch (err) {
                 setError("連接揪團資訊時發生錯誤:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         getFetchGroupInfo();
@@ -131,7 +135,11 @@ export default function GroupListPage() {
 
     return (
         <>
-            {error !== "查無此揪團" ? (
+            {isLoading ? (
+                <div className="text-center mt-10"><Loader/></div>
+            ) : error === "查無此揪團" ? (
+                <div className="sm:px-6 w-full ">沒有資料</div>
+            ) : (
                 <div className="sm:px-6 w-full ">
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
@@ -217,8 +225,6 @@ export default function GroupListPage() {
                         </div>
                     </div>
                 </div>
-            ) : (
-                <div className="sm:px-6 w-full ">沒有資料</div>
             )}
         </>
     );
