@@ -23,4 +23,6 @@ export const ORDER_TEMPLATE_GET  = `${API_SERVER}/order/templates/api`
 export const ORDER_ADD_POST  = `${API_SERVER}/order/add/api`
 //  修改付款狀態
 export const TOGGLE_STATUS  = `${API_SERVER}/order/updatePaid/api`
+// 刪除指定餐點
+export const DELETE_ORDER  = `${API_SERVER}/order/delete/api`
 

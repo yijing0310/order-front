@@ -1,5 +1,9 @@
 "use client";
 import { TOGGLE_STATUS } from "@/config/api-path";
+import { DELETE_ORDER } from "@/config/api-path";
+import { FaTrashCan } from "react-icons/fa6";
+import Swal from "sweetalert2";
+
 export default function GroupTable({
     filteredList = [],
     setRefresh = () => {},
@@ -27,6 +31,52 @@ export default function GroupTable({
         }
     };
 
+    const handleDelete = async (orderId) => {
+        Swal.fire({
+            title: "確定要刪除此筆資料嗎?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "刪除",
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DBB5B5",
+            reverseButtons: true,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(DELETE_ORDER, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ order_id: orderId }),
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        Swal.fire({
+                            title: "刪除成功",
+                            icon: "success",
+                            confirmButtonColor: "#DBB5B5",
+                        });
+                        setRefresh?.((prev) => !prev);
+                    } else {
+                        Swal.fire({
+                            title: "刪除失敗",
+                            text: data.error || "請稍後再試",
+                            icon: "error",
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: "發生錯誤",
+                        text: err.message || "無法連接伺服器",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
     return (
         <>
             <div className="w-full overflow-x-auto ">
@@ -40,6 +90,7 @@ export default function GroupTable({
                     <div className="w-[10%] px-3">總額</div>
                     <div className="w-[10%] pl-5">狀態</div>
                     <div className="w-[15%] pl-4">備註</div>
+                    <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
                 <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
@@ -126,6 +177,20 @@ export default function GroupTable({
                                         備註：
                                     </span>
                                     {list.note}
+                                </div>
+                                <div className="w-full md:w-[8%] pl-4 mt-2 md:mt-0 ml-2">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        刪除：
+                                    </span>
+                                    <button
+                                        onClick={() => {
+                                            handleDelete(list.id);
+                                        }}
+                                        title="刪除此筆資料"
+                                        className="hover:text-red-700 transition-colors"
+                                    >
+                                        <FaTrashCan className="text-lg" />
+                                    </button>
                                 </div>
                             </div>
                         ))

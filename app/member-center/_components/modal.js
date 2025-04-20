@@ -63,7 +63,6 @@ export default function EditModal({
             });
         }
     }, [editData]);
-    const { auth, getAuthHeader } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [editGroupForm, setEditGroupForm] = useState(defaultAddGroupForm);
