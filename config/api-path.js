@@ -9,6 +9,8 @@ export const GROUP_GET = `${API_SERVER}/group/api`
 export const ADD_GROUP_POST = `${API_SERVER}/group/add/api`
 // 加入揪團
 export const JOIN_GROUP_POST  = `${API_SERVER}/group/join/api`
+// 刪除揪團
+export const DELETE_GROUP_POST  = `${API_SERVER}/group/delete/api`
 // 獲取該團點餐總覽
 export const ORDER_LIST_GET  = `${API_SERVER}/order/api`
 // 獲取該團詳細資訊
@@ -19,3 +21,4 @@ export const ORDER_TEMPLATE_GET  = `${API_SERVER}/order/templates/api`
 export const ORDER_ADD_POST  = `${API_SERVER}/order/add/api`
 //  修改付款狀態
 export const TOGGLE_STATUS  = `${API_SERVER}/order/updatePaid/api`
+

@@ -28,25 +28,6 @@ export default function GroupListPage() {
 
     const [filterStatus, setFilterStatus] = useState("all");
     const [announcement, setAnnouncement] = useState();
-
-    useEffect(() => {
-        // 取得訂餐列表
-        const getFetchOrderList = async () => {
-            try {
-                const res = await fetch(
-                    `${ORDER_LIST_GET}?group_uuid=${group_uuid}`
-                );
-                if (!res.ok) {
-                    throw new Error("取得訂餐列表請求失敗");
-                }
-                const data = await res.json();
-                setListData(data);
-            } catch (err) {
-                setError("取得訂餐列表發送請求時發生錯誤:", error);
-            }
-        };
-        getFetchOrderList();
-    }, [refresh]);
     useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
@@ -89,6 +70,25 @@ export default function GroupListPage() {
         };
         getFetchGroupInfo();
     }, []);
+    useEffect(() => {
+        // 取得訂餐列表
+        const getFetchOrderList = async () => {
+            try {
+                const res = await fetch(
+                    `${ORDER_LIST_GET}?group_uuid=${group_uuid}`
+                );
+                if (!res.ok) {
+                    throw new Error("取得訂餐列表請求失敗");
+                }
+                const data = await res.json();
+                setListData(data);
+            } catch (err) {
+                setError("取得訂餐列表發送請求時發生錯誤:", error);
+            }
+        };
+        getFetchOrderList();
+    }, [refresh]);
+
     const filteredList = listData?.data?.filter((item) => {
         if (filterStatus === "all") return true;
         return item.status === filterStatus;

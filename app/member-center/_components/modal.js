@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ORDER_EDIT_POST } from "@/config/api-path";
+import { ORDER_EDIT_POST, DELETE_GROUP_POST } from "@/config/api-path";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useAuth } from "@/context/auth.js";
 import { addGroupSchema } from "@/utils/schema/addGroupSchema";
 import { FaTrashCan } from "react-icons/fa6";
-
+import Swal from "sweetalert2";
 export default function EditModal({
     isOpen,
     onClose,
@@ -133,6 +133,58 @@ export default function EditModal({
         }
     };
 
+    // 刪除
+    const handleDelete = async (group_uuid) => {
+        Swal.fire({
+            title: "確定要刪除此揪團嗎?",
+            text: "刪除後無法復原",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "刪除",
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DBB5B5",
+            reverseButtons: true,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(DELETE_GROUP_POST, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ group_uuid }),
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        Swal.fire({
+                            title: "刪除成功",
+                            text: "該揪團已成功刪除",
+                            icon: "success",
+                            confirmButtonColor: "#DBB5B5",
+                        }).then(() => {
+                            onClose();
+                        });
+                        setRefresh?.((prev) => !prev);
+                    } else {
+                        Swal.fire({
+                            title: "刪除失敗",
+                            text: data.error || "請稍後再試",
+                            icon: "error",
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: "發生錯誤",
+                        text: err.message || "無法連接伺服器",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
+
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-4 py-8"
@@ -152,7 +204,9 @@ export default function EditModal({
                     <MdOutlineRestaurantMenu />
                     &nbsp;{editData.title}{" "}
                     <button
-                        // onClick={handleDelete}
+                        onClick={() => {
+                            handleDelete(editData.group_uuid);
+                        }}
                         title="刪除揪團"
                         className="text-red-500 hover:text-red-700 transition-colors p-2 rounded-md hover:bg-red-100 ml-3"
                     >
