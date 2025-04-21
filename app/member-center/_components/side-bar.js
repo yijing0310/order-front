@@ -102,6 +102,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                                 if (window.innerWidth < 1024) {
                                     toggleSidebar();
                                 }
+                                logout()
                                 router.push("/");
                             }}
                             className="flex items-center justify-center w-10 h-10 bg-lightSec  rounded-full hover:scale-110 transition duration-200 cursor-pointer"
