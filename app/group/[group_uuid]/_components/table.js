@@ -83,13 +83,13 @@ export default function GroupTable({
                 {/* 表頭 */}
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
+                    <div className="w-[10%] px-3">訂購人</div>
                     <div className="w-[15%] px-3">品項</div>
                     <div className="w-[10%] px-3">金額</div>
                     <div className="w-[10%] px-3">數量</div>
-                    <div className="w-[15%] px-3">訂購人</div>
                     <div className="w-[10%] px-3">總額</div>
                     <div className="w-[10%] pl-5">狀態</div>
-                    <div className="w-[15%] pl-4">備註</div>
+                    <div className="w-[18%] pl-4">備註</div>
                     <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
@@ -113,6 +113,12 @@ export default function GroupTable({
                                     </span>
                                     {i + 1}
                                 </div>
+                                <div className="w-full md:w-[10%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        訂購人：
+                                    </span>
+                                    {list.name}
+                                </div>
                                 <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         品項：
@@ -131,12 +137,7 @@ export default function GroupTable({
                                     </span>
                                     {list.quantity}
                                 </div>
-                                <div className="w-full md:w-[15%] px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        訂購人：
-                                    </span>
-                                    {list.name}
-                                </div>
+
                                 <div className="w-full md:w-[10%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         總額：
@@ -175,7 +176,7 @@ export default function GroupTable({
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[15%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:w-[18%] md:pl-4 mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         備註：
                                     </span>

@@ -14,7 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Register() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
-    const { auth, login } = useAuth();
     const [error, setError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const defaultRegisterForm = {

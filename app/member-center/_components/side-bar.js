@@ -69,7 +69,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                             </li>
                             <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
                                 <Link
-                                    href="/member-center/add-group "
+                                    href="/member-center/profile "
                                     className="flex items-center justify-center"
                                     onClick={() => {
                                         if (window.innerWidth < 1024) {

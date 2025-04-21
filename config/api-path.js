@@ -3,6 +3,8 @@ export const API_SERVER = "http://localhost:3001"
 export const JWT_LOGIN = `${API_SERVER}/login-jwt`
 // 註冊
 export const REGISTER_POST = `${API_SERVER}/admin/register/api`
+// 獲取用戶資訊
+export const PROFILE_GET = `${API_SERVER}/admin/profile/api`
 // 我的揪團
 export const GROUP_GET = `${API_SERVER}/group/api`
 // 新增揪團 
