@@ -1,47 +1,88 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
+import { PASSWORD_RESET_POST } from "@/config/api-path";
+import { resetPasswordschema } from "@/utils/schema/resetPasswordschema";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function ResetPasswordPage() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         password: "",
         passwordCheck: "",
     });
     const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+    const [token, setToken] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => {
-            const newFormData = {
-                ...prev,
-                [name]: value,
-            };
-            if (
-                (name === "password" || name === "passwordCheck") &&
-                newFormData.password &&
-                newFormData.passwordCheck
-            ) {
-                if (newFormData.password !== newFormData.passwordCheck) {
-                    setError((prev) => ({
-                        ...prev,
-                        passwordCheck: "密碼不一致",
-                    }));
-                } else {
-                    setError((prev) => ({
-                        ...prev,
-                        passwordCheck: "",
-                    }));
-                }
-            }
+        const newFormData = {
+            ...formData,
+            [name]: value,
+        };
+        setFormData(newFormData);
 
-            return newFormData;
-        });
+        if (
+            newFormData.password &&
+            newFormData.passwordCheck &&
+            newFormData.password !== newFormData.passwordCheck
+        ) {
+            setError("⚠️密碼不一致");
+        } else {
+            setError("");
+        }
     };
-    const handleSubmit = (e) => {
+    // 獲取token
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const tokenFromUrl = new URLSearchParams(
+                window.location.search
+            ).get("token");
+            setToken(tokenFromUrl || "");
+        }
+    }, []);
+    const notify = () => {
+        toast.success("修改成功 ! 準備跳轉至登入頁");
+    };
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const zResult = resetPasswordschema.safeParse({
+            token,
+            ...formData,
+        });
+        if (!zResult.success) {
+            setError(zResult.error.issues[0].message);
+            return;
+        }
+        const res = await fetch(PASSWORD_RESET_POST, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token,
+                ...formData,
+            }),
+        });
+        const result = await res.json();
+        if (result.success) {
+            setMessage(result.message);
+            setError("");
+            setFormData({ password: "", passwordCheck: "" });
+            notify();
+            setTimeout(() => {
+                router.push("/login");
+            }, 2000);
+        } else {
+            setError(result.error);
+        }
     };
+
     return (
         <div className="sm:px-6 w-full h-screen flex justify-center items-center">
             <div className="px-4 md:px-10 py-4 md:py-7 w-3/5 ">
@@ -71,10 +112,6 @@ export default function ResetPasswordPage() {
                                 className="mb-1 text-sm font-medium text-gray-700"
                             >
                                 輸入新密碼
-                                {/* ERROR */}
-                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                                    {error.password}
-                                </div>
                             </label>
                             <input
                                 type={showPassword ? "text" : "password"}
@@ -106,10 +143,6 @@ export default function ResetPasswordPage() {
                                 className="mb-1 text-sm font-medium text-gray-700"
                             >
                                 確認新密碼
-                                {/* ERROR */}
-                                <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                                    {error.passwordCheck}
-                                </div>
                             </label>
                             <input
                                 type={showPassword ? "text" : "password"}
@@ -122,7 +155,7 @@ export default function ResetPasswordPage() {
                                 maxLength={20}
                             />
                             <div className="absolute right-3 top-[38px] text-sm text-gray-500">
-                                {error.passwordCheck === "密碼不一致" ? (
+                                {error === "⚠️密碼不一致" ? (
                                     <IoIosCloseCircle className="text-[12px] text-red-500" />
                                 ) : formData.passwordCheck?.length > 0 ? (
                                     <IoIosCheckmarkCircle className="text-[12px] text-green-500" />
@@ -130,6 +163,34 @@ export default function ResetPasswordPage() {
                                     ""
                                 )}
                             </div>
+                            {/* ERROR */}
+                            {error ? (
+                                <div className="text-[12px] text-red-500 h-3 mt-2 inline pb-1 mb-2 ml-1 ">
+                                    {error === "連結已過期，請重新發送連結" ||
+                                    "無效的連結" ? (
+                                        <>
+                                            {error}
+                                            <Link
+                                                href="/forget-password"
+                                                className="ml-2 text-gray-800 hover:underline"
+                                            >
+                                                忘記密碼?
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        error
+                                    )}
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                            {message ? (
+                                <div className="text-[12px] text-green-700 h-3 mt-4 ml-3 inline pb-1 mb-2 ">
+                                    {message}
+                                </div>
+                            ) : (
+                                ""
+                            )}
                         </div>
 
                         <button
@@ -152,6 +213,18 @@ export default function ResetPasswordPage() {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { PASSWORD_FORGET_POST } from "@/config/api-path";
+
 export default function ForgetPasswordPage() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
@@ -84,7 +85,7 @@ export default function ForgetPasswordPage() {
                         )}
                         <button
                             type="submit"
-                            className="flex justify-center items-center text-white bg-primary hover:bg-third transition-all w-full py-3 mt-2 rounded-md shadow-sm active:scale-95"
+                            className="flex justify-center items-center text-white bg-primary hover:bg-third transition-all w-full py-3 mt-4 rounded-md shadow-sm active:scale-95 "
                         >
                             寄送重設密碼連結
                         </button>

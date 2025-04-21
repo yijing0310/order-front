@@ -11,6 +11,8 @@ export const PROFILE_EDIT_POST = `${API_SERVER}/admin/editProfile/api`
 export const PASSWORD_EDIT_POST = `${API_SERVER}/admin/editPassword/api`
 // 忘記密碼
 export const PASSWORD_FORGET_POST = `${API_SERVER}/admin/forgot-password/api`
+// 重設密碼
+export const PASSWORD_RESET_POST = `${API_SERVER}/admin/reset-password/api`
 // 我的揪團
 export const GROUP_GET = `${API_SERVER}/group/api`
 // 新增揪團 
