@@ -32,6 +32,8 @@ export default function GroupListPage() {
     const [filterStatus, setFilterStatus] = useState("all");
     const [announcement, setAnnouncement] = useState();
     const [isSearch, setIsSearch] = useState(""); // 搜尋
+    const [sorting, setSorting] = useState(""); // 排序
+
     useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
@@ -107,6 +109,26 @@ export default function GroupListPage() {
                 item.name?.toLowerCase().includes(keyword) ||
                 item.item_name?.toLowerCase().includes(keyword)
             );
+        })
+        ?.sort((a, b) => {
+            switch (sorting) {
+                case "品項名稱":
+                    return a.item_name.localeCompare(b.item_name, "zh-Hant", {
+                        sensitivity: "base", // 忽略大小寫與重音符號
+                        numeric: true, // 數值大小來排序含數字的字串
+                    });
+                case "訂購人姓名":
+                    return a.name.localeCompare(b.name, "zh-Hant", {
+                        sensitivity: "base",
+                        numeric: true,
+                    });
+                case "最高金額":
+                    return b.price - a.price;
+                case "最低金額":
+                    return a.price - b.price;
+                default:
+                    return 0; // 預設不排序
+            }
         });
     // 獲取總額總數量
     const getTotalSummary = (data) => {
@@ -202,7 +224,7 @@ export default function GroupListPage() {
                                 <Search onSearch={setIsSearch} />
                             </div>
                             <div className="flex items-center justify-end -order-last md:order-1">
-                                <Sort />
+                                <Sort setSorting={setSorting} />
                                 <DownloadButton onClick={handleDownload} />
                                 <ShareButton group_uuid={group_uuid} />
                             </div>
