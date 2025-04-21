@@ -68,8 +68,8 @@ export default function Login() {
                 method="post"
                 onSubmit={onSubmit}
             >
-                <Link href="/" className="inline-block">
-                    <FaHome className="text-secondary" />
+                <Link href="/" className=" flex items-center text-secondary">
+                    <FaHome className="" />
                 </Link>
                 <h2 className="text-2xl font-bold text-center">登入 Login</h2>
 
@@ -116,9 +116,21 @@ export default function Login() {
                     >
                         {showPassword ? <TbEyeglass2 /> : <TbEyeglassFilled />}
                     </button>
+                    {/* 其他連結 */}
+                    <Link
+                        href="/forget-password"
+                        className=" inline-block text-sm text-end  hover:underline hover:text-primary mt-2"
+                    >
+                        忘記密碼？{" "}
+                    </Link>
                 </div>
                 {/* ERROR */}
-                <div className="text-sm text-red-500 h-5">{error}</div>
+
+                {error ? (
+                    <div className="text-sm text-red-500 h-4">{error}</div>
+                ) : (
+                    ""
+                )}
 
                 {/* 登入按鈕 */}
                 <button
@@ -130,7 +142,7 @@ export default function Login() {
                 </button>
 
                 {/* 其他連結 */}
-                <div className="text-sm text-center text-gray-600">
+                <div className="text-sm text-center ">
                     尚未註冊？{" "}
                     <Link
                         href="/register"
