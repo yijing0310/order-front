@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
+import { TbLockPassword } from "react-icons/tb";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -40,7 +41,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                         </Link>
 
                         {/* 選單列表 */}
-                        <ul className="mt-8 w-full flex flex-col gap-2 md:min-h-80">
+                        <ul className="mt-8 w-full flex flex-col gap-2 md:min-h-20 overflow-y-auto">
                             <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
                                 <Link
                                     href="/member-center "
@@ -77,7 +78,20 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                                         }
                                     }}
                                 >
-                                    <IoSettingsOutline /> &nbsp;&nbsp;我的資料
+                                    <IoSettingsOutline /> &nbsp;&nbsp;個人資料
+                                </Link>
+                            </li>
+                            <li className="w-full text-right pr-4 py-2 rounded-md font-semibold text-white hover:bg-third hover:text-white transition  cursor-pointer">
+                                <Link
+                                    href="/member-center/change-password "
+                                    className="flex items-center justify-center"
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) {
+                                            toggleSidebar();
+                                        }
+                                    }}
+                                >
+                                    <TbLockPassword /> &nbsp;&nbsp;修改密碼
                                 </Link>
                             </li>
                         </ul>

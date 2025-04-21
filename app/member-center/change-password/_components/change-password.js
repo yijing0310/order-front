@@ -98,7 +98,7 @@ export default function ChangePasswordForm() {
                 }, 1000);
                 setTimeout(() => {
                     router.push("/login");
-                }, 2000);
+                }, 1000);
             } else {
                 setGeneralError(result.message);
             }

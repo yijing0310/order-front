@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ChangePasswordForm from "./_components/change-password";
 import ProfileForm from "./_components/profile-form";
 import { PROFILE_GET } from "@/config/api-path";
 import { useAuth } from "@/context/auth.js";
@@ -39,24 +38,8 @@ export default function ProfilePage() {
 
     return (
         <div className="sm:px-6 w-full">
-            {/* 個人資料區塊 */}
             <div className="px-4 md:px-10 py-4 md:py-7">
                 <ProfileForm data={data} />
-            </div>
-
-            <hr className="border-gray-300" />
-
-            {/* 密碼變更區塊 */}
-            <div className="px-4 md:px-10 py-4 md:py-7">
-                <div className="flex items-center justify-between mb-4">
-                    <p
-                        tabIndex={0}
-                        className="focus:outline-none text-base sm:text-lg md:text-xl  font-bold leading-normal w-full"
-                    >
-                        變更密碼
-                    </p>
-                </div>
-                <ChangePasswordForm />
             </div>
         </div>
     );
