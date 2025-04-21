@@ -7,6 +7,8 @@ export const REGISTER_POST = `${API_SERVER}/admin/register/api`
 export const PROFILE_GET = `${API_SERVER}/admin/profile/api`
 // 修改用戶資訊
 export const PROFILE_EDIT_POST = `${API_SERVER}/admin/editProfile/api`
+// 修改密碼
+export const PASSWORD_EDIT_POST = `${API_SERVER}/admin/editPassword/api`
 // 我的揪團
 export const GROUP_GET = `${API_SERVER}/group/api`
 // 新增揪團 
