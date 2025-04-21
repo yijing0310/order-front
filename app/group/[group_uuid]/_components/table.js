@@ -79,9 +79,9 @@ export default function GroupTable({
     };
     return (
         <>
-            <div className="w-full overflow-x-auto min-w-[800px]">
+            <div className="w-full overflow-x-auto ">
                 {/* 表頭 */}
-                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3">
+                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">品項</div>
                     <div className="w-[10%] px-3">金額</div>
@@ -93,7 +93,7 @@ export default function GroupTable({
                     <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
-                <div className="max-h-[400px] overflow-y-auto">
+                <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
                     {filteredList?.length <= 0 ? (
                         <>
                             <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 ">
@@ -190,7 +190,7 @@ export default function GroupTable({
                                             handleDelete(list.id);
                                         }}
                                         title="刪除此筆資料"
-                                        className="hover:text-red-700 transition-colors"
+                                        className="hover:text-red-700 transition-colors ml-2"
                                     >
                                         <FaTrashCan className="text-lg" />
                                     </button>

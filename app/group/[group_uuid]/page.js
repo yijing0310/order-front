@@ -220,7 +220,7 @@ export default function GroupListPage() {
 
                     <div className="px-4 md:px-8 py-4 md:py-3">
                         <div className="flex flex-col md:flex-row  items-end md:items-center justify-end">
-                            <div className="flex items-center justify-end -order-first md:order-1 mt-3 md:mt-0">
+                            <div className="flex items-center justify-end -order-first md:order-1 mt-3 md:mt-0 w-4/5 md:w-2/5">
                                 <Search onSearch={setIsSearch} />
                             </div>
                             <div className="flex items-center justify-end -order-last md:order-1">
