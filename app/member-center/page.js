@@ -4,6 +4,7 @@ import { GROUP_GET } from "@/config/api-path";
 import Select from "./_components/select";
 import Table from "./_components/table";
 import MeberCenterSearch from "./_components/search";
+import MemberSort from "./_components/sort";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
 export default function MemberCenterPage() {
@@ -14,6 +15,7 @@ export default function MemberCenterPage() {
     const [filterStatus, setFilterStatus] = useState("all");
     const [refresh, setRefresh] = useState(false);
     const [isSearch, setIsSearch] = useState(""); // 搜尋
+    const [sorting, setSorting] = useState(""); // 排序
 
     useEffect(() => {
         // if (!auth.id) {
@@ -47,7 +49,26 @@ export default function MemberCenterPage() {
                 item.restaurant?.toLowerCase().includes(keyword)
             );
         })
-        
+        ?.sort((a, b) => {
+            switch (sorting) {
+                case "最新截止日":
+                    return new Date(b.deadline) - new Date(a.deadline);
+                case "最舊截止日":
+                    return new Date(a.deadline) - new Date(b.deadline);
+                case "揪團名稱":
+                    return a.title.localeCompare(b.title, "zh-Hant", {
+                        sensitivity: "base", // 忽略大小寫與重音符號
+                        numeric: true, // 數值大小來排序含數字的字串
+                    });
+                case "餐廳名稱":
+                    return a.restaurant.localeCompare(b.restaurant, "zh-Hant", {
+                        sensitivity: "base",
+                        numeric: true,
+                    });
+                default:
+                    return 0; // 預設不排序
+            }
+        });
 
     return (
         <>
@@ -62,23 +83,7 @@ export default function MemberCenterPage() {
                         </p>
                         <div className=" flex  items-center gap-4 md:gap-0">
                             <MeberCenterSearch onSearch={setIsSearch} />
-                            <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded  w-3/5">
-                                <p>Sort By:</p>
-                                <select
-                                    aria-label="select"
-                                    className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-                                >
-                                    <option className="text-sm text-indigo-800">
-                                        Latest
-                                    </option>
-                                    <option className="text-sm text-indigo-800">
-                                        Oldest
-                                    </option>
-                                    <option className="text-sm text-indigo-800">
-                                        Latest
-                                    </option>
-                                </select>
-                            </div>
+                            <MemberSort setSorting={setSorting} />
                         </div>
                     </div>
                 </div>
