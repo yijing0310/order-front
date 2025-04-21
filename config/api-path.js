@@ -9,6 +9,8 @@ export const PROFILE_GET = `${API_SERVER}/admin/profile/api`
 export const PROFILE_EDIT_POST = `${API_SERVER}/admin/editProfile/api`
 // 修改密碼
 export const PASSWORD_EDIT_POST = `${API_SERVER}/admin/editPassword/api`
+// 忘記密碼
+export const PASSWORD_FORGET_POST = `${API_SERVER}/admin/forgot-password/api`
 // 我的揪團
 export const GROUP_GET = `${API_SERVER}/group/api`
 // 新增揪團 
