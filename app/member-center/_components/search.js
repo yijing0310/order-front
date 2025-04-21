@@ -21,7 +21,7 @@ export default function MeberCenterSearch({ onSearch }) {
             <FaSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
             <input
                 type="text"
-                placeholder="搜尋訂購人或品項..."
+                placeholder="搜尋名稱或餐廳..."
                 value={keyword}
                 onChange={handleChange}
                 className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:outline-none transition"

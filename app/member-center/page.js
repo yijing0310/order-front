@@ -13,6 +13,8 @@ export default function MemberCenterPage() {
     const router = useRouter();
     const [filterStatus, setFilterStatus] = useState("all");
     const [refresh, setRefresh] = useState(false);
+    const [isSearch, setIsSearch] = useState(""); // 搜尋
+
     useEffect(() => {
         // if (!auth.id) {
         //     router.push("/");
@@ -33,10 +35,19 @@ export default function MemberCenterPage() {
         };
         getFetchGroup();
     }, [auth, getAuthHeader, refresh]);
-    const filteredList = listData?.data?.filter((item) => {
-        if (filterStatus === "all") return true;
-        return item.status === filterStatus;
-    });
+    const filteredList = listData?.data
+        ?.filter((item) => {
+            if (filterStatus === "all") return true;
+            return item.status === filterStatus;
+        })
+        ?.filter((item) => {
+            const keyword = isSearch.toLowerCase();
+            return (
+                item.title?.toLowerCase().includes(keyword) ||
+                item.restaurant?.toLowerCase().includes(keyword)
+            );
+        })
+        
 
     return (
         <>
@@ -50,7 +61,7 @@ export default function MemberCenterPage() {
                             我的揪團
                         </p>
                         <div className=" flex  items-center gap-4 md:gap-0">
-                            <MeberCenterSearch />
+                            <MeberCenterSearch onSearch={setIsSearch} />
                             <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded  w-3/5">
                                 <p>Sort By:</p>
                                 <select
