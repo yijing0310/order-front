@@ -22,6 +22,8 @@ export default function ProfileForm({ data }) {
     }, [data]);
 
     const [error, setError] = useState("");
+    const [generalError, setGeneralError] = useState("");
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -37,7 +39,7 @@ export default function ProfileForm({ data }) {
         const isChanged =
             formData.name !== data.name || formData.email !== data.email;
         if (!isChanged) {
-            setError("你沒有修改任何資料");
+            setGeneralError("你沒有修改任何資料");
             return;
         }
         const zResult = editProfileSchema.safeParse(formData);
@@ -72,6 +74,7 @@ export default function ProfileForm({ data }) {
             }
             const result = await r.json();
             setError(result.error);
+            setGeneralError(result.message)
             if (result.success) {
                 setError("");
                 setFormData(result.data);
@@ -83,7 +86,7 @@ export default function ProfileForm({ data }) {
                     router.push("/login");
                 }, 2000);
             } else {
-                setError(result.error || "取得資料失敗");
+                setGeneralError(result.error || "取得資料失敗");
             }
         } catch (err) {
             setError("發送請求時發生錯誤:", error);
@@ -188,7 +191,7 @@ export default function ProfileForm({ data }) {
                             確定修改
                         </button>
                         <div className="text-[12px] text-red-500 h-3 mt-2 ml-3 inline pb-1 ">
-                            {error == "你沒有修改任何資料" ? error : ""}
+                            {generalError}
                         </div>
                     </div>
                 </form>
