@@ -84,7 +84,6 @@ export default function Register() {
             },
         });
         const result = await r.json();
-        console.log(result);
         setError(result.error);
         setTimeout(() => setIsSubmitting(false), 2000);
         if (result.success) {

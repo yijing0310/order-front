@@ -27,8 +27,6 @@ export default function Header() {
                 const result = await r.json();
                 setError(result.error);
                 if (result && !result.error) {
-                    console.log(result);
-                    
                     setName(result.result.name);
                 } else {
                     setError(result.error || "取得資料失敗");
