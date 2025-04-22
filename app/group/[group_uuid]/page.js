@@ -18,8 +18,6 @@ import Search from "./_components/search";
 import Sort from "./_components/sort";
 import { useAuth } from "@/context/auth.js";
 import { useJoin } from "@/context/join";
-import { FaHome } from "react-icons/fa";
-import { MdOutlineRestaurantMenu } from "react-icons/md";
 import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
     const { auth, logout, getAuthHeader } = useAuth();
@@ -213,46 +211,7 @@ export default function GroupListPage() {
                 <div className="sm:px-6 w-full ">沒有資料</div>
             ) : (
                 <div className="sm:px-6 w-full ">
-                    <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                            <Link
-                                href="/"
-                                className="w-[90px] flex items-center text-sm mt-2 hover:text-primary"
-                            >
-                                <FaHome /> &nbsp;&nbsp;{" "}
-                                <span className="mt-2 ">回到首頁</span>
-                            </Link>
-
-                            <Link
-                                href="/join-group"
-                                className="w-[120px] flex items-center text-sm mt-2 hover:text-primary"
-                            >
-                                <MdOutlineRestaurantMenu /> &nbsp;&nbsp;{" "}
-                                <span className="mt-2">其他揪團點餐</span>
-                            </Link>
-                        </div>
-                        <div className="hidden lg:flex lg:flex-1 lg:justify-end  mt-2">
-                            {auth.id ? (
-                                <>
-                                    <Link
-                                        href="/member-center"
-                                        className="text-sm font-semibold mr-4 mt-2 text-gray-700"
-                                    >
-                                        H i ! {name}
-                                    </Link>
-                                    <div
-                                        className="text-sm  cursor-pointer hover:text-primary mt-2"
-                                        onClick={logout}
-                                    >
-                                        {" "}
-                                        登出{" "}
-                                    </div>
-                                </>
-                            ) : (
-                                ""
-                            )}
-                        </div>
-                    </div>
+                    
                     <Announcement announcement={announcement} />
 
                     <div className="px-4 md:px-8 py-4 md:py-3">
