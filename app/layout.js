@@ -1,5 +1,6 @@
 import "./globals.css";
 import { AuthContextProvider } from "@/context/auth.js";
+import { JoinContextProvider } from "@/context/join";
 import Header from "./_components/header";
 
 export const metadata = {
@@ -12,8 +13,10 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body>
                 <AuthContextProvider>
-                    <Header />
-                    {children}
+                    <JoinContextProvider>
+                        <Header />
+                        {children}
+                    </JoinContextProvider>
                 </AuthContextProvider>
             </body>
         </html>

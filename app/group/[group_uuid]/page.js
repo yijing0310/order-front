@@ -16,11 +16,13 @@ import ShareButton from "./_components/share";
 import Search from "./_components/search";
 import Sort from "./_components/sort";
 import { useAuth } from "@/context/auth.js";
+import { useJoin } from "@/context/join";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
-    const { auth, getAuthHeader, logout } = useAuth();
+    const { auth, logout } = useAuth();
+    const { join, getJoinHeader } = useJoin();
     const [listData, setListData] = useState([]);
     const [templateData, setTemplateData] = useState([]);
     const [error, setError] = useState("");
@@ -33,13 +35,21 @@ export default function GroupListPage() {
     const [announcement, setAnnouncement] = useState();
     const [isSearch, setIsSearch] = useState(""); // 搜尋
     const [sorting, setSorting] = useState(""); // 排序
-
+    if (
+        !join ||
+        !join.token ||
+        error === "無授權訪問此揪團" ||
+        error === "未授權，無法獲取信息"
+    ) {
+        router.replace("/join-group");
+    }
     useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
             try {
                 const res = await fetch(
-                    `${ORDER_TEMPLATE_GET}?group_uuid=${group_uuid}`
+                    `${ORDER_TEMPLATE_GET}?group_uuid=${group_uuid}`,
+                    { headers: { ...getJoinHeader() } }
                 );
                 if (!res.ok) {
                     throw new Error("取得訂餐模板請求失敗");
@@ -51,14 +61,14 @@ export default function GroupListPage() {
             }
         };
         getFetchOrderTemplate();
-    }, []);
+    }, [getJoinHeader, join]);
     useEffect(() => {
         // 取得揪團詳細資訊
         const getFetchGroupInfo = async () => {
-            setIsLoading(true);
             try {
                 const res = await fetch(
-                    `${ORDER_DETAIL_GET}?group_uuid=${group_uuid}`
+                    `${ORDER_DETAIL_GET}?group_uuid=${group_uuid}`,
+                    { headers: { ...getJoinHeader() } }
                 );
                 if (!res.ok) {
                     throw new Error("連接揪團資訊失敗");
@@ -68,23 +78,23 @@ export default function GroupListPage() {
                 if (data.error == "查無此揪團") {
                     router.push("/join-group");
                 }
-
-                setAnnouncement(data?.data);
+                if (data?.success) {
+                    setIsLoading(false);
+                    setAnnouncement(data?.data);
+                }
                 if (data?.data?.status == "closed") {
                     setIsEnd(true);
                 }
             } catch (err) {
                 setError("連接揪團資訊時發生錯誤:", error);
-            } finally {
-                setIsLoading(false);
             }
         };
-        getFetchGroupInfo();
         // 取得訂餐列表
         const getFetchOrderList = async () => {
             try {
                 const res = await fetch(
-                    `${ORDER_LIST_GET}?group_uuid=${group_uuid}`
+                    `${ORDER_LIST_GET}?group_uuid=${group_uuid}`,
+                    { headers: { ...getJoinHeader() } }
                 );
                 if (!res.ok) {
                     throw new Error("取得訂餐列表請求失敗");
@@ -95,8 +105,9 @@ export default function GroupListPage() {
                 setError("取得訂餐列表發送請求時發生錯誤:", error);
             }
         };
+        getFetchGroupInfo();
         getFetchOrderList();
-    }, [refresh]);
+    }, [refresh, getJoinHeader, join]);
 
     const filteredList = listData?.data
         ?.filter((item) => {

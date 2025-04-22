@@ -19,10 +19,11 @@ export default function MemberCenterPage() {
     const [sorting, setSorting] = useState(""); // 排序
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        if (!auth || !auth.token) {
-            router.push("/");
-            return;
-        }
+        // if (!auth || !auth.token) {
+        //     router.replace("/");
+        //     return;
+        // }
+        
         const getFetchGroup = async () => {
             try {
                 const res = await fetch(GROUP_GET, {

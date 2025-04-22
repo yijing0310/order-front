@@ -1,12 +1,14 @@
 "use client";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { JOIN_GROUP_POST } from "@/config/api-path";
 import Loader from "@/app/_components/loader";
+import { useJoin } from "@/context/join";
 export default function EnterGroup() {
     const router = useRouter();
+    const { joinin } = useJoin();
     const [showPassword, setShowPassword] = useState(false);
     const [groupId, setGroupId] = useState("");
     const [password, setPassword] = useState("");
@@ -26,27 +28,15 @@ export default function EnterGroup() {
             return;
         }
         const fetchJoinGroup = async () => {
-            const res = await fetch(JOIN_GROUP_POST, {
-                method: "POST",
-                body: JSON.stringify({
-                    group_uuid: groupId,
-                    password: password,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!res.ok) {
-                setError("連接資料錯誤");
-            }
-            const r = await res.json();
-            setError(r.error);
+            const r = await joinin(groupId, password);
             if (r.success == true) {
                 setIsloading(true);
                 router.push(`/group/${groupId}`);
                 setIsloading(false);
                 setGroupId("");
                 setPassword("");
+            } else {
+                setError(r.error);
             }
         };
         fetchJoinGroup();

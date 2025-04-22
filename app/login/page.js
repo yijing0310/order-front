@@ -30,7 +30,7 @@ export default function Login() {
         setIsSubmitting(true);
         if (loginForm.password.length <= 0 && loginForm.account.length <= 0) {
             setError("⚠️ 帳號密碼不得為空");
-            setTimeout(() => setIsSubmitting(false), 3000);
+            setTimeout(() => setIsSubmitting(false), 2000);
             return;
         }
         const { success, error, code } = await login(
@@ -42,8 +42,8 @@ export default function Login() {
             setError("");
             setTimeout(() => {
                 router.push("/");
-            }, 2000);
-            setTimeout(() => setIsSubmitting(false), 2000);
+            }, 1000);
+            setTimeout(() => setIsSubmitting(false), 1000);
         } else {
             if (code === 400) {
                 setError("⚠️ 帳號密碼不得為空");
