@@ -199,7 +199,7 @@ export default function AddGroupPage() {
                         </div>
 
                         {/* 人數上限 */}
-                        <div>
+                        <div className="hidden">
                             <label
                                 htmlFor="limit"
                                 className="block text-sm font-medium text-gray-700 mb-1"

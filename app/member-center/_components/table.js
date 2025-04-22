@@ -4,6 +4,7 @@ import moment from "moment";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 import EditModal from "./modal";
+import { IoShareSocialSharp } from "react-icons/io5";
 export default function Table({ filteredList = [], setRefresh = () => {} }) {
     const [showModal, setShowModal] = useState(false);
     const [editData, setEditData] = useState({});
@@ -18,13 +19,14 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3">
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">揪團名稱</div>
-                    <div className="w-[13%] px-3">揪團代號</div>
+                    <div className="w-[15%] px-3">揪團代號</div>
                     <div className="w-[15%] px-3">餐廳名稱</div>
-                    <div className="w-[8%] px-3">上限</div>
-                    <div className="w-[15%] px-3">結束時間</div>
-                    <div className="w-[10%] pl-5">狀態</div>
-                    <div className="w-[10%] pl-4">查看</div>
-                    <div className="w-[7%] pl-2">編輯</div>
+                    {/* <div className="w-[8%] px-3">上限</div> */}
+                    <div className="w-[17%] px-3">結束時間</div>
+                    <div className="w-[9%] px-3">狀態</div>
+                    <div className="w-[9%] px-5">查看</div>
+                    <div className="w-[6%] px-3">編輯</div>
+                    <div className="w-[6%] px-3">分享</div>
                 </div>
                 {/* 內容 */}
                 <div className="max-h-[400px] overflow-y-auto ">
@@ -41,7 +43,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                 tabIndex={0}
                                 className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 "
                             >
-                                <div className="w-full md:w-[5%] px-2">
+                                <div className="w-full md:w-[5%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         #{" "}
                                     </span>
@@ -53,7 +55,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     </span>
                                     {list.title}
                                 </div>
-                                <div className="w-full md:w-[13%] px-3">
+                                <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         代號：
                                     </span>
@@ -65,13 +67,13 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     </span>
                                     {list.restaurant}
                                 </div>
-                                <div className="w-full md:w-[8%] px-3">
+                                {/* <div className="w-full md:w-[8%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         上限：
                                     </span>
                                     {list.max_people}
-                                </div>
-                                <div className="w-full md:w-[15%] px-3">
+                                </div> */}
+                                <div className="w-full md:w-[17%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         截止：
                                     </span>
@@ -79,7 +81,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                         "YYYY/MM/DD HH:mm"
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] md:pl-5 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:w-[10%]  mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
                                     </span>
@@ -93,7 +95,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:w-[10%] mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         查看：
                                     </span>
@@ -104,7 +106,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     </Link>
                                 </div>
                                 <div
-                                    className="w-full md:w-[7%] px-3 cursor-pointer flex md:block items-center"
+                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center"
                                     onClick={() => {
                                         editInfo(list);
                                     }}
@@ -113,6 +115,17 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                         編輯
                                     </span>
                                     <FaEdit className="mx-2" />
+                                </div>
+                                <div
+                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center"
+                                    onClick={() => {
+                                        editInfo(list);
+                                    }}
+                                >
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        分享
+                                    </span>
+                                    <IoShareSocialSharp className="" />
                                 </div>
                             </div>
                         ))
