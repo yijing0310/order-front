@@ -167,7 +167,7 @@ export default function ResetPasswordPage() {
                             {error ? (
                                 <div className="text-[12px] text-red-500 h-3 mt-2 inline pb-1 mb-2 ml-1 ">
                                     {error === "連結已過期，請重新發送連結" ||
-                                    "無效的連結" ? (
+                                    error === "無效的連結" ? (
                                         <>
                                             {error}
                                             <Link
