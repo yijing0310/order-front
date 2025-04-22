@@ -7,6 +7,7 @@ import MeberCenterSearch from "./_components/search";
 import MemberSort from "./_components/sort";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
+import Loader from "../_components/loader";
 export default function MemberCenterPage() {
     const { auth, getAuthHeader } = useAuth();
     const [listData, setListData] = useState([]);
@@ -16,11 +17,12 @@ export default function MemberCenterPage() {
     const [refresh, setRefresh] = useState(false);
     const [isSearch, setIsSearch] = useState(""); // 搜尋
     const [sorting, setSorting] = useState(""); // 排序
-
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        // if (!auth.id) {
-        //     router.push("/");
-        // }
+        if (!auth || !auth.token) {
+            router.push("/");
+            return;
+        }
         const getFetchGroup = async () => {
             try {
                 const res = await fetch(GROUP_GET, {
@@ -31,12 +33,14 @@ export default function MemberCenterPage() {
                 }
                 const data = await res.json();
                 setListData(data);
+                setIsLoading(false);
             } catch (err) {
                 setError("發送請求時發生錯誤:", error);
             }
         };
         getFetchGroup();
     }, [auth, getAuthHeader, refresh]);
+
     const filteredList = listData?.data
         ?.filter((item) => {
             if (filterStatus === "all") return true;
@@ -72,34 +76,38 @@ export default function MemberCenterPage() {
 
     return (
         <>
-            <div className="sm:px-6 w-full">
-                <div className="px-4 md:px-10 py-4 md:py-7 mt-5 md:mt-0">
-                    <div className="flex md:flex-row flex-col md:gap-0 gap-3  md:items-center justify-between">
-                        <p
-                            tabIndex={0}
-                            className="focus:outline-none  text-xl lg:text-2xl font-bold leading-normal"
-                        >
-                            我的揪團
-                        </p>
-                        <div className=" flex  items-center gap-4 md:gap-0">
-                            <MeberCenterSearch onSearch={setIsSearch} />
-                            <MemberSort setSorting={setSorting} />
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <div className="sm:px-6 w-full">
+                    <div className="px-4 md:px-10 py-4 md:py-7 mt-5 md:mt-0">
+                        <div className="flex md:flex-row flex-col md:gap-0 gap-3  md:items-center justify-between">
+                            <p
+                                tabIndex={0}
+                                className="focus:outline-none  text-xl lg:text-2xl font-bold leading-normal"
+                            >
+                                我的揪團
+                            </p>
+                            <div className=" flex  items-center gap-4 md:gap-0">
+                                <MeberCenterSearch onSearch={setIsSearch} />
+                                <MemberSort setSorting={setSorting} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-7">
+                        <Select
+                            setFilterStatus={setFilterStatus}
+                            filterStatus={filterStatus}
+                        />
+                        <div className="mt-7 overflow-x-auto ">
+                            <Table
+                                filteredList={filteredList}
+                                setRefresh={setRefresh}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-7">
-                    <Select
-                        setFilterStatus={setFilterStatus}
-                        filterStatus={filterStatus}
-                    />
-                    <div className="mt-7 overflow-x-auto ">
-                        <Table
-                            filteredList={filteredList}
-                            setRefresh={setRefresh}
-                        />
-                    </div>
-                </div>
-            </div>
+            )}
         </>
     );
 }
