@@ -5,12 +5,22 @@ import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 import EditModal from "./modal";
 import { IoShareSocialSharp } from "react-icons/io5";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Table({ filteredList = [], setRefresh = () => {} }) {
     const [showModal, setShowModal] = useState(false);
     const [editData, setEditData] = useState({});
     const editInfo = (list_data) => {
         setEditData(list_data);
         setShowModal(true);
+    };
+    const notify = () => {
+        toast.success("已複製連結 !");
+    };
+    const handleShare = (group_uuid) => {
+        const url = `${window.location.origin}/join-group?group_id=${group_uuid}`;
+        navigator.clipboard.writeText(url);
+        notify();
     };
     return (
         <>
@@ -106,7 +116,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     </Link>
                                 </div>
                                 <div
-                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center"
+                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center hover:text-primary"
                                     onClick={() => {
                                         editInfo(list);
                                     }}
@@ -117,9 +127,9 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     <FaEdit className="mx-2" />
                                 </div>
                                 <div
-                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center"
+                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center hover:text-primary"
                                     onClick={() => {
-                                        editInfo(list);
+                                        handleShare(list.group_uuid);
                                     }}
                                 >
                                     <span className="md:hidden text-gray-500 font-medium">
@@ -137,6 +147,18 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                 onClose={() => setShowModal(false)}
                 editData={editData}
                 setRefresh={setRefresh}
+            />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
             />
         </>
     );
