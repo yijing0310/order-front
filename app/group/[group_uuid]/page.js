@@ -33,7 +33,6 @@ export default function GroupListPage() {
     const [announcement, setAnnouncement] = useState();
     const [isSearch, setIsSearch] = useState(""); // 搜尋
     const [sorting, setSorting] = useState(""); // 排序
-    const [endTime, setEndTime] = useState(""); 
 
     useEffect(() => {
         // 取得訂餐模板
@@ -52,7 +51,6 @@ export default function GroupListPage() {
             }
         };
         getFetchOrderTemplate();
-        
     }, []);
     useEffect(() => {
         // 取得揪團詳細資訊
@@ -70,7 +68,7 @@ export default function GroupListPage() {
                 if (data.error == "查無此揪團") {
                     router.push("/join-group");
                 }
-                
+
                 setAnnouncement(data?.data);
                 if (data?.data?.status == "closed") {
                     setIsEnd(true);
@@ -241,6 +239,7 @@ export default function GroupListPage() {
                             setRefresh={setRefresh}
                             refresh={refresh}
                             endTime={announcement?.deadline}
+                            isEnd={isEnd}
                         />
                         <div className="mt-7" ref={pdfRef}>
                             <GroupTable

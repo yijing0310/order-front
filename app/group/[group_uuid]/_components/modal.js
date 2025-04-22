@@ -12,6 +12,7 @@ export default function OrderModal({
     setRefresh = () => {},
     refresh = false,
     endTime = "",
+    isEnd = false,
 }) {
     const { group_uuid } = useParams();
     const defaultValue = { name: "", item_name: "", note: "" };
@@ -129,7 +130,7 @@ export default function OrderModal({
                         清除資料
                     </span>
                 </h2>
-                {error === "已截止" ? (
+                {isEnd || error === "已截止"  ? (
                     <span className="py-1 px-2 text-sm text-red-700 bg-red-100 rounded">
                         已截止
                     </span>
