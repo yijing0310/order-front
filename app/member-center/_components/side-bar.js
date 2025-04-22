@@ -1,5 +1,5 @@
 "use client";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import { IoMdReorder } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
@@ -9,10 +9,40 @@ import { TbLockPassword } from "react-icons/tb";
 import { useAuth } from "@/context/auth.js";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { PROFILE_GET } from "@/config/api-path";
+
 
 const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
-    const { auth, logout } = useAuth();
+    const { auth, logout, getAuthHeader } = useAuth();
+    const [name, setName] = useState("");
+    const [error, setError] = useState("");
+
     const router = useRouter();
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            if (!auth) return;
+            try {
+                const r = await fetch(PROFILE_GET, {
+                    headers: { ...getAuthHeader() },
+                });
+                if (!r.ok) {
+                    throw new Error("fail to fetch profile");
+                }
+                const result = await r.json();
+                setError(result.error);
+                if (result && !result.error) {
+                    console.log(result);
+
+                    setName(result.result.name);
+                } else {
+                    setError(result.error || "取得資料失敗");
+                }
+            } catch (err) {
+                setError("發送請求時發生錯誤:", error);
+            }
+        };
+        fetchProfileData();
+    }, [auth]);
     return (
         <>
             {/* Sidebar：電腦固定、手機滑動 */}
@@ -37,7 +67,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                             }}
                         >
                             <p className="text-sm opacity-70">WELCOME!</p>
-                            <p className="text-lg">{auth.name}</p>
+                            <p className="text-lg">{name}</p>
                         </Link>
 
                         {/* 選單列表 */}
@@ -116,7 +146,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
                                 if (window.innerWidth < 1024) {
                                     toggleSidebar();
                                 }
-                                logout()
+                                logout();
                                 router.push("/");
                             }}
                             className="flex items-center justify-center w-10 h-10 bg-lightSec  rounded-full hover:scale-110 transition duration-200 cursor-pointer"

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function ProfileForm({ data }) {
-    const { auth, getAuthHeader, logout } = useAuth();
+    const { auth, getAuthHeader, logout, login } = useAuth();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -74,7 +74,7 @@ export default function ProfileForm({ data }) {
             }
             const result = await r.json();
             setError(result.error);
-            setGeneralError(result.message)
+            setGeneralError(result.message);
             if (result.success) {
                 setError("");
                 setFormData(result.data);

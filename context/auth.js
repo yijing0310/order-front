@@ -5,7 +5,6 @@ const AuthContext = createContext();
 const emptyAuth = {
     id: 0,
     account: "",
-    name: "",
     token: "",
 };
 const storageKey = "how-order";

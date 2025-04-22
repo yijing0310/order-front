@@ -1,21 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/context/auth.js";
 import { usePathname } from "next/navigation";
 import { FaHome } from "react-icons/fa";
-
+import { PROFILE_GET } from "@/config/api-path";
 import Link from "next/link";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { auth, logout } = useAuth();
+    const [name, setName] = useState("");
+    const [error, setError] = useState("");
+    const { auth, logout,getAuthHeader } = useAuth();
     const pathname = usePathname();
     const hiddenPaths = ["/member-center", "/login", "/register", "/group"];
     const shouldHide = hiddenPaths.some((path) => pathname.startsWith(path));
-
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            if (!auth) return;
+            try {
+                const r = await fetch(PROFILE_GET, {
+                    headers: { ...getAuthHeader() },
+                });
+                if (!r.ok) {
+                    throw new Error("fail to fetch profile");
+                }
+                const result = await r.json();
+                setError(result.error);
+                if (result && !result.error) {
+                    console.log(result);
+                    
+                    setName(result.result.name);
+                } else {
+                    setError(result.error || "取得資料失敗");
+                }
+            } catch (err) {
+                setError("發送請求時發生錯誤:", error);
+            }
+        };
+        fetchProfileData();
+    }, [auth]);
     if (shouldHide) return null;
     return (
         <>
@@ -55,7 +81,7 @@ export default function Header() {
                                     href="/member-center"
                                     className="text-sm/6 font-semibold mr-4 text-gray-500"
                                 >
-                                    H i ! {auth.name}
+                                    H i ! {name}
                                 </Link>
                                 <div
                                     className="text-sm/6 font-semibold cursor-pointer hover:text-primary "

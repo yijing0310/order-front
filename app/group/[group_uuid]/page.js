@@ -4,6 +4,7 @@ import {
     ORDER_LIST_GET,
     ORDER_TEMPLATE_GET,
     ORDER_DETAIL_GET,
+    PROFILE_GET
 } from "@/config/api-path";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
@@ -21,7 +22,7 @@ import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
-    const { auth, logout } = useAuth();
+    const { auth, logout, getAuthHeader } = useAuth();
     const { join, getJoinHeader } = useJoin();
     const [listData, setListData] = useState([]);
     const [templateData, setTemplateData] = useState([]);
@@ -35,6 +36,8 @@ export default function GroupListPage() {
     const [announcement, setAnnouncement] = useState();
     const [isSearch, setIsSearch] = useState(""); // 搜尋
     const [sorting, setSorting] = useState(""); // 排序
+    const [name, setName] = useState("");
+
     if (
         !join ||
         !join.token ||
@@ -43,6 +46,31 @@ export default function GroupListPage() {
     ) {
         router.replace("/join-group");
     }
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            if (!auth) return;
+            try {
+                const r = await fetch(PROFILE_GET, {
+                    headers: { ...getAuthHeader() },
+                });
+                if (!r.ok) {
+                    throw new Error("fail to fetch profile");
+                }
+                const result = await r.json();
+                setError(result.error);
+                if (result && !result.error) {
+                    console.log(result);
+
+                    setName(result.result.name);
+                } else {
+                    setError(result.error || "取得資料失敗");
+                }
+            } catch (err) {
+                setError("發送請求時發生錯誤:", error);
+            }
+        };
+        fetchProfileData();
+    }, [auth]);
     useEffect(() => {
         // 取得訂餐模板
         const getFetchOrderTemplate = async () => {
@@ -212,7 +240,7 @@ export default function GroupListPage() {
                                         href="/member-center"
                                         className="text-sm font-semibold mr-4 mt-2 text-gray-700"
                                     >
-                                        H i ! {auth.name}
+                                        H i ! {name}
                                     </Link>
                                     <div
                                         className="text-sm  cursor-pointer hover:text-primary mt-2"
