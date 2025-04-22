@@ -55,7 +55,7 @@ export default function Select({
                                     : ""
                             }`}
                         >
-                            <p>進行中</p>
+                            <p>開放中</p>
                         </div>
                     </div>
                 </div>

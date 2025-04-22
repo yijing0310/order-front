@@ -18,7 +18,7 @@ const SideBar = forwardRef(function SideBar({ toggleSidebar }, ref) {
             {/* Sidebar：電腦固定、手機滑動 */}
             <aside
                 id="logo-sidebar"
-                className="fixed  top-0 left-0 z-40 lg:w-2/12  lg:h-screen h-screen lg:translate-x-0 px-3 py-4 flex flex-col items-center"
+                className="fixed  top-0 left-0 z-40 lg:w-2/12  h-screen lg:translate-x-0 px-3 py-4 flex flex-col items-center"
                 aria-label="Sidebar"
                 ref={ref}
                 style={{ transform: "translateX(0px)" }}

@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { RiDrinks2Fill } from "react-icons/ri";
 import { addOrderSchema } from "@/utils/schema/addOrderSchema";
 import { ORDER_ADD_POST } from "@/config/api-path";
 import { useParams } from "next/navigation";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
-
 
 export default function OrderModal({
     isOpen,
@@ -13,7 +11,7 @@ export default function OrderModal({
     templateFields,
     setRefresh = () => {},
     refresh = false,
-    isEnd = false,
+    endTime = "",
 }) {
     const { group_uuid } = useParams();
     const defaultValue = { name: "", item_name: "", note: "" };
@@ -47,6 +45,11 @@ export default function OrderModal({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (Date.now() > new Date(endTime).getTime()) {
+            setError("已截止");
+            setRefresh((pre) => !pre);
+            return;
+        }
         const finalData = {
             ...formData,
             quantity: parseInt(quantity),
@@ -93,7 +96,7 @@ export default function OrderModal({
             setError(result.error);
             if (result.success) {
                 setRefresh(!refresh);
-                onClose()
+                onClose();
                 handleClear();
             }
         } catch (ex) {
@@ -126,7 +129,7 @@ export default function OrderModal({
                         清除資料
                     </span>
                 </h2>
-                {isEnd ? (
+                {error === "已截止" ? (
                     <span className="py-1 px-2 text-sm text-red-700 bg-red-100 rounded">
                         已截止
                     </span>
@@ -313,7 +316,6 @@ export default function OrderModal({
                     </form>
                 )}
             </div>
-            
         </div>
     );
 }
