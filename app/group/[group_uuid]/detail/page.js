@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Announcement from "../_components/announcement";
 import { useGroup } from "@/context/group.js";
 import DownloadButton from "../_components/download";
@@ -8,8 +8,10 @@ import Search from "../_components/search";
 import Sort from "../_components/sort";
 import GroupDetailSelect from "./_components/select";
 import GroupDetailTable from "./_components/table";
+import GroupDetailTableByItem from "./_components/tableOrder";
 export default function GroupDetailPage() {
     const { announcement, setIsSearch, setSorting, group_uuid } = useGroup();
+    const [orderBy, setOrderBy] = useState("person");
     // 下載內容
     const pdfRef = useRef();
 
@@ -42,9 +44,13 @@ export default function GroupDetailPage() {
                 </div>
             </div>
             <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
-                <GroupDetailSelect />
+                <GroupDetailSelect setOrderBy={setOrderBy} orderBy={orderBy} />
                 <div className="mt-7" ref={pdfRef}>
-                    <GroupDetailTable />
+                    {orderBy === "item" ? (
+                        <GroupDetailTableByItem />
+                    ) : (
+                        <GroupDetailTable />
+                    )}
                 </div>
             </div>
         </>

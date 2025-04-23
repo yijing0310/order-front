@@ -1,49 +1,47 @@
 "use client";
+import { TOGGLE_STATUS } from "@/config/api-path";
+import { DELETE_ORDER } from "@/config/api-path";
+import Swal from "sweetalert2";
 import { useGroup } from "@/context/group.js";
 
-export default function GroupDetailTable() {
+export default function GroupDetailTableByItem() {
     const { filteredList, setRefresh } = useGroup();
-    const summarizeByPerson = (orders) => {
+    const summarizeByItemDetailWithNames = (orders) => {
         const summary = {};
 
         orders?.forEach((order) => {
-            const name = order.name;
             const item = order.item_name;
+            const note = order.note;
             const price = parseFloat(order.price);
             const qty = order.quantity || 1;
-            const note = order.note;
-            const status = order.status;
-            const id = order.id;
-            if (!summary[name]) {
-                summary[name] = {
+
+            const name = qty > 1 ? `${order.name}(${qty})` : order.name;
+
+            const key = note ? `${item} / ${note}` : item;
+
+            if (!summary[key]) {
+                summary[key] = {
+                    quantity: 0,
                     total: 0,
-                    count: 0,
-                    items: [],
-                    statusList: [],
-                    orderIds: [],
+                    names: new Set(),
                 };
             }
 
-            summary[name].total += price * qty;
-            summary[name].count += qty;
-            summary[name].statusList.push(status);
-            summary[name].orderIds.push(id);
-            note
-                ? summary[name].items.push(`${item} x${qty} / ${note}`)
-                : summary[name].items.push(`${item} x${qty} `);
+            summary[key].quantity += qty;
+            summary[key].total += price * qty;
+            summary[key].names.add(name);
         });
 
-        return Object.entries(summary).map(([name, data]) => ({
-            name,
+        return Object.entries(summary).map(([detail, data]) => ({
+            detail,
+            quantity: data.quantity,
             total: `${data.total.toLocaleString()} 元`,
-            quantity: data.count,
-            details: data.items.join(",\n"),
-            allPaid: data.statusList.every((s) => s === "Paid"),
-            orderIds: data.orderIds,
+            names: Array.from(data.names).join("、"),
         }));
     };
 
-    const result = summarizeByPerson(filteredList);
+    const result = summarizeByItemDetailWithNames(filteredList);
+    // console.table(result);
 
     
 
@@ -53,11 +51,10 @@ export default function GroupDetailTable() {
                 {/* 表頭 */}
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
-                    <div className="w-[15%] px-3">訂購人</div>
-                    <div className="w-[15%] px-3">總金額</div>
-                    <div className="w-[15%] px-3">總數量</div>
-                    <div className="w-[30%] pl-4">訂單明細</div>
-                    <div className="w-[10%] pl-5">狀態</div>
+                    <div className="w-[22%] pl-4">訂單明細</div>
+                    <div className="w-[12%] px-3">總數量</div>
+                    <div className="w-[12%] px-3">總金額</div>
+                    <div className="flex-1 px-3">訂購人</div>
                 </div>
                 {/* 內容 */}
                 <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
@@ -72,7 +69,7 @@ export default function GroupDetailTable() {
                             <div
                                 tabIndex={0}
                                 className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 "
-                                key={list.id}
+                                key={list.detail}
                             >
                                 <div className="w-full md:w-[5%] px-2">
                                     <span className="md:hidden text-gray-500 font-medium">
@@ -80,52 +77,32 @@ export default function GroupDetailTable() {
                                     </span>
                                     {i + 1}
                                 </div>
-                                <div className="w-full md:w-[15%] px-3">
+                                <div className="w-full md:w-[22%] md:pl-4 mt-2 md:mt-0 px-3 whitespace-pre-line">
                                     <span className="md:hidden text-gray-500 font-medium">
-                                        訂購人：
+                                        訂單明細：
                                     </span>
-                                    {list.name}
+                                    {list.detail}
                                 </div>
 
-                                <div className="w-full md:w-[15%] px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        總金額：
-                                    </span>
-                                    {list.total}
-                                </div>
-                                <div className="w-full md:w-[15%] px-3">
+                                <div className="w-full md:w-[12%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         總數量：
                                     </span>
                                     {list.quantity}
                                 </div>
-                                <div className="w-full md:w-[30%] md:pl-4 mt-2 md:mt-0 px-3 whitespace-pre-line">
+                                <div className="w-full md:w-[12%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
-                                        訂單明細：
+                                        總金額：
                                     </span>
-                                    {list.details}
+                                    {list.total}
                                 </div>
-
-                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:flex-1 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
-                                        狀態：
+                                        訂購人：
                                     </span>
-                                    {list.status === "Paid" ? (
-                                        <span
-                                            className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded "
-                                            
-                                        >
-                                            已付款
-                                        </span>
-                                    ) : (
-                                        <span
-                                            className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded "
-                                            
-                                        >
-                                            未付款
-                                        </span>
-                                    )}
+                                    {list.names}
                                 </div>
+                                
                             </div>
                         ))
                     )}
