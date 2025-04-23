@@ -1,17 +1,20 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import Link from "next/link";
+import { useJoin } from "@/context/join";
+import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import EditModal from "./modal";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function Table({ filteredList = [], setRefresh = () => {} }) {
+    const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const [editData, setEditData] = useState({});
     const tableRef = useRef();
     const [height, setHeight] = useState(0);
+    const { joinin } = useJoin();
 
     useEffect(() => {
         if (tableRef.current) {
@@ -29,6 +32,19 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
         const url = `${window.location.origin}/join-group?group_id=${group_uuid}`;
         navigator.clipboard.writeText(url);
         notify();
+    };
+    const onEnter = (groupId, password) => {
+        if (!groupId.length) {
+            setError({ group_uuid: "請輸入揪團ID" });
+            return;
+        }
+        const fetchJoinGroup = async () => {
+            const r = await joinin(groupId, password);
+            if (r.success == true) {
+                router.push(`/group/${groupId}`);
+            }
+        };
+        fetchJoinGroup();
     };
     return (
         <>
@@ -131,11 +147,17 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     <span className="md:hidden text-gray-500 font-medium">
                                         查看：
                                     </span>
-                                    <Link href={`/group/${list.group_uuid}`}>
-                                        <button className="text-xs text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200">
-                                            view
-                                        </button>
-                                    </Link>
+                                    <button
+                                        className="text-xs text-gray-600 py-1 px-4 bg-gray-100 rounded hover:bg-gray-200"
+                                        onClick={() => {
+                                            onEnter(
+                                                list.group_uuid,
+                                                list.password
+                                            );
+                                        }}
+                                    >
+                                        view
+                                    </button>
                                 </div>
                                 <div
                                     className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center hover:text-primary"

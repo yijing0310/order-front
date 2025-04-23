@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TOGGLE_STATUS } from "@/config/api-path";
 import { DELETE_ORDER } from "@/config/api-path";
 import { FaTrashCan } from "react-icons/fa6";
@@ -7,8 +7,14 @@ import Swal from "sweetalert2";
 import { useGroup } from "@/context/group.js";
 
 export default function GroupTable() {
-    
+    const tableRef = useRef();
+    const [height, setHeight] = useState(0);
 
+    useEffect(() => {
+        if (tableRef.current) {
+            setHeight(tableRef.current.offsetHeight);
+        }
+    }, []);
     const toggleStatus = async (orderId, status) => {
         try {
             const res = await fetch(TOGGLE_STATUS, {
@@ -94,12 +100,18 @@ export default function GroupTable() {
                     <div className="w-[10%] px-3">總額</div>
                     <div className="w-[10%] pl-5">狀態</div>
                     <div className="w-[18%] pl-4">備註</div>
-                    <div className="w-[8%] pl-4 ml-2">刪除</div>
+                    <div
+                        className={`pl-4 ${
+                            parseInt(height) <= 400 ? "ml-3" : ""
+                        }`}
+                    >
+                        刪除
+                    </div>
                 </div>
                 {/* 內容 */}
                 <div
-                    
                     className={`max-h-[400px] overflow-y-auto min-w-[800px] `}
+                    ref={tableRef}
                 >
                     {filteredList?.length <= 0 ? (
                         <>
@@ -189,7 +201,11 @@ export default function GroupTable() {
                                     </span>
                                     {list.note}
                                 </div>
-                                <div className="w-full md:w-[8%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div
+                                    className={`w-full md:w-[8%] md:pl-4 mt-2 md:mt-0 px-3 ${
+                                        parseInt(height) < 400 ? "" : "ml-2"
+                                    }`}
+                                >
                                     <span className="md:hidden text-gray-500 font-medium">
                                         刪除：
                                     </span>
