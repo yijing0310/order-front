@@ -35,6 +35,7 @@ export default function EnterGroup() {
                 setIsloading(false);
                 setGroupId("");
                 setPassword("");
+                setError("")
             } else {
                 setError(r.error);
             }

@@ -47,7 +47,7 @@ const StyledWrapper = styled.div`
         height: 40px;
         border: none;
         border-radius: 50%;
-        background-color: #dbb5b5;
+        background-color: #3B82F6;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -68,7 +68,7 @@ const StyledWrapper = styled.div`
         position: absolute;
         top: -40px;
         opacity: 0;
-        background-color: #c39898;
+        background-color: #3B82F6;
         color: white;
         padding: 5px 10px;
         border-radius: 5px;
@@ -78,6 +78,7 @@ const StyledWrapper = styled.div`
         transition-duration: 0.2s;
         pointer-events: none;
         letter-spacing: 0.5px;
+        transition-duration: 0.3s;
     }
 
     .tooltip::before {
@@ -85,7 +86,7 @@ const StyledWrapper = styled.div`
         content: "";
         width: 10px;
         height: 10px;
-        background-color: #c39898;
+        background-color: #3B82F6;
         background-size: 1000%;
         background-position: center;
         transform: rotate(45deg);
@@ -99,7 +100,7 @@ const StyledWrapper = styled.div`
     }
 
     .Btn:hover {
-        background-color: #c39898;
+        background-color: #3B82F6;
         transition-duration: 0.3s;
     }
 
