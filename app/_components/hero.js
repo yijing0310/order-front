@@ -1,7 +1,9 @@
 "use client";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { TbHandFingerRight } from "react-icons/tb";
 import Link from "next/link";
+
 export default function Hero() {
     return (
         <>
@@ -9,25 +11,47 @@ export default function Hero() {
                 <div className="relative isolate px-6 pt-14 lg:px-8 ">
                     <div className="mx-auto max-w-2xl py-12 sm:py-24 lg:py-36">
                         <div className="text-center">
-                            <h1 className="text-4xl font-semibold tracking-tight text-balance text-font sm:text-4xl">
+                            <motion.h1
+                                className="text-4xl font-semibold tracking-tight text-balance text-font sm:text-4xl"
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                            >
                                 訂餐不再靠手算！
-                            </h1>
-                            <p className="my-6 text-base font-medium text-pretty text-gray-500 sm:text-lg/8">
+                            </motion.h1>
+                            <motion.p
+                                className="my-6 text-base font-medium text-pretty text-gray-500 sm:text-lg/8"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                            >
                                 團體訂餐太麻煩？How Order Are You 幫你一次解決！
-                            </p>
+                            </motion.p>
                             <div className="mt-10 flex items-center justify-center gap-x-6">
-                                <Link
-                                    href="/join-group"
-                                    className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-third focus-visible:outline-2 focus-visible:outline-offset-2 focus-third:outline-indigo-600 flex items-center justify-center "
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 1.4, delay: 0.6, ease: "easeOut" }}
                                 >
-                                    <TbHandFingerRight/>&nbsp;開始訂餐
-                                </Link>
-                                <Link
-                                    href="/how-to-use"
-                                    className="text-sm/6 font-semibold text-font"
+                                    <Link
+                                        href="/join-group"
+                                        className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-third focus-visible:outline-2 focus-visible:outline-offset-2 focus-third:outline-indigo-600 flex items-center justify-center "
+                                    >
+                                        <TbHandFingerRight /> &nbsp;開始訂餐
+                                    </Link>
+                                </motion.div>
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 1.4, delay: 0.8, ease: "easeOut" }}
                                 >
-                                    如何使用 <span aria-hidden="true">→</span>
-                                </Link>
+                                    <Link
+                                        href="/how-to-use"
+                                        className="text-sm/6 font-semibold text-font"
+                                    >
+                                        如何使用 <span aria-hidden="true">→</span>
+                                    </Link>
+                                </motion.div>
                             </div>
                         </div>
                     </div>
@@ -45,13 +69,19 @@ export default function Hero() {
                     </div>
                 </div>
                 <div className="relative isolate px-6 pt-14 lg:px-8 ">
-                    <Image
-                        src="/imgs/cover.png"
-                        alt="封面"
-                        width={150}
-                        height={100}
-                        className="w-[150px] sm:w-[250px]  h-auto"
-                    />
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                    >
+                        <Image
+                            src="/imgs/cover.png"
+                            alt="封面"
+                            width={150}
+                            height={100}
+                            className="w-[150px] sm:w-[250px] h-auto"
+                        />
+                    </motion.div>
                 </div>
             </div>
         </>
