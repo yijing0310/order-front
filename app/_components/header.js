@@ -2,15 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/auth.js";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { PROFILE_GET } from "@/config/api-path";
+
 import Link from "next/link";
 
 export default function Header() {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const { auth, logout,getAuthHeader } = useAuth();
+    const router = useRouter() 
     const pathname = usePathname();
     const hiddenPaths = ["/member-center", "/login", "/register", "/group"];
     const shouldHide = hiddenPaths.some((path) => pathname.startsWith(path));
@@ -70,7 +72,10 @@ export default function Header() {
                                 </Link>
                                 <div
                                     className="text-sm/6 font-semibold cursor-pointer hover:text-primary "
-                                    onClick={logout}
+                                    onClick={()=>{
+                                        logout()
+                                        router.push("/")
+                                    }}
                                 >
                                     {" "}
                                     登出{" "}

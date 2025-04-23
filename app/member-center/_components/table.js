@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
@@ -10,6 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Table({ filteredList = [], setRefresh = () => {} }) {
     const [showModal, setShowModal] = useState(false);
     const [editData, setEditData] = useState({});
+    const tableRef = useRef();
+    const [height, setHeight] = useState(0);
+
+    useEffect(() => {
+        if (tableRef.current) {
+            setHeight(tableRef.current.offsetHeight);
+        }
+    }, []);
     const editInfo = (list_data) => {
         setEditData(list_data);
         setShowModal(true);
@@ -26,20 +34,34 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
         <>
             <div className="w-full overflow-x-auto  min-w-[800px]">
                 {/* 表頭 */}
-                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3">
+                <div
+                    className={`hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 `}
+                >
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[15%] px-3">揪團名稱</div>
                     <div className="w-[15%] px-3">揪團代號</div>
                     <div className="w-[15%] px-3">餐廳名稱</div>
                     {/* <div className="w-[8%] px-3">上限</div> */}
                     <div className="w-[17%] px-3">結束時間</div>
-                    <div className="w-[9%] px-3">狀態</div>
-                    <div className="w-[9%] px-5">查看</div>
+                    <div
+                        className={`px-3 ${
+                            parseInt(height) < 400 ? "w-[10%]" : "w-[9%] "
+                        }`}
+                    >
+                        狀態
+                    </div>
+                    <div
+                        className={` px-5 ${
+                            parseInt(height) < 400 ? "w-[10%]" : "w-[9%]"
+                        }`}
+                    >
+                        查看
+                    </div>
                     <div className="w-[6%] px-3">編輯</div>
                     <div className="w-[6%] px-3">分享</div>
                 </div>
                 {/* 內容 */}
-                <div className="max-h-[400px] overflow-y-auto ">
+                <div className="max-h-[400px] overflow-y-auto " ref={tableRef}>
                     {filteredList?.length <= 0 ? (
                         <>
                             <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 ">
@@ -135,7 +157,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     <span className="md:hidden text-gray-500 font-medium">
                                         分享
                                     </span>
-                                    <IoShareSocialSharp className="" />
+                                    <IoShareSocialSharp />
                                 </div>
                             </div>
                         ))

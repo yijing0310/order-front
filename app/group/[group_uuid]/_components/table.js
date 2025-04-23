@@ -1,4 +1,5 @@
 "use client";
+import { useRef, useState, useEffect } from "react";
 import { TOGGLE_STATUS } from "@/config/api-path";
 import { DELETE_ORDER } from "@/config/api-path";
 import { FaTrashCan } from "react-icons/fa6";
@@ -6,6 +7,8 @@ import Swal from "sweetalert2";
 import { useGroup } from "@/context/group.js";
 
 export default function GroupTable() {
+    
+
     const toggleStatus = async (orderId, status) => {
         try {
             const res = await fetch(TOGGLE_STATUS, {
@@ -80,7 +83,9 @@ export default function GroupTable() {
         <>
             <div className="w-full overflow-x-auto ">
                 {/* 表頭 */}
-                <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
+                <div
+                    className={`hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px] `}
+                >
                     <div className="w-[5%] px-2">#</div>
                     <div className="w-[10%] px-3">訂購人</div>
                     <div className="w-[15%] px-3">品項</div>
@@ -92,7 +97,10 @@ export default function GroupTable() {
                     <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
-                <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
+                <div
+                    
+                    className={`max-h-[400px] overflow-y-auto min-w-[800px] `}
+                >
                     {filteredList?.length <= 0 ? (
                         <>
                             <div className="hidden md:flex font-medium text-sm border-y py-5 px-3 ">
