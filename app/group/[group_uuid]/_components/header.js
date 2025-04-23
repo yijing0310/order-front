@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { PROFILE_GET } from "@/config/api-path";
 import Link from "next/link";
 import { useAuth } from "@/context/auth.js";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 export default function GroupHeader() {
+    const router = useRouter();
     const { auth, logout, getAuthHeader } = useAuth();
     const [error, setError] = useState("");
     const [name, setName] = useState("");
@@ -63,7 +65,10 @@ export default function GroupHeader() {
                             </Link>
                             <div
                                 className="text-sm  cursor-pointer hover:text-primary mt-2"
-                                onClick={logout}
+                                onClick={() => {
+                                    router.push("/");
+                                    logout();
+                                }}
                             >
                                 {" "}
                                 登出{" "}
