@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { usePathname, useRouter } from "next/navigation";
-import { MdGroups } from "react-icons/md";
+import { GrList } from "react-icons/gr";
 import { FaTable } from "react-icons/fa";
 const DetailBtn = () => {
     const pathname = usePathname();
@@ -28,7 +28,7 @@ const DetailBtn = () => {
                         {pathname.endsWith("detail") ? (
                             <FaTable />
                         ) : (
-                            <MdGroups />
+                            <GrList />
                         )}
                     </span>
                     <span className="tooltip">
@@ -47,7 +47,7 @@ const StyledWrapper = styled.div`
         height: 40px;
         border: none;
         border-radius: 50%;
-        background-color: #3B82F6;
+        background-color: #60A5FA;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -68,7 +68,7 @@ const StyledWrapper = styled.div`
         position: absolute;
         top: -40px;
         opacity: 0;
-        background-color: #3B82F6;
+        background-color: #60A5FA;
         color: white;
         padding: 5px 10px;
         border-radius: 5px;
@@ -86,7 +86,7 @@ const StyledWrapper = styled.div`
         content: "";
         width: 10px;
         height: 10px;
-        background-color: #3B82F6;
+        background-color: #60A5FA;
         background-size: 1000%;
         background-position: center;
         transform: rotate(45deg);
@@ -100,7 +100,7 @@ const StyledWrapper = styled.div`
     }
 
     .Btn:hover {
-        background-color: #3B82F6;
+        background-color: #60A5FA;
         transition-duration: 0.3s;
     }
 
