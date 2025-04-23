@@ -52,7 +52,7 @@ CREATE TABLE menu_templates (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   -- FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
-
+-- 飲料模板
 INSERT INTO menu_templates (name, fields)
 VALUES (
   'drink',
@@ -77,6 +77,16 @@ VALUES (
       "options": ["去冰", "微冰", "少冰", "正常冰", "固定", "熱飲"],
       "required": true
     },
+    { "label": "備註", "type": "textarea" }
+  ]'
+);
+-- 一般模板
+INSERT INTO menu_templates (name, fields)
+VALUES (
+  'basic',
+  '[
+    { "label": "訂購人,name", "type": "text", "required": true },
+    { "label": "今天要點什麼,item_name", "type": "text", "required": true },
     { "label": "備註", "type": "textarea" }
   ]'
 );

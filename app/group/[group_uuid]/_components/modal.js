@@ -165,7 +165,6 @@ export default function OrderModal({
                                                         e.target.value
                                                     )
                                                 }
-                                                // required={field.required}
                                             />
                                         </div>
                                     );

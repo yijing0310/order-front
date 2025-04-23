@@ -1,9 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { EDIT_GROUP_POST, DELETE_GROUP_POST } from "@/config/api-path";
+import {
+    EDIT_GROUP_POST,
+    DELETE_GROUP_POST,
+    END_GROUP_POST,
+} from "@/config/api-path";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
-import { useAuth } from "@/context/auth.js";
 import { editGroupSchema } from "@/utils/schema/editGroupSchema.js";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
@@ -196,7 +199,56 @@ export default function EditModal({
             }
         });
     };
+    // 立即截止
+    const onEnd = async (group_id) => {
+        Swal.fire({
+            title: "確定要立即截止嗎?",
+            text: "截止後就無法再編輯或點餐",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "確定",
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DBB5B5",
+            reverseButtons: true,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(END_GROUP_POST, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ group_id }),
+                    });
 
+                    const data = await res.json();
+
+                    if (data.success) {
+                        Swal.fire({
+                            title: "已截止",
+                            icon: "success",
+                            confirmButtonColor: "#DBB5B5",
+                        }).then(() => {
+                            setRefresh?.((prev) => !prev);
+                            onClose();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "失敗",
+                            text: data.error || "請稍後再試",
+                            icon: "error",
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: "發生錯誤",
+                        text: err.message || "無法連接伺服器",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-4 py-8"
@@ -369,6 +421,18 @@ export default function EditModal({
                             }
                             disabled={isExpired}
                         />
+                        {isExpired ? (
+                            ""
+                        ) : (
+                            <span
+                                className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded cursor-pointer mt-3 inline-block"
+                                onClick={() => {
+                                    onEnd(editData.id);
+                                }}
+                            >
+                                立即截止
+                            </span>
+                        )}
                     </div>
 
                     {/* 密碼欄位 */}
