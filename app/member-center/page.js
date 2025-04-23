@@ -36,7 +36,7 @@ export default function MemberCenterPage() {
                     throw new Error("請求失敗");
                 }
                 const data = await res.json();
-                if (data.success) {
+                if (data.success || data.error === "沒有資料") {
                     setListData(data);
                     setIsLoading(false);
                 } else {
