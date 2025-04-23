@@ -35,15 +35,17 @@ export const GroupProvider = ({ children }) => {
     const [sorting, setSorting] = useState("");
 
     useEffect(() => {
+        if (isLoading) return;
+        if (typeof window === "undefined") return;
+        if (!join) return;
         if (
-            !join ||
             !join.token ||
             error === "無授權訪問此揪團" ||
             error === "未授權，無法獲取信息"
         ) {
             router.replace("/join-group");
         }
-    }, [join, error]);
+    }, [join, error, isLoading]);
 
     useEffect(() => {
         const fetchProfileData = async () => {
