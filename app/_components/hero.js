@@ -23,7 +23,7 @@ export default function Hero() {
                                     <TbHandFingerRight/>&nbsp;開始訂餐
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/how-to-use"
                                     className="text-sm/6 font-semibold text-font"
                                 >
                                     如何使用 <span aria-hidden="true">→</span>

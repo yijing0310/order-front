@@ -46,7 +46,7 @@ export default function EnterGroup() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4">
             {isloading ? (
-                <Loader></Loader>
+                <Loader/>
             ) : (
                 <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                     <h2 className="text-2xl font-semibold mb-4 text-center">

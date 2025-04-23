@@ -48,7 +48,7 @@ export default function Header() {
                     className="flex items-center justify-between p-5 lg:px-8"
                 >
                     <div className="flex lg:flex-1">
-                        {pathname.startsWith("/join-group") ? (
+                        {pathname.startsWith("/join-group") || pathname=="/how-to-use" ? (
                             <Link
                                 href="/"
                                 className="w-[90px] flex items-center text-sm hover:text-primary"
