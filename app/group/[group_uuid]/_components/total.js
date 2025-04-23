@@ -1,6 +1,8 @@
 import React from "react";
+import { useGroup } from "@/context/group.js";
 
-export default function Total({ summary = {} }) {
+export default function Total() {
+    const { summary } = useGroup();
     return (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:my-6 mb-4 mt-2">
             {/* 總數量 */}

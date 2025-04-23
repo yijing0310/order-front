@@ -9,6 +9,7 @@ import Sort from "../_components/sort";
 import GroupDetailSelect from "./_components/select";
 import GroupDetailTable from "./_components/table";
 import GroupDetailTableByItem from "./_components/tableOrder";
+import Total from "../_components/total";
 export default function GroupDetailPage() {
     const { announcement, setIsSearch, setSorting, group_uuid } = useGroup();
     const [orderBy, setOrderBy] = useState("person");
@@ -31,7 +32,7 @@ export default function GroupDetailPage() {
         <>
             <Announcement announcement={announcement} />
 
-            <div className="px-4 md:px-8 py-4 md:py-3 mb-6">
+            <div className="px-4 md:px-8 py-4 md:py-3 ">
                 <div className="flex flex-col md:flex-row  items-end md:items-center justify-end">
                     <div className="flex items-center justify-end -order-first md:order-1 mt-3 md:mt-0 w-4/5 md:w-2/5">
                         <Search onSearch={setIsSearch} />
@@ -43,6 +44,7 @@ export default function GroupDetailPage() {
                     </div>
                 </div>
             </div>
+            <Total/>
             <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
                 <GroupDetailSelect setOrderBy={setOrderBy} orderBy={orderBy} />
                 <div className="mt-7" ref={pdfRef}>

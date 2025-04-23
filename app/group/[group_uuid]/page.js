@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
 import Announcement from "./_components/announcement";
@@ -13,7 +13,6 @@ import { useGroup } from "@/context/group.js";
 import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
     const {
-        summary,
         isLoading,
         error,
         setIsSearch,
@@ -62,7 +61,7 @@ export default function GroupListPage() {
                             </div>
                         </div>
                     </div>
-                    <Total summary={summary} />
+                    <Total />
                     <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
                         <OrderSelect />
                         <div className="mt-7" ref={pdfRef}>
