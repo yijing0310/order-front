@@ -33,6 +33,7 @@ export const GroupProvider = ({ children }) => {
     const [filterStatus, setFilterStatus] = useState("all");
     const [isSearch, setIsSearch] = useState("");
     const [sorting, setSorting] = useState("");
+    const [isCheck, setIsCheck] = useState(false);
 
     useEffect(() => {
         if (isLoading) return;
@@ -44,6 +45,8 @@ export const GroupProvider = ({ children }) => {
             error === "未授權，無法獲取信息"
         ) {
             router.replace("/join-group");
+        } else {
+            setIsCheck(true);
         }
     }, [join, error, isLoading]);
 
@@ -103,9 +106,13 @@ export const GroupProvider = ({ children }) => {
                 }
                 const data = await res.json();
                 setError(data.error);
-                if (data?.success) {
-                    setAnnouncement(data?.data);
+                if (
+                    data?.success ||
+                    data?.error === "無授權訪問此揪團" ||
+                    data?.error === "未授權，無法獲取信息"
+                ) {
                     setIsLoading(false);
+                    setAnnouncement(data?.data);
                     if (data.data.status === "closed") setIsEnd(true);
                 } else if (data.error === "查無此揪團") {
                     router.push("/join-group");
@@ -205,6 +212,7 @@ export const GroupProvider = ({ children }) => {
                 announcement,
                 summary,
                 isLoading,
+                isCheck,
             }}
         >
             {children}
