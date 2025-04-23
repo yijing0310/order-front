@@ -32,7 +32,8 @@ export default function GroupDetailTable() {
                 ? summary[name].items.push(`${item} x${qty} / ${note}`)
                 : summary[name].items.push(`${item} x${qty} `);
         });
-
+        
+        
         return Object.entries(summary).map(([name, data]) => ({
             name,
             total: `${data.total.toLocaleString()} 元`,
@@ -44,6 +45,7 @@ export default function GroupDetailTable() {
     };
 
     const result = summarizeByPerson(filteredList);
+    
 
     
 
@@ -110,7 +112,7 @@ export default function GroupDetailTable() {
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
                                     </span>
-                                    {list.status === "Paid" ? (
+                                    {list.allPaid  ? (
                                         <span
                                             className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded "
                                             
