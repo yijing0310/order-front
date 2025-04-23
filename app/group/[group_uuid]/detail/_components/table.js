@@ -1,11 +1,10 @@
 "use client";
 import { TOGGLE_STATUS } from "@/config/api-path";
 import { DELETE_ORDER } from "@/config/api-path";
-import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import { useGroup } from "@/context/group.js";
 
-export default function GroupTable() {
+export default function GroupDetailTable() {
     const toggleStatus = async (orderId, status) => {
         try {
             const res = await fetch(TOGGLE_STATUS, {
@@ -82,14 +81,11 @@ export default function GroupTable() {
                 {/* 表頭 */}
                 <div className="hidden md:flex bg-gray-100 font-medium text-sm border-y border-gray-200 py-3 min-w-[800px]">
                     <div className="w-[5%] px-2">#</div>
-                    <div className="w-[10%] px-3">訂購人</div>
-                    <div className="w-[15%] px-3">品項</div>
-                    <div className="w-[10%] px-3">金額</div>
-                    <div className="w-[10%] px-3">數量</div>
-                    <div className="w-[10%] px-3">總額</div>
+                    <div className="w-[15%] px-3">訂購人</div>
+                    <div className="w-[15%] px-3">總金額</div>
+                    <div className="w-[15%] px-3">總數量</div>
+                    <div className="w-[30%] pl-4">訂單明細</div>
                     <div className="w-[10%] pl-5">狀態</div>
-                    <div className="w-[18%] pl-4">備註</div>
-                    <div className="w-[8%] pl-4 ml-2">刪除</div>
                 </div>
                 {/* 內容 */}
                 <div className="max-h-[400px] overflow-y-auto min-w-[800px]">
@@ -112,39 +108,34 @@ export default function GroupTable() {
                                     </span>
                                     {i + 1}
                                 </div>
-                                <div className="w-full md:w-[10%] px-3">
+                                <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         訂購人：
                                     </span>
                                     {list.name}
                                 </div>
+                                
                                 <div className="w-full md:w-[15%] px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
-                                        品項：
-                                    </span>
-                                    {list.item_name}
-                                </div>
-                                <div className="w-full md:w-[10%] px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        金額：
-                                    </span>
-                                    $ {parseInt(list.price, 10)}
-                                </div>
-                                <div className="w-full md:w-[10%] px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        數量：
-                                    </span>
-                                    {list.quantity}
-                                </div>
-
-                                <div className="w-full md:w-[10%] px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        總額：
+                                        總金額：
                                     </span>
                                     ${" "}
                                     {parseInt(list.quantity) *
                                         parseInt(list.price, 10)}
                                 </div>
+                                <div className="w-full md:w-[15%] px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        總數量：
+                                    </span>
+                                    {list.quantity}
+                                </div>
+                                <div className="w-full md:w-[30%] md:pl-4 mt-2 md:mt-0 px-3">
+                                    <span className="md:hidden text-gray-500 font-medium">
+                                        訂單明細：
+                                    </span>
+                                    {list.note}
+                                </div>
+                               
                                 <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
@@ -175,26 +166,8 @@ export default function GroupTable() {
                                         </span>
                                     )}
                                 </div>
-                                <div className="w-full md:w-[18%] md:pl-4 mt-2 md:mt-0 px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        備註：
-                                    </span>
-                                    {list.note}
-                                </div>
-                                <div className="w-full md:w-[8%] md:pl-4 mt-2 md:mt-0 px-3">
-                                    <span className="md:hidden text-gray-500 font-medium">
-                                        刪除：
-                                    </span>
-                                    <button
-                                        onClick={() => {
-                                            handleDelete(list.id);
-                                        }}
-                                        title="刪除此筆資料"
-                                        className="hover:text-red-700 transition-colors ml-2"
-                                    >
-                                        <FaTrashCan className="text-lg" />
-                                    </button>
-                                </div>
+                                
+                                
                             </div>
                         ))
                     )}

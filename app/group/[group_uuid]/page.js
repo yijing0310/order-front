@@ -14,11 +14,11 @@ import Loader from "@/app/_components/loader";
 export default function GroupListPage() {
     const {
         summary,
-        announcement,
         isLoading,
         error,
         setIsSearch,
         setSorting,
+        announcement
     } = useGroup();
     const { group_uuid } = useParams();
 
@@ -48,7 +48,7 @@ export default function GroupListPage() {
                 <div className="sm:px-6 w-full ">沒有資料</div>
             ) : (
                 <div className="sm:px-6 w-full ">
-                    <Announcement announcement={announcement} />
+                    <Announcement announcement={announcement}/>
 
                     <div className="px-4 md:px-8 py-4 md:py-3">
                         <div className="flex flex-col md:flex-row  items-end md:items-center justify-end">
