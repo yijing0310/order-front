@@ -14,6 +14,7 @@ export default function OrderModal({
     endTime = "",
     isEnd = false,
 }) {
+    
     const { group_uuid } = useParams();
     const defaultValue = { name: "", item_name: "", note: "" };
     const [formData, setFormData] = useState(defaultValue);
@@ -136,7 +137,7 @@ export default function OrderModal({
                     </span>
                 ) : (
                     <form className="space-y-4" onSubmit={handleSubmit}>
-                        {templateFields?.fields.map((field, i) => {
+                        {templateFields?.fields?.map((field, i) => {
                             const { label, type, options = [] } = field;
                             const [labelText, fieldNameRaw] = label.split(",");
                             const fieldName =

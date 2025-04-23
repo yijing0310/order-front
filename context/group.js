@@ -17,7 +17,7 @@ export const useGroup = () => useContext(GroupContext);
 export const GroupProvider = ({ children }) => {
     const router = useRouter();
     const { group_uuid } = useParams();
-    
+
     const { auth, getAuthHeader } = useAuth();
     const { join, getJoinHeader } = useJoin();
 
@@ -33,7 +33,6 @@ export const GroupProvider = ({ children }) => {
     const [filterStatus, setFilterStatus] = useState("all");
     const [isSearch, setIsSearch] = useState("");
     const [sorting, setSorting] = useState("");
-
 
     useEffect(() => {
         if (
@@ -75,10 +74,11 @@ export const GroupProvider = ({ children }) => {
                         headers: { ...getJoinHeader() },
                     }
                 );
-                console.log(data);
-                
                 const data = await res.json();
-                setTemplateData(data?.data || []);
+                setError(data.error);
+                if (data.success) {
+                    setTemplateData(data?.data || []);
+                }
             } catch (err) {
                 setError("訂餐模板發送請求時發生錯誤:", err.message);
             }
@@ -133,7 +133,7 @@ export const GroupProvider = ({ children }) => {
 
         getGroupDetail();
         getOrderList();
-    }, [group_uuid, refresh,join]);
+    }, [group_uuid, refresh, join]);
 
     const filteredList = listData?.data
         ?.filter((item) => {
@@ -164,7 +164,7 @@ export const GroupProvider = ({ children }) => {
                 case "最低金額":
                     return a.price - b.price;
                 default:
-                    return 0;// 預設不排序
+                    return 0; // 預設不排序
             }
         });
     // 獲取總額總數量
