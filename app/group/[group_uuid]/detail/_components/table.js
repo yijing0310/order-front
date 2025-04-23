@@ -32,8 +32,7 @@ export default function GroupDetailTable() {
                 ? summary[name].items.push(`${item} x${qty} / ${note}`)
                 : summary[name].items.push(`${item} x${qty} `);
         });
-        
-        
+
         return Object.entries(summary).map(([name, data]) => ({
             name,
             total: `${data.total.toLocaleString()} 元`,
@@ -45,9 +44,6 @@ export default function GroupDetailTable() {
     };
 
     const result = summarizeByPerson(filteredList);
-    
-
-    
 
     return (
         <>
@@ -74,7 +70,7 @@ export default function GroupDetailTable() {
                             <div
                                 tabIndex={0}
                                 className="flex flex-col md:flex-row items-start md:items-center text-sm border-b border-gray-100 py-4 hover:bg-gray-50 "
-                                key={list.id}
+                                key={i}
                             >
                                 <div className="w-full md:w-[5%] px-2">
                                     <span className="md:hidden text-gray-500 font-medium">
@@ -112,18 +108,12 @@ export default function GroupDetailTable() {
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
                                     </span>
-                                    {list.allPaid  ? (
-                                        <span
-                                            className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded "
-                                            
-                                        >
+                                    {list.allPaid ? (
+                                        <span className="py-1 px-2 text-xs text-green-700 bg-green-100 rounded ">
                                             已付款
                                         </span>
                                     ) : (
-                                        <span
-                                            className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded "
-                                            
-                                        >
+                                        <span className="py-1 px-2 text-xs text-red-700 bg-red-100 rounded ">
                                             未付款
                                         </span>
                                     )}
