@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
-import { JOIN_GROUP_POST } from "@/config/api-path";
 import Loader from "@/app/_components/loader";
 import { useJoin } from "@/context/join";
 export default function EnterGroup() {
