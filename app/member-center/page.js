@@ -19,11 +19,14 @@ export default function MemberCenterPage() {
     const [sorting, setSorting] = useState(""); // 排序
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        // if (!auth || !auth.token) {
-        //     router.replace("/");
-        //     return;
-        // }
-        
+        if (isLoading) return;
+        if (typeof window === "undefined") return;
+        if (!auth) return;
+        if (!auth.token) {
+            router.replace("/");
+        }
+    }, [auth, isLoading]);
+    useEffect(() => {
         const getFetchGroup = async () => {
             try {
                 const res = await fetch(GROUP_GET, {
@@ -33,8 +36,12 @@ export default function MemberCenterPage() {
                     throw new Error("請求失敗");
                 }
                 const data = await res.json();
-                setListData(data);
-                setIsLoading(false);
+                if (data.success) {
+                    setListData(data);
+                    setIsLoading(false);
+                } else {
+                    setError(data.error);
+                }
             } catch (err) {
                 setError("發送請求時發生錯誤:", error);
             }
