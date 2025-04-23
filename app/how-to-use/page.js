@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaUserPlus, FaLink, FaUtensils, FaFileAlt } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
 import { MdLogin, MdOutlinePrint } from "react-icons/md";
+import { IoMdFlower } from "react-icons/io";
 export default function HowToUsePage() {
     const ownerSteps = [
         {
@@ -61,15 +62,15 @@ export default function HowToUsePage() {
     };
 
     return (
-        <section className="min-h-screen px-6 py-20  text-gray-800">
+        <section className="min-h-screen px-6 py-20  text-gray-800 ">
             <div className="max-w-6xl mx-auto text-center">
-                <h2 className="text-3xl sm:text-4xl font-bold mb-14 ">
-                    使用說明
+                <h2 className="text-3xl sm:text-4xl font-bold mb-14 flex justify-center gap-5 items-center">
+                    <IoMdFlower /> 使用說明 <IoMdFlower />
                 </h2>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     {/* 團主區塊 */}
-                    <div className="bg-third/5 rounded-2xl p-8 shadow-md border border-third/20">
+                    <div className="bg-third/30 rounded-2xl p-8 shadow-md border border-third/20">
                         <h3 className="text-2xl font-semibold  mb-6 text-left">
                             🧑‍💼 成為團主
                         </h3>
@@ -101,7 +102,7 @@ export default function HowToUsePage() {
                     </div>
 
                     {/* 點餐者區塊 */}
-                    <div className="bg-third/5 rounded-2xl p-8 shadow-md border border-third/20">
+                    <div className="bg-third/30 rounded-2xl p-8 shadow-md border border-third/20">
                         <h3 className="text-2xl font-semibold  mb-6 text-left">
                             🍱 我要點餐
                         </h3>
