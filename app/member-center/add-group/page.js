@@ -311,7 +311,7 @@ export default function AddGroupPage() {
                                     />
                                     <span>飲料模板</span>
                                 </label>
-                                <label className="inline-flex items-center gap-2">
+                                {/* <label className="inline-flex items-center gap-2">
                                     <input
                                         type="radio"
                                         name="template"
@@ -323,7 +323,7 @@ export default function AddGroupPage() {
                                         onChange={changeAddGroupForm}
                                     />
                                     <span>自訂模板</span>
-                                </label>
+                                </label> */}
                             </div>
                         </div>
 
