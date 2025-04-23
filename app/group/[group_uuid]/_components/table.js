@@ -3,11 +3,9 @@ import { TOGGLE_STATUS } from "@/config/api-path";
 import { DELETE_ORDER } from "@/config/api-path";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useGroup } from "@/context/group.js";
 
-export default function GroupTable({
-    filteredList = [],
-    setRefresh = () => {},
-}) {
+export default function GroupTable() {
     const toggleStatus = async (orderId, status) => {
         try {
             const res = await fetch(TOGGLE_STATUS, {
@@ -30,6 +28,7 @@ export default function GroupTable({
             console.error("請求錯誤:", err);
         }
     };
+    const { filteredList, setRefresh } = useGroup();
 
     const handleDelete = async (orderId) => {
         Swal.fire({

@@ -1,16 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import OrderModal from "./modal";
-export default function OrderSelect({
-    setFilterStatus = () => {},
-    filterStatus = "",
-    templateData = [],
-    setRefresh = () => {},
-    refresh = false,
-    endTime = "",
-    isEnd = false,
-}) {
+import { useGroup } from "@/context/group.js";
+
+export default function OrderSelect() {
     const [showModal, setShowModal] = useState(false);
+    const {
+        setFilterStatus,
+        filterStatus,
+        templateData,
+        setRefresh,
+        refresh,
+        endTime,
+        isEnd,
+    } = useGroup();
     return (
         <>
             {/* 篩選 */}
