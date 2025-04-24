@@ -12,9 +12,10 @@ export default function GroupTable() {
 
     useEffect(() => {
         if (tableRef.current) {
-            setHeight(tableRef.current.offsetHeight);
+            setHeight(tableRef.current.scrollHeight);
         }
     }, []);
+    
     const toggleStatus = async (orderId, status) => {
         try {
             const res = await fetch(TOGGLE_STATUS, {
@@ -102,7 +103,7 @@ export default function GroupTable() {
                     <div className="w-[18%] pl-4">備註</div>
                     <div
                         className={`w-[8%]  ${
-                            parseInt(height) <= 400 ? "pl-1" : "pl-4"
+                            parseInt(height) <= 400 ? "pl-5" : "pl-3"
                         }`}
                     >
                         刪除
@@ -203,7 +204,7 @@ export default function GroupTable() {
                                 </div>
                                 <div
                                     className={`w-full md:w-[8%] md:pl-4 mt-2 md:mt-0 px-3 ${
-                                        parseInt(height) < 400 ? "" : "ml-2"
+                                        parseInt(height) <= 400 ? "" : "md:ml-2"
                                     }`}
                                 >
                                     <span className="md:hidden text-gray-500 font-medium">

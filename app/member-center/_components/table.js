@@ -18,7 +18,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
 
     useEffect(() => {
         if (tableRef.current) {
-            setHeight(tableRef.current.offsetHeight);
+            setHeight(tableRef.current.scrollHeight);
         }
     }, []);
     const editInfo = (list_data) => {
@@ -171,7 +171,7 @@ export default function Table({ filteredList = [], setRefresh = () => {} }) {
                                     <FaEdit className="mx-2" />
                                 </div>
                                 <div
-                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center hover:text-primary"
+                                    className="w-full md:w-[6%] px-3 cursor-pointer flex md:block items-center hover:text-primary md:ml-2"
                                     onClick={() => {
                                         handleShare(list.group_uuid);
                                     }}
