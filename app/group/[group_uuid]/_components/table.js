@@ -101,8 +101,8 @@ export default function GroupTable() {
                     <div className="w-[10%] pl-5">狀態</div>
                     <div className="w-[18%] pl-4">備註</div>
                     <div
-                        className={`pl-4 ${
-                            parseInt(height) <= 400 ? "ml-3" : ""
+                        className={`w-[8%]  ${
+                            parseInt(height) <= 400 ? "pl-1" : "pl-4"
                         }`}
                     >
                         刪除
@@ -165,7 +165,7 @@ export default function GroupTable() {
                                     {parseInt(list.quantity) *
                                         parseInt(list.price, 10)}
                                 </div>
-                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 md:px-0 px-3 ">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
                                     </span>
