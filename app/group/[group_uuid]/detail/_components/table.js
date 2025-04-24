@@ -104,7 +104,7 @@ export default function GroupDetailTable() {
                                     {list.details}
                                 </div>
 
-                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0 px-3">
+                                <div className="w-full md:w-[10%] md:pl-4 mt-2 md:mt-0">
                                     <span className="md:hidden text-gray-500 font-medium">
                                         狀態：
                                     </span>
