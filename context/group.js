@@ -42,7 +42,8 @@ export const GroupProvider = ({ children }) => {
         if (
             !join.token ||
             error === "無授權訪問此揪團" ||
-            error === "未授權，無法獲取信息"
+            error === "未授權，無法獲取信息" ||
+            error === "無效的 Token"
         ) {
             router.replace("/join-group");
         } else {
@@ -133,7 +134,9 @@ export const GroupProvider = ({ children }) => {
                 if (!res.ok) {
                     throw new Error("取得訂餐列表請求失敗");
                 }
+                
                 const data = await res.json();
+                setError(data?.error)
                 setListData(data);
             } catch (err) {
                 setError("取得訂餐列表失敗:", err.message);
