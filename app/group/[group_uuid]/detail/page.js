@@ -21,21 +21,8 @@ export default function GroupDetailPage() {
         error,
     } = useGroup();
     const [orderBy, setOrderBy] = useState("person");
-    // 下載內容
-    const pdfRef = useRef();
+    const [isDowload, setIsDowload] = useState(false);
 
-    const handleDownload = async () => {
-        const html2pdf = (await import("html2pdf.js")).default;
-        const element = pdfRef.current;
-        const opt = {
-            margin: 0.4,
-            filename: `${announcement.title}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        };
-        html2pdf().set(opt).from(element).save();
-    };
     return (
         <>
             {isLoading ? (
@@ -55,7 +42,11 @@ export default function GroupDetailPage() {
                             </div>
                             <div className="flex items-center justify-end -order-last md:order-1">
                                 <Sort setSorting={setSorting} />
-                                <DownloadButton onClick={handleDownload} />
+                                <DownloadButton
+                                    onClick={() => {
+                                        setIsDowload(true);
+                                    }}
+                                />
                                 <ShareButton group_uuid={group_uuid} />
                             </div>
                         </div>
@@ -66,11 +57,17 @@ export default function GroupDetailPage() {
                             setOrderBy={setOrderBy}
                             orderBy={orderBy}
                         />
-                        <div className="mt-7" ref={pdfRef}>
+                        <div className="mt-7" >
                             {orderBy === "item" ? (
-                                <GroupDetailTableByItem />
+                                <GroupDetailTableByItem
+                                    isDowload={isDowload}
+                                    setIsDowload={setIsDowload}
+                                />
                             ) : (
-                                <GroupDetailTable />
+                                <GroupDetailTable
+                                    isDowload={isDowload}
+                                    setIsDowload={setIsDowload}
+                                />
                             )}
                         </div>
                     </div>
