@@ -7,8 +7,7 @@ import { FaHome } from "react-icons/fa";
 import { TbEyeglass2, TbEyeglassFilled } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 export default function Login() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +22,11 @@ export default function Login() {
         setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     };
     const notify = () => {
-        toast.success("登入成功 ! 準備前往首頁");
+        Swal.fire({
+            title: "登入成功",
+            icon: "success",
+            confirmButtonColor: "#DBB5B5",
+        });
     };
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -40,9 +43,9 @@ export default function Login() {
         if (success) {
             notify();
             setError("");
-            setTimeout(() => {
-                router.push("/");
-            }, 1000);
+            router.push("/");
+            // setTimeout(() => {
+            // }, 1000);
             setTimeout(() => setIsSubmitting(false), 1000);
         } else {
             if (code === 400) {
@@ -152,18 +155,6 @@ export default function Login() {
                     </Link>
                 </div>
             </form>
-            <ToastContainer
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
         </div>
     );
 }
