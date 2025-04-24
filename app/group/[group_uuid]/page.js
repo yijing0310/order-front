@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import OrderSelect from "./_components/select";
 import GroupTable from "./_components/table";
@@ -15,22 +15,8 @@ export default function GroupListPage() {
     const { isLoading, error, setIsSearch, setSorting, announcement, isCheck } =
         useGroup();
     const { group_uuid } = useParams();
+    const [isDowload, setIsDowload] = useState(false);
 
-    // 下載內容
-    const pdfRef = useRef();
-
-    const handleDownload = async () => {
-        const html2pdf = (await import("html2pdf.js")).default;
-        const element = pdfRef.current;
-        const opt = {
-            margin: 0.4,
-            filename: `${announcement.title}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        };
-        html2pdf().set(opt).from(element).save();
-    };
     if (isLoading || !isCheck) {
         return (
             <div className="text-center mt-10">
@@ -56,7 +42,11 @@ export default function GroupListPage() {
                     </div>
                     <div className="flex items-center justify-end -order-last md:order-1">
                         <Sort setSorting={setSorting} />
-                        <DownloadButton onClick={handleDownload} />
+                        <DownloadButton
+                            onClick={() => {
+                                setIsDowload(true);
+                            }}
+                        />
                         <ShareButton group_uuid={group_uuid} />
                     </div>
                 </div>
@@ -64,8 +54,8 @@ export default function GroupListPage() {
             <Total />
             <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10 mb-6">
                 <OrderSelect />
-                <div className="mt-7" ref={pdfRef}>
-                    <GroupTable />
+                <div className="mt-7">
+                    <GroupTable isDowload={isDowload} setIsDowload={setIsDowload}/>
                 </div>
             </div>
         </>
